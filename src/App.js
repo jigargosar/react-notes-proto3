@@ -4,7 +4,7 @@ import { overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { Inspector } from 'react-inspector'
+import { Inspector, ObjectLabel, ObjectRootLabel } from 'react-inspector'
 import {
   createStore,
   select,
@@ -30,6 +30,25 @@ function removeNote(state, note) {
   return R.dissocPath(['byId', note._id])(state)
 }
 
+const defaultNodeRenderer = ({
+  depth,
+  name,
+  data,
+  isNonenumerable,
+  expanded,
+}) => {
+  console.log(`data`, data)
+  return depth === 0 ? (
+    <ObjectRootLabel name={name} data={data} />
+  ) : (
+    <ObjectLabel
+      name={name}
+      data={data}
+      isNonenumerable={isNonenumerable}
+    />
+  )
+}
+
 function InspectState() {
   const { visible, state } = useStore(state => ({
     visible: state.debug.inspectorVisible,
@@ -39,7 +58,18 @@ function InspectState() {
   return (
     visible && (
       <div className="mv3">
-        <Inspector data={state} name={'state4'} />
+        <Inspector
+          data={state}
+          name={'state'}
+          expandPaths={[
+            '$',
+            '$.todos',
+            '$.todos.items',
+            '$.notes',
+            '$.notes.visibleNotes',
+          ]}
+          nodeRenderer={defaultNodeRenderer}
+        />
       </div>
     )
   )
