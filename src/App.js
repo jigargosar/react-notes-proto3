@@ -4,15 +4,6 @@ import { useLocalStorage } from './hooks'
 import { ErrorBoundary } from './ErrorBoundary'
 import { mergeDefaults } from './ramda-helpers'
 
-// function applyIfFunction(fnOrValue, ...args) {
-//   validate('*A', [fnOrValue, args])
-//   if (R.is(Function)(fnOrValue)) {
-//     return R.apply(fnOrValue, args)
-//   } else {
-//     return fnOrValue
-//   }
-// }
-
 function App() {
   const initialState = {}
   const [state, setState] = useLocalStorage('app-state', mergeDefaults)
