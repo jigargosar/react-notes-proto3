@@ -4,6 +4,7 @@ import { getCached } from './dom-helpers'
 import { useCacheEffect } from './hooks'
 import validate from 'aproba'
 import * as R from 'ramda'
+import { ErrorBoundary } from './ErrorBoundary'
 
 // function applyIfFunction(fnOrValue, ...args) {
 //   validate('*A', [fnOrValue, args])
@@ -35,12 +36,10 @@ function App() {
   )
 
   return (
-    state && (
-      <div>
-        <div>Global app state: {JSON.stringify(state)}</div>
-        <div>ct:{state.ct + 1}</div>
-      </div>
-    )
+    <ErrorBoundary>
+      <div>Global app state: {JSON.stringify(state)}</div>
+      <div>ct:{state.ct + 1}</div>
+    </ErrorBoundary>
   )
 }
 
