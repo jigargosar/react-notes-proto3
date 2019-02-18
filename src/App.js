@@ -2,10 +2,10 @@
 import React from 'react'
 import { useLocalStorage } from './hooks'
 import { ErrorBoundary } from './ErrorBoundary'
-import { mergeDefaults } from './ramda-helpers'
+import { mergeDefaults, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 
-const getVisibleNotes = pipe([
+const getVisibleNotes = pipe([])([
   R.prop('notesById'),
   R.values,
   R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
