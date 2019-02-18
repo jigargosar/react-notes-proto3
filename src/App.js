@@ -2,14 +2,20 @@
 import React from 'react'
 import { useLocalStorage } from './hooks'
 import { ErrorBoundary } from './ErrorBoundary'
-import { mergeDefaults, overProp, pipe, toggleLens } from './ramda-helpers'
+import { mergeDefaults, overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { Inspector } from 'react-inspector'
 import validate from 'aproba'
 import useHotKeys from 'react-hotkeys-hook'
-import { createStore, StoreProvider, useStore } from 'easy-peasy'
+import {
+  createStore,
+  select,
+  StoreProvider,
+  useActions,
+  useStore,
+} from 'easy-peasy'
 
 const getVisibleNotes = pipe([
   R.prop('notesById'),
@@ -43,7 +49,7 @@ function useAppState(def) {
     mergeDefaults({ ...def, __debug: { inspectorVisible: false } }),
   )
 
-  useHotKeys('`', () => setState(toggleLens(ivLens)))
+  // useHotKeys('`', () => setState(toggleLens(ivLens)))
 
   return [state, setState]
 }
@@ -59,8 +65,16 @@ function InspectState({ state }) {
 }
 
 function InspectState2() {
-  const state = useStore(R.identity)
-  const visible = useStore(state => state.debug.insVis)
+  const { state, visible } = useStore(state => ({
+    visible: state.debug.inspectorVisible,
+    state,
+  }))
+  const toggle = useActions(actions => actions.debug.toggleInspector)
+
+  useHotKeys('`', () => {
+    debugger
+    return toggle()
+  })
 
   return (
     visible && (
@@ -77,8 +91,8 @@ function NoteItem(props) {
 
 const store = createStore({
   debug: {
-    insVis: true,
-    toggleIns: overProp('insVis')(R.not),
+    inspectorVisible: true,
+    toggleInspector: overProp('inspectorVisible')(R.not),
   },
   todos: {
     items: ['Install easy-peasy', 'Build app', 'Profit'],
@@ -88,6 +102,16 @@ const store = createStore({
       state.items.push(payload)
       // (you can also return a new immutable instance if you prefer)
     },
+  },
+  notes: {
+    byId: {},
+    getVisibleNotes: select(
+      pipe([
+        R.prop('byId'),
+        R.values,
+        R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
+      ]),
+    ),
   },
 })
 
