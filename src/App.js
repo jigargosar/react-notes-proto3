@@ -70,7 +70,6 @@ function App() {
     <ErrorBoundary>
       <InspectApp state={state} />
       {/*<Inspector data={visibleNotes} table />*/}
-      {/*<div>ct:{state.ct + 1}</div>*/}
       <div className="flex">
         <button autoFocus onClick={() => addNewNote(setState)}>
           ADD
