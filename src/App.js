@@ -18,6 +18,18 @@ const getVisibleNotes = pipe([
   R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
 ])
 
+function addNewNote(setState) {
+  const note = {
+    _id: `m_${nanoid()}`,
+    _rev: null,
+    content: faker.lorem.lines(),
+    createdAt: Date.now(),
+    modifiedAt: Date.now(),
+  }
+  const overNotesById = overProp('notesById')
+  setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
+}
+
 function App() {
   const [state, setState] = useLocalStorage(
     'app-state',
@@ -26,27 +38,15 @@ function App() {
 
   const visibleNotes = getVisibleNotes(state)
 
-  function addNewNote() {
-    const note = {
-      _id: `m_${nanoid()}`,
-      _rev: null,
-      content: faker.lorem.lines(),
-      createdAt: Date.now(),
-      modifiedAt: Date.now(),
-    }
-    const overNotesById = overProp('notesById')
-    setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
-  }
-
   return (
     <ErrorBoundary>
-      <Inspector data={state} />
+      <Inspector data={state} name={'app-state'} />
       <div className="mv3">
-        <Inspector data={visibleNotes} table />
+        {/*<Inspector data={visibleNotes} table />*/}
       </div>
       <div>ct:{state.ct + 1}</div>
       <div className="flex">
-        <button autoFocus onClick={() => addNewNote()}>
+        <button autoFocus onClick={() => addNewNote(setState)}>
           ADD
         </button>
       </div>
