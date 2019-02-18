@@ -1,4 +1,4 @@
-import React, { useDebugValue } from 'react'
+import React from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
@@ -25,16 +25,8 @@ function addNewNote(state) {
   return R.assocPath(['byId', note._id])(note)(state)
 }
 
-function useDebugStore(arg) {
-  useDebugValue('useDebugStore')
-
-  const ret = useStore(arg)
-  useDebugValue('useDebugStore')
-  return ret
-}
-
 function InspectState() {
-  const { visible, state } = useDebugStore(state => ({
+  const { visible, state } = useStore(state => ({
     visible: state.debug.inspectorVisible,
     state,
   }))
@@ -79,7 +71,7 @@ const store = createStore({
 })
 
 const NotesApp = React.memo(function NotesApp() {
-  const visibleNotes = useDebugStore(state => state.notes.visibleNotes)
+  const visibleNotes = useStore(state => state.notes.visibleNotes)
   const add = useActions(actions => actions.notes.addNew)
   return (
     <>
