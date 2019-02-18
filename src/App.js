@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
-import { getCached } from './dom-helpers'
-import { useCacheEffect } from './hooks'
-import validate from 'aproba'
+import React from 'react'
+import { useLocalStorage } from './hooks'
 import { ErrorBoundary } from './ErrorBoundary'
 import { mergeDefaults } from './ramda-helpers'
 
@@ -14,16 +12,6 @@ import { mergeDefaults } from './ramda-helpers'
 //     return fnOrValue
 //   }
 // }
-
-function useLocalStorage(key, preProcess) {
-  validate('SF', arguments)
-
-  const [state, setState] = useState(() => {
-    return preProcess(getCached(key))
-  })
-  useCacheEffect(key, state)
-  return [state, setState]
-}
 
 function App() {
   const initialState = {}
