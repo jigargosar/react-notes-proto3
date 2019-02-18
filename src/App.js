@@ -5,16 +5,18 @@ import { useCacheEffect } from './hooks'
 import validate from 'aproba'
 import * as R from 'ramda'
 
-function applyIfFunction(fnOrValue, ...args) {
-  validate('*A', [fnOrValue, args])
-  if (R.is(Function)(fnOrValue)) {
-    return R.apply(fnOrValue, args)
-  } else {
-    return fnOrValue
-  }
-}
+// function applyIfFunction(fnOrValue, ...args) {
+//   validate('*A', [fnOrValue, args])
+//   if (R.is(Function)(fnOrValue)) {
+//     return R.apply(fnOrValue, args)
+//   } else {
+//     return fnOrValue
+//   }
+// }
 
 function useLocalStorage(key, preProcess) {
+  validate('SF', arguments)
+
   const [state, setState] = useState(() => {
     return preProcess(getCached(key))
   })
