@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useState } from 'react'
 
 function App() {
   const initialState = { fahrenheit: 70, other: {} }
 
-  const [state, set] = React.useState(initialState)
+  const [state, set] = useState(initialState)
 
   return (
     <div>
