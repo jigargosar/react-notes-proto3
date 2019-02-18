@@ -6,12 +6,19 @@ import { mergeDefaults, overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
+import * as PropTypes from 'prop-types'
 
 const getVisibleNotes = pipe([
   R.prop('notesById'),
   R.values,
   R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
 ])
+
+function NoteItem(props) {
+  return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
+}
+
+NoteItem.propTypes = { note: PropTypes.any }
 
 function App() {
   const [state, setState] = useLocalStorage(
@@ -29,7 +36,6 @@ function App() {
       createdAt: Date.now(),
       modifiedAt: Date.now(),
     }
-
     const overNotesById = overProp('notesById')
     setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
   }
@@ -38,8 +44,13 @@ function App() {
     <ErrorBoundary>
       <div>Global app state: {JSON.stringify(state)}</div>
       <div>ct:{state.ct + 1}</div>
+      <div className="flex">
+        <button autoFocus onClick={() => addNewNote()}>
+          ADD
+        </button>
+      </div>
       {visibleNotes.map(note => (
-        <div className="pa3 bb b--moon-gray">{note.content}</div>
+        <NoteItem key={note._id} note={note} />
       ))}
     </ErrorBoundary>
   )
