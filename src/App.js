@@ -80,7 +80,7 @@ const store = createStore({
   },
 })
 
-function NotesApp() {
+const NotesApp = React.memo(function NotesApp() {
   const visibleNotes = useDebugStore(state => state.notes.visibleNotes)
   const add = useActions(actions => actions.notes.addNewNote)
   return (
@@ -95,7 +95,7 @@ function NotesApp() {
       ))}
     </>
   )
-}
+})
 
 function App() {
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
