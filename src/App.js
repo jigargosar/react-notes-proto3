@@ -1,6 +1,5 @@
 import React from 'react'
 import useProfunctorState from './upf.js'
-import Thermometer from 'react-thermometer-component'
 
 function fToC(fahrenheit) {
   return Math.round(((fahrenheit - 32) * 5) / 9)
@@ -17,7 +16,11 @@ function CelsiusThermometer({ state, setState }) {
     <div>
       <button onClick={onColder}>Colder</button>
       <button onClick={onHotter}>Hotter</button>
-      <Thermometer value={state} max="100" steps="4" format="°C" />
+      <input
+        value={state}
+        type="number"
+        onChange={e => setState(Number(e.target.value))}
+      />
     </div>
   )
 }
