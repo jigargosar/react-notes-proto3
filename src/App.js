@@ -10,10 +10,6 @@ import { Inspector } from 'react-inspector'
 import validate from 'aproba'
 import useHotKeys from 'react-hotkeys-hook'
 
-function NoteItem(props) {
-  return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
-}
-
 const getVisibleNotes = pipe([
   R.prop('notesById'),
   R.values,
@@ -38,6 +34,7 @@ function isInspectorVisible(state) {
   validate('O', arguments)
   return R.view(ivLens)(state)
 }
+
 function useAppState(def) {
   validate('O', arguments)
   const [state, setState] = useLocalStorage(
@@ -50,6 +47,20 @@ function useAppState(def) {
   return [state, setState]
 }
 
+function InspectApp({ state }) {
+  return (
+    isInspectorVisible(state) && (
+      <div className="mv3">
+        <Inspector data={state} name={'app-state'} />
+      </div>
+    )
+  )
+}
+
+function NoteItem(props) {
+  return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
+}
+
 function App() {
   const [state, setState] = useAppState({ ct: 0, notesById: {} })
 
@@ -57,11 +68,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      {isInspectorVisible(state) && (
-        <div className="mv3">
-          <Inspector data={state} name={'app-state'} />
-        </div>
-      )}
+      <InspectApp state={state} />
       {/*<Inspector data={visibleNotes} table />*/}
       {/*<div>ct:{state.ct + 1}</div>*/}
       <div className="flex">
