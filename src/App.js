@@ -8,6 +8,7 @@ import nanoid from 'nanoid'
 import faker from 'faker'
 import { Inspector } from 'react-inspector'
 import validate from 'aproba'
+import useHotKeys from 'react-hotkeys-hook'
 
 function NoteItem(props) {
   return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
@@ -31,12 +32,21 @@ function addNewNote(setState) {
   setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
 }
 
+function toggleLens(ivLens) {
+  validate('O', arguments)
+  return R.over(ivLens)(R.not)
+}
+
 function useAppState(def) {
   validate('O', arguments)
   const [state, setState] = useLocalStorage(
     'app-state',
     mergeDefaults({ ...def, __debug: { inspectorVisible: false } }),
   )
+
+  const ivLens = R.lensPath(['__debug', 'inspectorVisible'])
+
+  useHotKeys('ctrl+k', setState(toggleLens(ivLens)))
 
   return [state, setState]
 }
