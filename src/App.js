@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 class App extends Component {
   render() {
-    return <div>HW</div>
+    return <div>BTT TEST</div>
   }
 }
 
