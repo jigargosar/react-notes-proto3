@@ -86,3 +86,8 @@ export const mergeDefaults = R.curry(function mergeDefaults(
 
   return pipe([R.defaultTo({}), R.mergeDeepRight(def)])(objOrNil)
 })
+
+export function toggleLens(ivLens) {
+  validate('F', arguments)
+  return R.over(ivLens)(R.not)
+}

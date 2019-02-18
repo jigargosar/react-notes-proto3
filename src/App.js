@@ -2,7 +2,7 @@
 import React from 'react'
 import { useLocalStorage } from './hooks'
 import { ErrorBoundary } from './ErrorBoundary'
-import { mergeDefaults, overProp, pipe } from './ramda-helpers'
+import { mergeDefaults, overProp, pipe, toggleLens } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
@@ -32,11 +32,6 @@ function addNewNote(setState) {
   setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
 }
 
-function toggleLens(ivLens) {
-  validate('O', arguments)
-  return R.over(ivLens)(R.not)
-}
-
 function useAppState(def) {
   validate('O', arguments)
   const [state, setState] = useLocalStorage(
@@ -46,7 +41,7 @@ function useAppState(def) {
 
   const ivLens = R.lensPath(['__debug', 'inspectorVisible'])
 
-  useHotKeys('ctrl+k', setState(toggleLens(ivLens)))
+  useHotKeys('ctrl+k', () => setState(toggleLens(ivLens)))
 
   return [state, setState]
 }
