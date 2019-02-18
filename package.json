@@ -31,6 +31,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/faker": "^4.1.5",
     "@types/react": "^16.8.3",
     "@types/react-dom": "^16.8.2",
     "husky": "^1.3.1",
