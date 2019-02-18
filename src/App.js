@@ -16,13 +16,7 @@ import {
   useStore,
 } from 'easy-peasy'
 
-const getVisibleNotes = pipe([
-  R.prop('notesById'),
-  R.values,
-  R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
-])
-
-function addNewNote(setState) {
+function addNewNote(state) {
   const note = {
     _id: `m_${nanoid()}`,
     _rev: null,
@@ -31,14 +25,7 @@ function addNewNote(setState) {
     modifiedAt: Date.now(),
   }
   const overNotesById = overProp('notesById')
-  setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
-}
-
-const ivLens = R.lensPath(['__debug', 'inspectorVisible'])
-
-function isInspectorVisible(state) {
-  validate('O', arguments)
-  return R.view(ivLens)(state)
+  return overNotesById(R.mergeLeft(R.objOf(note._id, note)))(state)
 }
 
 function useAppState(def) {
@@ -51,16 +38,6 @@ function useAppState(def) {
   // useHotKeys('`', () => setState(toggleLens(ivLens)))
 
   return [state, setState]
-}
-
-function InspectState({ state }) {
-  return (
-    isInspectorVisible(state) && (
-      <div className="mv3">
-        <Inspector data={state} name={'app-state'} />
-      </div>
-    )
-  )
 }
 
 function InspectState2() {
@@ -104,36 +81,41 @@ const store = createStore({
   },
   notes: {
     byId: {},
-    getVisibleNotes: select(
+    visibleNotes: select(
       pipe([
         R.prop('byId'),
         R.values,
         R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
       ]),
     ),
+    addNewNote,
   },
 })
 
-function App() {
-  const [state, setState] = useAppState({ ct: 0, notesById: {} })
-
-  const visibleNotes = getVisibleNotes(state)
-
+function NotesApp() {
+  const visibleNotes = useStore(state => state.notes.visibleNotes)
+  const add = useActions(actions => actions.notes.addNewNote)
   return (
-    <ErrorBoundary>
-      <StoreProvider store={store}>
-        <InspectState2 />
-      </StoreProvider>
-      <InspectState state={state} />
-      {/*<Inspector data={visibleNotes} table />*/}
+    <>
       <div className="flex">
-        <button autoFocus onClick={() => addNewNote(setState)}>
+        <button autoFocus onClick={() => add()}>
           ADD
         </button>
       </div>
       {visibleNotes.map(note => (
         <NoteItem key={note._id} note={note} />
       ))}
+    </>
+  )
+}
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <StoreProvider store={store}>
+        <InspectState2 />
+        <NotesApp />
+      </StoreProvider>
     </ErrorBoundary>
   )
 }
