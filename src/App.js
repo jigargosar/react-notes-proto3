@@ -35,8 +35,9 @@ function useAppState(def) {
   validate('O', arguments)
   const [state, setState] = useLocalStorage(
     'app-state',
-    mergeDefaults({ ct: 0, notesById: {} }),
+    mergeDefaults({ ...def, __debug: { inspectorVisible: false } }),
   )
+
   return [state, setState]
 }
 
