@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
@@ -13,6 +13,7 @@ import {
   useStore,
 } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
+import { getCached, setCache } from './dom-helpers'
 
 function addNewNote(state) {
   const note = {
@@ -51,7 +52,7 @@ const getVisibleNotes = pipe([
 ])
 
 function createAppStore() {
-  return createStore({
+  const model = {
     debug: {
       inspectorVisible: true,
       toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
@@ -70,7 +71,8 @@ function createAppStore() {
       visibleNotes: select(getVisibleNotes),
       addNew: addNewNote,
     },
-  })
+  }
+  return createStore(model, { initialState: getCached('app-state') })
 }
 
 const NotesApp = React.memo(function NotesApp() {
@@ -92,6 +94,11 @@ const NotesApp = React.memo(function NotesApp() {
 
 function App() {
   const store = useMemo(() => createAppStore(), [])
+  useEffect(() => {
+    return store.subscribe(() => {
+      setCache('app-state', store.getState())
+    })
+  }, [])
 
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   return (
