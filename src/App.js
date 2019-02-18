@@ -42,7 +42,14 @@ function InspectState() {
 }
 
 function NoteItem(props) {
-  return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
+  return (
+    <div className="pa3 bb b--moon-gray flex ">
+      <div>{props.note.content}</div>
+      <div>
+        <button onClick={() => {}}>X</button>
+      </div>
+    </div>
+  )
 }
 
 const getVisibleNotes = pipe([
