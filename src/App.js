@@ -14,6 +14,7 @@ import {
 } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
 import { getCached, setCache } from './dom-helpers'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 function addNewNote(state) {
   const note = {
@@ -24,6 +25,9 @@ function addNewNote(state) {
     modifiedAt: Date.now(),
   }
   return R.assocPath(['byId', note._id])(note)(state)
+}
+function removeNote(state, note) {
+  return R.dissocPath(['byId', note._id])(state)
 }
 
 function InspectState() {
@@ -41,12 +45,13 @@ function InspectState() {
   )
 }
 
-function NoteItem(props) {
+function NoteItem({ note }) {
+  const remove = useActions(actions => actions.notes.remove)
   return (
-    <div className="pa3 bb b--moon-gray flex ">
-      <div>{props.note.content}</div>
+    <div className="pa3 bb b--moon-gray flex justify-between ">
+      <div>{note.content}</div>
       <div>
-        <button onClick={() => {}}>X</button>
+        <button onClick={() => remove(note)}>XX</button>
       </div>
     </div>
   )
@@ -77,9 +82,13 @@ function createAppStore() {
       byId: {},
       visibleNotes: select(getVisibleNotes),
       addNew: addNewNote,
+      remove: removeNote,
     },
   }
-  return createStore(model, { initialState: getCached('app-state') })
+  return createStore(model, {
+    initialState: getCached('app-state'),
+    compose: composeWithDevTools({ trace: true }),
+  })
 }
 
 const NotesApp = React.memo(function NotesApp() {
