@@ -70,7 +70,7 @@ function createAppStore() {
       toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
     },
     todos: {
-      items: ['Install easy-peasy', 'Build app', 'Profit', 'Profit'],
+      items: ['Install easy-peasy', 'Build app', 'Profit'],
       // 👇 define actions directly on your model
       add: (state, payload) => {
         // do simple mutation to update state, and we make it an immutable update
