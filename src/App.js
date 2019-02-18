@@ -2,8 +2,10 @@
 import React from 'react'
 import { useLocalStorage } from './hooks'
 import { ErrorBoundary } from './ErrorBoundary'
-import { mergeDefaults, pipe } from './ramda-helpers'
+import { mergeDefaults, overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
+import nanoid from 'nanoid'
+import faker from 'faker'
 
 const getVisibleNotes = pipe([
   R.prop('notesById'),
@@ -18,6 +20,19 @@ function App() {
   )
 
   const visibleNotes = getVisibleNotes(state)
+
+  function addNewNote() {
+    const note = {
+      _id: `m_${nanoid()}`,
+      _rev: null,
+      content: faker.lorem.lines(),
+      createdAt: Date.now(),
+      modifiedAt: Date.now(),
+    }
+
+    const overNotesById = overProp('notesById')
+    setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
+  }
 
   return (
     <ErrorBoundary>
