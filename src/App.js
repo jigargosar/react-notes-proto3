@@ -5,7 +5,6 @@ import { ErrorBoundary } from './ErrorBoundary'
 import { mergeDefaults } from './ramda-helpers'
 
 function App() {
-  const initialState = {}
   const [state, setState] = useLocalStorage(
     'app-state',
     mergeDefaults({ ct: 0 }),
