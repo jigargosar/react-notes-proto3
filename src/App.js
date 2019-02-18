@@ -51,7 +51,7 @@ const getVisibleNotes = pipe([
 ])
 
 function createAppStore() {
-  const store = createStore({
+  return createStore({
     debug: {
       inspectorVisible: true,
       toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
@@ -71,7 +71,6 @@ function createAppStore() {
       addNew: addNewNote,
     },
   })
-  return store
 }
 
 const NotesApp = React.memo(function NotesApp() {
