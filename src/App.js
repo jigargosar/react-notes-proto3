@@ -47,7 +47,7 @@ function useAppState(def) {
   return [state, setState]
 }
 
-function InspectApp({ state }) {
+function InspectState({ state }) {
   return (
     isInspectorVisible(state) && (
       <div className="mv3">
@@ -68,7 +68,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <InspectApp state={state} />
+      <InspectState state={state} />
       {/*<Inspector data={visibleNotes} table />*/}
       <div className="flex">
         <button autoFocus onClick={() => addNewNote(setState)}>
