@@ -91,3 +91,10 @@ export function toggleLens(ivLens) {
   validate('F', arguments)
   return R.over(ivLens)(R.not)
 }
+
+export const objBy = R.curry(function objBy(getKey, note) {
+  validate('F*', arguments)
+
+  return R.objOf(getKey(note), note)
+})
+export const overById = overProp('byId')

@@ -1,6 +1,6 @@
 import React, { useDebugValue } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
-import { overProp, pipe } from './ramda-helpers'
+import { _idProp, objBy, overById, overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
@@ -22,8 +22,7 @@ function addNewNote(state) {
     createdAt: Date.now(),
     modifiedAt: Date.now(),
   }
-  const overNotesById = overProp('byId')
-  return overNotesById(R.mergeLeft(R.objOf(note._id, note)))(state)
+  return overById(R.mergeLeft(objBy(_idProp, note)))(state)
 }
 
 function useDebugStore(arg) {
