@@ -9,6 +9,7 @@ import faker from 'faker'
 import { Inspector } from 'react-inspector'
 import validate from 'aproba'
 import useHotKeys from 'react-hotkeys-hook'
+import { createStore, StoreProvider, useStore } from 'easy-peasy'
 
 const getVisibleNotes = pipe([
   R.prop('notesById'),
@@ -57,9 +58,38 @@ function InspectState({ state }) {
   )
 }
 
+function InspectState2() {
+  const state = useStore(R.identity)
+  const visible = useStore(state => state.debug.insVis)
+
+  return (
+    visible && (
+      <div className="mv3">
+        <Inspector data={state} name={'app-state'} />
+      </div>
+    )
+  )
+}
+
 function NoteItem(props) {
   return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
 }
+
+const store = createStore({
+  debug: {
+    insVis: true,
+    toggleIns: overProp('insVis')(R.not),
+  },
+  todos: {
+    items: ['Install easy-peasy', 'Build app', 'Profit'],
+    // 👇 define actions directly on your model
+    add: (state, payload) => {
+      // do simple mutation to update state, and we make it an immutable update
+      state.items.push(payload)
+      // (you can also return a new immutable instance if you prefer)
+    },
+  },
+})
 
 function App() {
   const [state, setState] = useAppState({ ct: 0, notesById: {} })
@@ -68,6 +98,9 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <StoreProvider store={store}>
+        <InspectState2 />
+      </StoreProvider>
       <InspectState state={state} />
       {/*<Inspector data={visibleNotes} table />*/}
       <div className="flex">

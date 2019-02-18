@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "aproba": "latest",
+    "easy-peasy": "^1.14.0",
     "faker": "^4.1.0",
     "nanoid": "^2.0.1",
     "ramda": "^0.26.1",
