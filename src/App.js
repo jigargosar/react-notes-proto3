@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
@@ -34,7 +34,7 @@ function InspectState() {
   return (
     visible && (
       <div className="mv3">
-        <Inspector data={state} name={'app-state'} />
+        <Inspector data={state} name={'state4'} />
       </div>
     )
   )
@@ -49,26 +49,30 @@ const getVisibleNotes = pipe([
   R.values,
   R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
 ])
-const store = createStore({
-  debug: {
-    inspectorVisible: true,
-    toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
-  },
-  todos: {
-    items: ['Install easy-peasy', 'Build app', 'Profit'],
-    // 👇 define actions directly on your model
-    add: (state, payload) => {
-      // do simple mutation to update state, and we make it an immutable update
-      state.items.push(payload)
-      // (you can also return a new immutable instance if you prefer)
+
+function createAppStore() {
+  const store = createStore({
+    debug: {
+      inspectorVisible: true,
+      toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
     },
-  },
-  notes: {
-    byId: {},
-    visibleNotes: select(getVisibleNotes),
-    addNew: addNewNote,
-  },
-})
+    todos: {
+      items: ['Install easy-peasy', 'Build app', 'Profit', 'Profit'],
+      // 👇 define actions directly on your model
+      add: (state, payload) => {
+        // do simple mutation to update state, and we make it an immutable update
+        state.items.push(payload)
+        // (you can also return a new immutable instance if you prefer)
+      },
+    },
+    notes: {
+      byId: {},
+      visibleNotes: select(getVisibleNotes),
+      addNew: addNewNote,
+    },
+  })
+  return store
+}
 
 const NotesApp = React.memo(function NotesApp() {
   const visibleNotes = useStore(state => state.notes.visibleNotes)
@@ -88,6 +92,8 @@ const NotesApp = React.memo(function NotesApp() {
 })
 
 function App() {
+  const store = useMemo(() => createAppStore(), [])
+
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   return (
     <ErrorBoundary>
