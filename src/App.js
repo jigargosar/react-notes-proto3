@@ -6,6 +6,7 @@ import { mergeDefaults, overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
+import { Inspector } from 'react-inspector'
 
 function NoteItem(props) {
   return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
@@ -39,7 +40,10 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <div>Global app state: {JSON.stringify(state)}</div>
+      <Inspector data={state} />
+      <div className="mv3">
+        <Inspector data={visibleNotes} table />
+      </div>
       <div>ct:{state.ct + 1}</div>
       <div className="flex">
         <button autoFocus onClick={() => addNewNote()}>

@@ -9,6 +9,7 @@
     "ramda": "^0.26.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
+    "react-inspector": "^2.3.1",
     "react-scripts": "2.1.5",
     "rooks": "^1.2.1",
     "tachyons": "^4.11.1"
