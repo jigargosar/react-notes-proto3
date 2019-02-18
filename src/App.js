@@ -32,14 +32,18 @@ function addNewNote(setState) {
   setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
 }
 
+const ivLens = R.lensPath(['__debug', 'inspectorVisible'])
+
+function isInspectorVisible(state) {
+  validate('O', arguments)
+  return R.view(ivLens)(state)
+}
 function useAppState(def) {
   validate('O', arguments)
   const [state, setState] = useLocalStorage(
     'app-state',
     mergeDefaults({ ...def, __debug: { inspectorVisible: false } }),
   )
-
-  const ivLens = R.lensPath(['__debug', 'inspectorVisible'])
 
   useHotKeys('ctrl+k', () => setState(toggleLens(ivLens)))
 
@@ -53,11 +57,13 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <Inspector data={state} name={'app-state'} />
-      <div className="mv3">
-        {/*<Inspector data={visibleNotes} table />*/}
-      </div>
-      <div>ct:{state.ct + 1}</div>
+      {isInspectorVisible(state) && (
+        <div className="mv3">
+          <Inspector data={state} name={'app-state'} />
+        </div>
+      )}
+      {/*<Inspector data={visibleNotes} table />*/}
+      {/*<div>ct:{state.ct + 1}</div>*/}
       <div className="flex">
         <button autoFocus onClick={() => addNewNote(setState)}>
           ADD
