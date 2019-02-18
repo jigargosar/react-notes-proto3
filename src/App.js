@@ -1,12 +1,10 @@
 import React from 'react'
-import { useLocalStorage } from './hooks'
 import { ErrorBoundary } from './ErrorBoundary'
-import { mergeDefaults, overProp, pipe } from './ramda-helpers'
+import { overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { Inspector } from 'react-inspector'
-import validate from 'aproba'
 import useHotKeys from 'react-hotkeys-hook'
 import {
   createStore,
@@ -28,19 +26,7 @@ function addNewNote(state) {
   return overNotesById(R.mergeLeft(R.objOf(note._id, note)))(state)
 }
 
-function useAppState(def) {
-  validate('O', arguments)
-  const [state, setState] = useLocalStorage(
-    'app-state',
-    mergeDefaults({ ...def, __debug: { inspectorVisible: false } }),
-  )
-
-  // useHotKeys('`', () => setState(toggleLens(ivLens)))
-
-  return [state, setState]
-}
-
-function InspectState2() {
+function InspectState() {
   const { state, visible } = useStore(state => ({
     visible: state.debug.inspectorVisible,
     state,
@@ -113,7 +99,7 @@ function App() {
   return (
     <ErrorBoundary>
       <StoreProvider store={store}>
-        <InspectState2 />
+        <InspectState />
         <NotesApp />
       </StoreProvider>
     </ErrorBoundary>
