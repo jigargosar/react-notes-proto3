@@ -12,6 +12,7 @@ import {
   useActions,
   useStore,
 } from 'easy-peasy'
+import useHotKeys from 'react-hotkeys-hook'
 
 function addNewNote(state) {
   const note = {
@@ -97,7 +98,7 @@ function NotesApp() {
 }
 
 function App() {
-  // useHotKeys('`', () => store.dispatch.debug.toggleInspector())
+  useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   return (
     <ErrorBoundary>
       <StoreProvider store={store}>
