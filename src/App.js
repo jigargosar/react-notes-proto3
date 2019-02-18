@@ -74,13 +74,13 @@ const store = createStore({
   notes: {
     byId: {},
     visibleNotes: select(getVisibleNotes),
-    addNewNote,
+    addNew: addNewNote,
   },
 })
 
 const NotesApp = React.memo(function NotesApp() {
   const visibleNotes = useDebugStore(state => state.notes.visibleNotes)
-  const add = useActions(actions => actions.notes.addNewNote)
+  const add = useActions(actions => actions.notes.addNew)
   return (
     <>
       <div className="flex">
