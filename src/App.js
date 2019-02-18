@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useDebugValue } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { Inspector } from 'react-inspector'
-import useHotKeys from 'react-hotkeys-hook'
 import {
   createStore,
   select,
@@ -26,17 +25,19 @@ function addNewNote(state) {
   return overNotesById(R.mergeLeft(R.objOf(note._id, note)))(state)
 }
 
+function useDebugStore(arg) {
+  useDebugValue('useDebugStore')
+
+  const ret = useStore(arg)
+  useDebugValue('useDebugStore')
+  return ret
+}
+
 function InspectState() {
-  const { visible, state } = useStore(state => ({
+  const { visible, state } = useDebugStore(state => ({
     visible: state.debug.inspectorVisible,
     state,
   }))
-
-  useEffect(() => {
-    return () => {
-      debugger
-    }
-  }, [])
 
   return (
     visible && (
@@ -79,7 +80,7 @@ const store = createStore({
 })
 
 function NotesApp() {
-  const visibleNotes = useStore(state => state.notes.visibleNotes)
+  const visibleNotes = useDebugStore(state => state.notes.visibleNotes)
   const add = useActions(actions => actions.notes.addNewNote)
   return (
     <>
@@ -96,7 +97,7 @@ function NotesApp() {
 }
 
 function App() {
-  useHotKeys('`', () => store.dispatch.debug.toggleInspector())
+  // useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   return (
     <ErrorBoundary>
       <StoreProvider store={store}>
