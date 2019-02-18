@@ -27,12 +27,10 @@ function addNewNote(state) {
 }
 
 function InspectState() {
-  const { visible } = useStore(state => ({
+  const { visible, state } = useStore(state => ({
     visible: state.debug.inspectorVisible,
     state,
   }))
-
-  const state = useStore(R.identity)
 
   useEffect(() => {
     return () => {
