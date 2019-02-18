@@ -103,8 +103,6 @@ function App() {
     <ErrorBoundary>
       <StoreProvider store={store}>
         <InspectState />
-      </StoreProvider>
-      <StoreProvider store={store}>
         <NotesApp />
       </StoreProvider>
     </ErrorBoundary>
