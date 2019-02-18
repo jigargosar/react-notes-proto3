@@ -45,7 +45,7 @@ function useAppState(def) {
     mergeDefaults({ ...def, __debug: { inspectorVisible: false } }),
   )
 
-  useHotKeys('ctrl+k', () => setState(toggleLens(ivLens)))
+  useHotKeys('`', () => setState(toggleLens(ivLens)))
 
   return [state, setState]
 }
