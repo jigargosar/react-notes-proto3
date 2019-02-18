@@ -52,6 +52,11 @@ function NoteItem(props) {
   return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
 }
 
+const getVisibleNotes = pipe([
+  R.prop('byId'),
+  R.values,
+  R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
+])
 const store = createStore({
   debug: {
     inspectorVisible: true,
@@ -68,13 +73,7 @@ const store = createStore({
   },
   notes: {
     byId: {},
-    visibleNotes: select(
-      pipe([
-        R.prop('byId'),
-        R.values,
-        R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
-      ]),
-    ),
+    visibleNotes: select(getVisibleNotes),
     addNewNote,
   },
 })
