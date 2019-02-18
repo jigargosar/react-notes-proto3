@@ -7,6 +7,7 @@ import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { Inspector } from 'react-inspector'
+import validate from 'aproba'
 
 function NoteItem(props) {
   return <div className="pa3 bb b--moon-gray">{props.note.content}</div>
@@ -30,11 +31,17 @@ function addNewNote(setState) {
   setState(overNotesById(R.mergeLeft(R.objOf(note._id, note))))
 }
 
-function App() {
+function useAppState(def) {
+  validate('O', arguments)
   const [state, setState] = useLocalStorage(
     'app-state',
     mergeDefaults({ ct: 0, notesById: {} }),
   )
+  return [state, setState]
+}
+
+function App() {
+  const [state, setState] = useAppState({ ct: 0, notesById: {} })
 
   const visibleNotes = getVisibleNotes(state)
 
