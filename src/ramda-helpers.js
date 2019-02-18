@@ -78,7 +78,11 @@ export const toggleProp = R.curry(function toggleProp(propName, obj) {
 // }
 export const _idProp = R.prop('_id')
 
-export const mergeDefaults = pipe([
-  R.defaultTo({}),
-  R.mergeDeepRight({ ct: 0 }),
-])
+export const mergeDefaults = R.curry(function mergeDefaults(
+  def,
+  objOrNil,
+) {
+  validate('OO|OZ', arguments)
+
+  return pipe([R.defaultTo({}), R.mergeDeepRight(def)])(objOrNil)
+})
