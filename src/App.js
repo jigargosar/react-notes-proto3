@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
@@ -22,21 +22,23 @@ function addNewNote(state) {
     createdAt: Date.now(),
     modifiedAt: Date.now(),
   }
-  const overNotesById = overProp('notesById')
+  const overNotesById = overProp('byId')
   return overNotesById(R.mergeLeft(R.objOf(note._id, note)))(state)
 }
 
 function InspectState() {
-  const { state, visible } = useStore(state => ({
+  const { visible } = useStore(state => ({
     visible: state.debug.inspectorVisible,
     state,
   }))
-  const toggle = useActions(actions => actions.debug.toggleInspector)
 
-  useHotKeys('`', () => {
-    debugger
-    return toggle()
-  })
+  const state = useStore(R.identity)
+
+  useEffect(() => {
+    return () => {
+      debugger
+    }
+  }, [])
 
   return (
     visible && (
@@ -54,7 +56,7 @@ function NoteItem(props) {
 const store = createStore({
   debug: {
     inspectorVisible: true,
-    toggleInspector: overProp('inspectorVisible')(R.not),
+    toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
   },
   todos: {
     items: ['Install easy-peasy', 'Build app', 'Profit'],
@@ -96,10 +98,13 @@ function NotesApp() {
 }
 
 function App() {
+  useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   return (
     <ErrorBoundary>
       <StoreProvider store={store}>
         <InspectState />
+      </StoreProvider>
+      <StoreProvider store={store}>
         <NotesApp />
       </StoreProvider>
     </ErrorBoundary>
