@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { getCached } from './dom-helpers'
 import { useCacheEffect } from './hooks'
 import validate from 'aproba'
-import * as R from 'ramda'
 import { ErrorBoundary } from './ErrorBoundary'
+import { mergeDefaults } from './ramda-helpers'
 
 // function applyIfFunction(fnOrValue, ...args) {
 //   validate('*A', [fnOrValue, args])
@@ -27,13 +27,7 @@ function useLocalStorage(key, preProcess) {
 
 function App() {
   const initialState = {}
-  const [state, setState] = useLocalStorage(
-    'app-state',
-    R.pipe(
-      R.defaultTo({}),
-      R.mergeDeepRight({ ct: 0 }),
-    ),
-  )
+  const [state, setState] = useLocalStorage('app-state', mergeDefaults)
 
   return (
     <ErrorBoundary>
