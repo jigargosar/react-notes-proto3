@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
 import { useLocalStorage } from './hooks'
 import { ErrorBoundary } from './ErrorBoundary'
@@ -139,10 +138,4 @@ function App() {
   )
 }
 
-export default App
-
-if (module.hot) {
-  module.hot.dispose(() => {
-    console.clear()
-  })
-}
+export { App }

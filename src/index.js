@@ -1,9 +1,9 @@
 import React from 'react'
 import 'tachyons'
 import './index.css'
-import App from './App'
 import * as serviceWorker from './serviceWorker'
 import * as ReactDOM from 'react-dom'
+import { App } from './App'
 
 function render() {
   ReactDOM.render(<App />, document.getElementById('root'))
@@ -16,6 +16,6 @@ render()
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister()
 
-if (module.hot) {
-  module.hot.accept(['./App'], render)
-}
+// if (module.hot) {
+//   module.hot.accept(['./App'], render)
+// }
