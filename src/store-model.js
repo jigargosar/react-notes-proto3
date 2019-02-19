@@ -25,6 +25,7 @@ const getVisibleNotes = pipe([
   R.values,
   R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
 ])
+
 export const storeModel = {
   debug: {
     inspectorVisible: true,
