@@ -153,13 +153,18 @@ const NotesApp = React.memo(function NotesApp() {
   )
 })
 
-function App() {
+function useAppStore() {
   const store = useMemo(() => createAppStore(), [])
   useEffect(() => {
     return store.subscribe(() => {
       setCache('app-state', store.getState())
     })
   }, [])
+  return store
+}
+
+function App() {
+  const store = useAppStore()
 
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   return (
