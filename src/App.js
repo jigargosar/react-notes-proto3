@@ -21,10 +21,10 @@ function NoteItem({ note }) {
 }
 
 function NotesApp() {
-  const { notes, remoteUrl, syncStatus } = useStore(state => ({
+  const { notes, remoteUrl, syncDetails } = useStore(state => ({
     notes: state.notes.visibleNotes,
     remoteUrl: state.notes.remoteUrl,
-    syncStatus: state.notes.syncStatus,
+    syncDetails: state.notes.syncDetails,
   }))
   const [ipt, setIpt] = useState(() => remoteUrl || '')
   const { add, setRemoteUrl, startSync } = useActions(actions => ({
@@ -60,7 +60,7 @@ function NotesApp() {
           </form>
         </div>
       </div>
-      <Inspector data={syncStatus} name="sync" />
+      <Inspector data={syncDetails} name="sync" />
       {notes.map(note => (
         <NoteItem key={note._id} note={note} />
       ))}

@@ -50,7 +50,7 @@ const notesModel = {
   remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
-  syncStatus: select(state => {
+  syncDetails: select(state => {
     return { ...(state.syncLastUpdate || {}), err: state.syncErr }
   }),
   setRemoteUrl: (state, remoteUrl) => {
