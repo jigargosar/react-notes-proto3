@@ -43,7 +43,7 @@ function App() {
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   useEffect(() => {
     const changesP = store.dispatch.notes
-      .loadAllFromPouch()
+      .initFromPouch()
       .catch(console.error)
     return () => {
       changesP.then(changes => changes.cancel()).catch(console.error)

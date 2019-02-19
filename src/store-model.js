@@ -62,7 +62,7 @@ export const storeModel = {
       const update = change.deleted ? omitNote : mergeNote
       return update(state)
     },
-    loadAllFromPouch: thunk(async (actions, payload) => {
+    initFromPouch: thunk(async (actions, payload) => {
       const { rows } = await db.allDocs({ include_docs: true })
       const docs = rows.map(R.prop('doc'))
       actions.replaceAll(docs)
