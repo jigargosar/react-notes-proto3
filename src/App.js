@@ -105,6 +105,7 @@ function NoteItem({ note }) {
     <div className="pa3 bb b--moon-gray flex justify-between ">
       <label>
         <input
+          autoFocus={isSelected}
           className="ma2"
           type="radio"
           name="note-item"
