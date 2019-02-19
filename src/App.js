@@ -58,11 +58,12 @@ function App() {
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
 
   useEffect(() => {
-    const changesP = store.dispatch.notes
-      .initFromPouch()
-      .catch(console.error)
+    const initResult = store.dispatch.notes.initFromPouch()
+    initResult.catch(console.error)
     return () => {
-      changesP.then(changes => changes.cancel()).catch(console.error)
+      initResult
+        .then(({ changes }) => changes.cancel())
+        .catch(console.error)
     }
   }, [])
 

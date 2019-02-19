@@ -62,10 +62,11 @@ const notesModel = {
     const { rows } = await db.allDocs({ include_docs: true })
     const docs = rows.map(R.prop('doc'))
     actions.replaceAll(docs)
-    return db
+    const changes = db
       .changes({ include_docs: true, live: true, since: 'now' })
       .on('change', actions.handleChange)
       .on('error', console.error)
+    return { changes }
   }),
 }
 export const storeModel = {
