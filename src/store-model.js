@@ -54,16 +54,12 @@ const notesModel = {
     return { ...(state.syncLastUpdate || {}), err: state.syncErr }
   }),
   syncStatus: select(state => {
-    const { syncDetails: push } = state
-    if (push) {
-      const mapping = {
-        pending: 'synced',
-        stopped: 'problem',
-        active: 'syncing',
-      }
-    } else {
-      return 'disabled'
+    const mapping = {
+      pending: 'synced',
+      stopped: 'problem',
+      active: 'syncing',
     }
+    return R.propOr('disabled', state.syncDetails.push)(mapping)
   }),
   setRemoteUrl: (state, remoteUrl) => {
     return R.assoc('remoteUrl')(remoteUrl)(state)
