@@ -47,7 +47,7 @@ const notesModel = {
     state.byId = pouchDocsToIdLookup(docs)
   },
   handleChange: (state, change) => {
-    console.log(`change2`, change)
+    console.log(`change`, change)
     const note = change.doc
     const mergeNote = R.assocPath(['byId', note._id])(note)
     const omitNote = R.dissocPath(['byId', note._id])
