@@ -1,6 +1,6 @@
 import React from 'react'
 import 'tachyons'
-import './index.css'
+import './index.scss'
 import * as serviceWorker from './serviceWorker'
 import * as ReactDOM from 'react-dom'
 import { App } from './App'

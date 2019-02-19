@@ -17,6 +17,7 @@ import { getCached, setCache } from './dom-helpers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { Portal } from 'react-portal'
+import Tree from './Tree'
 
 function addNewNote(state) {
   const note = {
@@ -51,6 +52,24 @@ const defaultNodeRenderer = ({
   )
 }
 
+function InspectState() {
+  const { state } = useStore(state => ({
+    state,
+  }))
+  return (
+    <PortalInspector
+      data={state}
+      name={'state'}
+      expandPaths={[
+        '$',
+        '$.todos',
+        '$.todos.items',
+        '$.notes',
+        '$.notes.visibleNotes',
+      ]}
+    />
+  )
+}
 function PortalInspector(props) {
   const { visible } = useStore(state => ({
     visible: state.debug.inspectorVisible,
@@ -142,18 +161,9 @@ function App() {
   return (
     <ErrorBoundary>
       <StoreProvider store={store}>
-        <PortalInspector data={{ foo: 1 }} />
-        <PortalInspector
-          data={store}
-          name={'store'}
-          expandPaths={[
-            '$',
-            '$.todos',
-            '$.todos.items',
-            '$.notes',
-            '$.notes.visibleNotes',
-          ]}
-        />
+        <InspectState />
+        <PortalInspector data={store} name={'store'} />
+        <Tree />
         <NotesApp />
       </StoreProvider>
     </ErrorBoundary>
