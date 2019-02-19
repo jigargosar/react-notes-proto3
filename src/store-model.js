@@ -4,6 +4,15 @@ import faker from 'faker'
 import { objFromList, overProp, pipe } from './ramda-helpers'
 import { select, thunk } from 'easy-peasy'
 import validate from 'aproba'
+import PouchDB from 'pouchdb-browser'
+
+const db = new PouchDB('notes-pdb')
+
+if (module.hot) {
+  module.hot.dispose(() => {
+    db.close()
+  })
+}
 
 function createNewNote() {
   return {
@@ -27,19 +36,18 @@ const notesModel = {
   visibleNotes: select(getVisibleNotes),
   add: (state, note) =>
     pipe([R.assocPath(['byId', note._id])(note)])(state),
-  addNew: thunk(
-    async (actions, payload, { injections: { notesDb: db } }) => {
-      const note = createNewNote()
-      await db.put(note)
-    },
-  ),
-  remove: thunk(async (actions, note, { injections: { notesDb: db } }) => {
+  addNew: thunk(async (actions, payload) => {
+    const note = createNewNote()
+    await db.put(note)
+  }),
+  remove: thunk(async (actions, note) => {
     await db.put({ ...note, _deleted: true })
   }),
   replaceAll(state, docs) {
     state.byId = pouchDocsToIdLookup(docs)
   },
   handleChange: (state, change) => {
+    console.log(`change2`, change)
     const note = change.doc
     const mergeNote = R.assocPath(['byId', note._id])(note)
     const omitNote = R.dissocPath(['byId', note._id])
@@ -47,17 +55,15 @@ const notesModel = {
     const update = change.deleted ? omitNote : mergeNote
     return update(state)
   },
-  initFromPouch: thunk(
-    async (actions, payload, { injections: { notesDb: db } }) => {
-      const { rows } = await db.allDocs({ include_docs: true })
-      const docs = rows.map(R.prop('doc'))
-      actions.replaceAll(docs)
-      return db
-        .changes({ include_docs: true, live: true, from: 'now' })
-        .on('change', actions.handleChange)
-        .on('error', console.error)
-    },
-  ),
+  initFromPouch: thunk(async (actions, payload) => {
+    const { rows } = await db.allDocs({ include_docs: true })
+    const docs = rows.map(R.prop('doc'))
+    actions.replaceAll(docs)
+    return db
+      .changes({ include_docs: true, live: true, since: 'now' })
+      .on('change', actions.handleChange)
+      .on('error', console.error)
+  }),
 }
 export const storeModel = {
   debug: {

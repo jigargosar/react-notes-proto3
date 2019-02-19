@@ -1,11 +1,16 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
-import { StoreProvider, useActions, useStore } from 'easy-peasy'
+import {
+  createStore,
+  StoreProvider,
+  useActions,
+  useStore,
+} from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
 import { storeModel } from './store-model'
-import { useAppStore } from './easy-peasy-helpers'
 import { InspectState, PortalInspector } from './Inspect'
-import PouchDB from 'pouchdb-browser'
+import { getCached, setCache } from './dom-helpers'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
@@ -39,11 +44,19 @@ function NotesApp() {
   )
 }
 
+const store = createStore(storeModel, {
+  initialState: getCached('app-state'),
+  compose: composeWithDevTools({ trace: true }),
+})
+
 function App() {
-  const notesDb = useMemo(() => new PouchDB('notes-pdb'), [])
-  const store = useAppStore(storeModel, { injections: { notesDb } })
-  useEffect(() => () => notesDb.close(), [])
+  useEffect(
+    () => store.subscribe(() => setCache('app-state', store.getState())),
+    [],
+  )
+
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
+
   useEffect(() => {
     const changesP = store.dispatch.notes
       .initFromPouch()
