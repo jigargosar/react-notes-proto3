@@ -58,7 +58,7 @@ function PortalInspector(props) {
 
   return (
     visible && (
-      <Portal node={document.getElementById('root')}>
+      <Portal node={document.getElementById('portal-inspector')}>
         <div className="mv3">
           <Inspector
             nodeRenderer={defaultNodeRenderer}
