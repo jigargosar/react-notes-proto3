@@ -80,7 +80,7 @@ const NotesApp = React.memo(function NotesApp() {
   )
 })
 
-function useAppStore() {
+function useAppStore(storeModel) {
   const store = useMemo(
     () =>
       createStore(storeModel, {
@@ -98,7 +98,7 @@ function useAppStore() {
 }
 
 function App() {
-  const store = useAppStore()
+  const store = useAppStore(storeModel)
 
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   return (
