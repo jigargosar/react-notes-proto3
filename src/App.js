@@ -63,7 +63,9 @@ function App() {
     return () => {
       initResult
         .then(({ changes, sync }) => {
-          sync.cancel()
+          if (sync) {
+            sync.cancel()
+          }
           changes.cancel()
         })
         .catch(console.error)
