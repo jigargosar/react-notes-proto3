@@ -3,7 +3,7 @@ import { Portal } from 'react-portal'
 import { Inspector } from 'react-inspector'
 import React from 'react'
 
-export function InspectState() {
+export function PortalInspectState() {
   const { state } = useStore(state => ({
     state,
   }))

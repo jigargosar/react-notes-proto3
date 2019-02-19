@@ -12,6 +12,7 @@ let sync = null
 function cancelSync() {
   if (sync) {
     sync.cancel()
+    sync = null
   }
 }
 
@@ -47,6 +48,11 @@ const notesModel = {
   selectedId: null,
   visibleNotes: select(getVisibleNotes),
   remoteUrl: null,
+  syncErr: null,
+  syncLastUpdate: null,
+  syncStatus: select(state => {
+    return { ...(state.syncLastUpdate || {}), err: state.syncErr }
+  }),
   setRemoteUrl: (state, remoteUrl) => {
     return R.assoc('remoteUrl')(remoteUrl)(state)
   },
@@ -82,15 +88,30 @@ const notesModel = {
 
   syncUpdate: (state, info) => {
     console.log('syncUpdate', info, sync)
+    const syncState = sync
+      ? {
+          pullState: R.path(['pull', 'state'])(sync),
+          pushState: R.path(['push', 'state'])(sync),
+        }
+      : {}
+    return R.assoc('syncLastUpdate')({ ...syncState, info })(state)
   },
   syncError: (state, err) => {
     console.error('syncError', err)
+    return R.assoc('syncError')(err.message)(state)
   },
-
+  clearSync: state => {
+    cancelSync()
+    const update = pipe([
+      R.assoc('syncError')(null),
+      R.assoc('syncLastUpdate')(null),
+    ])
+    return update(state)
+  },
   startSync: thunk(async (actions, payload, { getState }) => {
+    actions.clearSync()
     const remoteUrl = getState().notes.remoteUrl
     console.log(`remoteUrl`, remoteUrl)
-    cancelSync()
     if (remoteUrl) {
       try {
         sync = db

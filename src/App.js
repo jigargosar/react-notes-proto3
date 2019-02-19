@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
-import { InspectState, PortalInspector } from './Inspect'
+import { PortalInspector, PortalInspectState } from './Inspect'
+import { Inspector } from 'react-inspector'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
@@ -20,9 +21,10 @@ function NoteItem({ note }) {
 }
 
 function NotesApp() {
-  const { notes, remoteUrl } = useStore(state => ({
+  const { notes, remoteUrl, syncStatus } = useStore(state => ({
     notes: state.notes.visibleNotes,
     remoteUrl: state.notes.remoteUrl,
+    syncStatus: state.notes.syncStatus,
   }))
   const [ipt, setIpt] = useState(() => remoteUrl || '')
   const { add, setRemoteUrl, startSync } = useActions(actions => ({
@@ -56,6 +58,7 @@ function NotesApp() {
           </form>
         </div>
       </div>
+      <Inspector data={syncStatus} name="sync" />
       {notes.map(note => (
         <NoteItem key={note._id} note={note} />
       ))}
@@ -68,7 +71,7 @@ function App({ store }) {
 
   return (
     <ErrorBoundary>
-      <InspectState />
+      <PortalInspectState />
       <PortalInspector data={store} name={'store'} />
       <NotesApp />
     </ErrorBoundary>
