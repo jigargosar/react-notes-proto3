@@ -60,18 +60,7 @@ function PortalInspector(props) {
     visible && (
       <Portal node={document.getElementById('portal-inspector')}>
         <div className="mv3">
-          <Inspector
-            nodeRenderer={defaultNodeRenderer}
-            name={'root'}
-            expandPaths={[
-              '$',
-              '$.todos',
-              '$.todos.items',
-              '$.notes',
-              '$.notes.visibleNotes',
-            ]}
-            {...props}
-          />
+          <Inspector nodeRenderer={defaultNodeRenderer} {...props} />
         </div>
       </Portal>
     )
