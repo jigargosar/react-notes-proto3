@@ -143,12 +143,6 @@ const storeModel = {
     inspectorVisible: true,
     toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
   },
-  todos: {
-    items: ['Install easy-peasy', 'Build app', 'Profit'],
-    add: (state, payload) => {
-      state.items.push(payload)
-    },
-  },
   notes: notesModel,
 }
 
