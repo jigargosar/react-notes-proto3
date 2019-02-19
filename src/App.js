@@ -17,13 +17,6 @@ import { getCached, setCache } from './dom-helpers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { Portal } from 'react-portal'
-import validate from 'aproba'
-
-function setSelectedId(id) {
-  validate('S|Z', arguments)
-
-  return R.assoc('selectedId')(id)
-}
 
 function addNewNote(state) {
   const note = {
@@ -34,7 +27,7 @@ function addNewNote(state) {
     modifiedAt: Date.now(),
   }
   const id = note._id
-  return pipe([R.assocPath(['byId', id])(note), setSelectedId(id)])(state)
+  return pipe([R.assocPath(['byId', id])(note)])(state)
 }
 function removeNote(state, note) {
   return R.dissocPath(['byId', note._id])(state)
@@ -47,7 +40,7 @@ const defaultNodeRenderer = ({
   isNonenumerable,
   expanded,
 }) => {
-  console.log(`data`, data)
+  // console.log(`data`, data)
   return depth === 0 ? (
     <ObjectRootLabel name={name} data={data} />
   ) : (
@@ -94,31 +87,13 @@ function PortalInspector(props) {
 }
 
 function NoteItem({ note }) {
-  const { remove, setSelectedId } = useActions(actions => ({
+  const { remove } = useActions(actions => ({
     remove: actions.notes.remove,
-    setSelectedId: actions.notes.setSelectedId,
   }))
 
-  const selectedId = useStore(R.path(['notes', 'selectedId']))
-  const isSelected = selectedId === note._id
   return (
     <div className="pa3 bb b--moon-gray flex justify-between ">
-      <label>
-        <input
-          autoFocus={isSelected}
-          className="ma2"
-          type="radio"
-          name="note-item"
-          checked={isSelected}
-          onChange={e => {
-            const newIsSelected = e.target.checked
-            if (newIsSelected) {
-              setSelectedId(note._id)
-            }
-          }}
-        />
-        {note.content}
-      </label>
+      <div className="">{note.content}</div>
       <div>
         <button onClick={() => remove(note)}>X</button>
       </div>
@@ -151,7 +126,6 @@ function createAppStore() {
       byId: {},
       selectedId: null,
       visibleNotes: select(getVisibleNotes),
-      setSelectedId: (state, payload) => setSelectedId(payload)(state),
       addNew: addNewNote,
       remove: removeNote,
     },
