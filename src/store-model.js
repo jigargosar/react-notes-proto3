@@ -43,9 +43,8 @@ const notesModel = {
   remove: thunk(async (actions, note) => {
     await db.put({ ...note, _deleted: true })
   }),
-  replaceAll(state, docs) {
-    state.byId = pouchDocsToIdLookup(docs)
-  },
+  replaceAll: (state, docs) =>
+    R.assoc('byId')(pouchDocsToIdLookup(docs))(state),
   handleChange: (state, change) => {
     console.log(`change`, change)
     const note = change.doc
