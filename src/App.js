@@ -1,16 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
-import {
-  createStore,
-  StoreProvider,
-  useActions,
-  useStore,
-} from 'easy-peasy'
+import { useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
-import { storeModel } from './store-model'
 import { InspectState, PortalInspector } from './Inspect'
-import { getCached, setCache } from './dom-helpers'
-import { composeWithDevTools } from 'redux-devtools-extension'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
@@ -30,7 +22,7 @@ function NoteItem({ note }) {
 function NotesApp() {
   const { notes, remoteUrl } = useStore(state => ({
     notes: state.notes.visibleNotes,
-    remoteUrl,
+    remoteUrl: state.notes.remoteUrl,
   }))
   const [ipt, setIpt] = useState(() => remoteUrl || '')
   const { add, setRemoteUrl } = useActions(actions => ({
@@ -66,38 +58,14 @@ function NotesApp() {
   )
 }
 
-const store = createStore(storeModel, {
-  initialState: getCached('app-state'),
-  compose: composeWithDevTools({ trace: true }),
-})
-
-function App() {
-  useEffect(
-    () => store.subscribe(() => setCache('app-state', store.getState())),
-    [],
-  )
-
+function App({ store }) {
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
-
-  useEffect(() => {
-    const initResult = store.dispatch.notes.initFromPouch()
-    initResult.catch(console.error)
-    return () => {
-      initResult
-        .then(({ changes }) => {
-          changes.cancel()
-        })
-        .catch(console.error)
-    }
-  }, [])
 
   return (
     <ErrorBoundary>
-      <StoreProvider store={store}>
-        <InspectState />
-        <PortalInspector data={store} name={'store'} />
-        <NotesApp />
-      </StoreProvider>
+      <InspectState />
+      <PortalInspector data={store} name={'store'} />
+      <NotesApp />
     </ErrorBoundary>
   )
 }

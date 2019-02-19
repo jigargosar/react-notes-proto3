@@ -4,9 +4,16 @@ import './index.scss'
 import * as serviceWorker from './serviceWorker'
 import * as ReactDOM from 'react-dom'
 import { App } from './App'
+import { store } from './store'
+import { StoreProvider } from 'easy-peasy'
 
 function render() {
-  ReactDOM.render(<App />, document.getElementById('root'))
+  ReactDOM.render(
+    <StoreProvider store={store}>
+      <App store={store} />
+    </StoreProvider>,
+    document.getElementById('root'),
+  )
 }
 
 render()
