@@ -91,7 +91,7 @@ function NoteItem({ note }) {
     <div className="pa3 bb b--moon-gray flex justify-between ">
       <div>{note.content}</div>
       <div>
-        <button onClick={() => remove(note)}>XX</button>
+        <button onClick={() => remove(note)}>X</button>
       </div>
     </div>
   )
