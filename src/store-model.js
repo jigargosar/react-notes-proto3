@@ -8,16 +8,14 @@ import validate from 'aproba'
 
 const db = new PouchDB('notes-pdb')
 
-function addNewNote(state) {
-  const note = {
+function createNewNote() {
+  return {
     _id: `m_${nanoid()}`,
     _rev: null,
     content: faker.lorem.lines(),
     createdAt: Date.now(),
     modifiedAt: Date.now(),
   }
-  const id = note._id
-  return pipe([R.assocPath(['byId', id])(note)])(state)
 }
 
 function removeNote(state, note) {
@@ -48,15 +46,29 @@ export const storeModel = {
     byId: {},
     selectedId: null,
     visibleNotes: select(getVisibleNotes),
-    addNew: addNewNote,
+    add: (state, note) =>
+      pipe([R.assocPath(['byId', note._id])(note)])(state),
+    addNew: thunk(async actions => {
+      const note = createNewNote()
+      await db.put(note)
+    }),
     remove: removeNote,
     replaceAll(state, docs) {
       state.byId = pouchDocsToIdLookup(docs)
+    },
+    handleChange: (state, change) => {
+      const note = change.doc
+      return pipe([R.assocPath(['byId', note._id])(note)])(state)
     },
     loadAllFromPouch: thunk(async (actions, payload) => {
       const { rows } = await db.allDocs({ include_docs: true })
       const docs = rows.map(R.prop('doc'))
       actions.replaceAll(docs)
+      const changes = db
+        .changes({ include_docs: true, live: true, from: 'now' })
+        .on('change', actions.handleChange)
+        .on('error', console.error)
+      return changes
     }),
   },
 }

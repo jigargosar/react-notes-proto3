@@ -42,7 +42,12 @@ function App() {
   const store = useAppStore(storeModel)
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   useEffect(() => {
-    store.dispatch.notes.loadAllFromPouch()
+    const changesP = store.dispatch.notes
+      .loadAllFromPouch()
+      .catch(console.error)
+    return () => {
+      changesP.then(changes => changes.cancel()).catch(console.error)
+    }
   }, [])
 
   return (
