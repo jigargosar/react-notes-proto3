@@ -3,6 +3,9 @@ import nanoid from 'nanoid'
 import faker from 'faker'
 import { overProp, pipe } from './ramda-helpers'
 import { select } from 'easy-peasy'
+import PouchDB from 'pouchdb-browser'
+
+const db = new PouchDB('notes-pdb')
 
 function addNewNote(state) {
   const note = {
