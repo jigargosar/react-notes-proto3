@@ -163,7 +163,7 @@ function App() {
       <StoreProvider store={store}>
         <InspectState />
         <PortalInspector data={store} name={'store'} />
-        <Tree />
+        <Tree data={store} />
         <NotesApp />
       </StoreProvider>
     </ErrorBoundary>
