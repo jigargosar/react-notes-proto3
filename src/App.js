@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
@@ -25,10 +25,15 @@ function NotesApp() {
     remoteUrl: state.notes.remoteUrl,
   }))
   const [ipt, setIpt] = useState(() => remoteUrl || '')
-  const { add, setRemoteUrl } = useActions(actions => ({
+  const { add, setRemoteUrl, startSync } = useActions(actions => ({
     add: actions.notes.addNew,
     setRemoteUrl: actions.notes.setRemoteUrl,
+    startSync: actions.notes.startSync,
   }))
+
+  useEffect(() => {
+    startSync().catch(console.error)
+  }, [remoteUrl])
 
   return (
     <>
