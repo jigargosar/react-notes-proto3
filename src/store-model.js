@@ -7,6 +7,13 @@ import validate from 'aproba'
 import PouchDB from 'pouchdb-browser'
 
 const db = new PouchDB('notes-pdb')
+let sync = null
+
+function cancelSync() {
+  if (sync) {
+    sync.cancel()
+  }
+}
 
 if (module.hot) {
   module.hot.dispose(() => {
@@ -39,6 +46,7 @@ const notesModel = {
   byId: {},
   selectedId: null,
   visibleNotes: select(getVisibleNotes),
+  remoteUrl: null,
   add: (state, note) =>
     pipe([R.assocPath(['byId', note._id])(note)])(state),
   addNew: thunk(async (actions, payload) => {
@@ -68,7 +76,12 @@ const notesModel = {
       .on('error', console.error)
     return { changes }
   }),
+  startSync: async (actions, payload, { getState }) => {
+    cancelSync()
+    sync = db.sync(getState().remoteUrl)
+  },
 }
+
 export const storeModel = {
   debug: {
     inspectorVisible: true,
