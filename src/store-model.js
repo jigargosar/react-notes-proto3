@@ -50,16 +50,13 @@ const notesModel = {
   remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
-  syncDetails: select(state => {
-    return { ...(state.syncLastUpdate || {}), err: state.syncErr }
-  }),
   syncStatus: select(state => {
     const mapping = {
       pending: 'synced',
       stopped: 'problem',
       active: 'syncing',
     }
-    return R.propOr('disabled', state.syncDetails.push)(mapping)
+    return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
   }),
   setRemoteUrl: (state, remoteUrl) => {
     return R.assoc('remoteUrl')(remoteUrl)(state)
@@ -104,7 +101,7 @@ const notesModel = {
       : {}
     return R.assoc('syncLastUpdate')({ ...syncState, info })(state)
   },
-  syncError: (state, err) => {
+  handleSyncError: (state, err) => {
     console.error('syncError', err)
     return R.assoc('syncError')(err.message)(state)
   },
