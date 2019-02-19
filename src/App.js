@@ -63,13 +63,6 @@ function NoteItem({ note }) {
   )
 }
 
-function createAppStore() {
-  return createStore(storeModel, {
-    initialState: getCached('app-state'),
-    compose: composeWithDevTools({ trace: true }),
-  })
-}
-
 const NotesApp = React.memo(function NotesApp() {
   const visibleNotes = useStore(state => state.notes.visibleNotes)
   const add = useActions(actions => actions.notes.addNew)
@@ -88,7 +81,14 @@ const NotesApp = React.memo(function NotesApp() {
 })
 
 function useAppStore() {
-  const store = useMemo(() => createAppStore(), [])
+  const store = useMemo(
+    () =>
+      createStore(storeModel, {
+        initialState: getCached('app-state'),
+        compose: composeWithDevTools({ trace: true }),
+      }),
+    [],
+  )
   useEffect(() => {
     return store.subscribe(() => {
       setCache('app-state', store.getState())
