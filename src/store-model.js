@@ -127,12 +127,12 @@ const notesModel = {
             live: true,
             retry: true,
           })
-          .on('change', actions.syncUpdate)
-          .on('paused', actions.syncUpdate)
-          .on('active', actions.syncUpdate)
-          .on('complete', actions.syncUpdate)
-          .on('denied', actions.syncUpdate)
-          .on('error', (...args) => actions.syncError(args))
+          .on('change', actions.handleSyncUpdate)
+          .on('paused', actions.handleSyncUpdate)
+          .on('active', actions.handleSyncUpdate)
+          .on('complete', actions.handleSyncUpdate)
+          .on('denied', actions.handleSyncUpdate)
+          .on('error', actions.handleSyncError)
       } catch (e) {
         debugger
         actions.syncError(e)
