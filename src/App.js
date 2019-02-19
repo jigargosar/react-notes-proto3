@@ -4,7 +4,7 @@ import { overProp, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { Inspector, ObjectLabel, ObjectRootLabel } from 'react-inspector'
+import { Inspector } from 'react-inspector'
 import {
   createStore,
   select,
@@ -31,25 +31,6 @@ function addNewNote(state) {
 }
 function removeNote(state, note) {
   return R.dissocPath(['byId', note._id])(state)
-}
-
-const defaultNodeRenderer = ({
-  depth,
-  name,
-  data,
-  isNonenumerable,
-  expanded,
-}) => {
-  // console.log(`data`, data)
-  return depth === 0 ? (
-    <ObjectRootLabel name={name} data={data} />
-  ) : (
-    <ObjectLabel
-      name={name}
-      data={data}
-      isNonenumerable={isNonenumerable}
-    />
-  )
 }
 
 function InspectState() {
@@ -79,7 +60,7 @@ function PortalInspector(props) {
     visible && (
       <Portal node={document.getElementById('portal-inspector')}>
         <div className="ma2">
-          <Inspector nodeRenderer={defaultNodeRenderer} {...props} />
+          <Inspector {...props} />
         </div>
       </Portal>
     )
