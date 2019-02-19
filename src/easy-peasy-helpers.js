@@ -3,12 +3,13 @@ import { createStore } from 'easy-peasy'
 import { getCached, setCache } from './dom-helpers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-export function useAppStore(storeModel) {
+export function useAppStore(storeModel, options = {}) {
   const store = useMemo(
     () =>
       createStore(storeModel, {
         initialState: getCached('app-state'),
         compose: composeWithDevTools({ trace: true }),
+        ...options,
       }),
     [],
   )

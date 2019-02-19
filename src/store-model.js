@@ -3,10 +3,7 @@ import nanoid from 'nanoid'
 import faker from 'faker'
 import { objFromList, overProp, pipe } from './ramda-helpers'
 import { select, thunk } from 'easy-peasy'
-import PouchDB from 'pouchdb-browser'
 import validate from 'aproba'
-
-const db = new PouchDB('notes-pdb')
 
 function createNewNote() {
   return {
@@ -30,11 +27,13 @@ const notesModel = {
   visibleNotes: select(getVisibleNotes),
   add: (state, note) =>
     pipe([R.assocPath(['byId', note._id])(note)])(state),
-  addNew: thunk(async actions => {
-    const note = createNewNote()
-    await db.put(note)
-  }),
-  remove: thunk(async (actions, note) => {
+  addNew: thunk(
+    async (actions, payload, { injections: { notesDb: db } }) => {
+      const note = createNewNote()
+      await db.put(note)
+    },
+  ),
+  remove: thunk(async (actions, note, { injections: { notesDb: db } }) => {
     await db.put({ ...note, _deleted: true })
   }),
   replaceAll(state, docs) {
@@ -48,15 +47,17 @@ const notesModel = {
     const update = change.deleted ? omitNote : mergeNote
     return update(state)
   },
-  initFromPouch: thunk(async (actions, payload) => {
-    const { rows } = await db.allDocs({ include_docs: true })
-    const docs = rows.map(R.prop('doc'))
-    actions.replaceAll(docs)
-    return db
-      .changes({ include_docs: true, live: true, from: 'now' })
-      .on('change', actions.handleChange)
-      .on('error', console.error)
-  }),
+  initFromPouch: thunk(
+    async (actions, payload, { injections: { notesDb: db } }) => {
+      const { rows } = await db.allDocs({ include_docs: true })
+      const docs = rows.map(R.prop('doc'))
+      actions.replaceAll(docs)
+      return db
+        .changes({ include_docs: true, live: true, from: 'now' })
+        .on('change', actions.handleChange)
+        .on('error', console.error)
+    },
+  ),
 }
 export const storeModel = {
   debug: {

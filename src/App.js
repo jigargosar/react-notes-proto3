@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { StoreProvider, useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
 import { storeModel } from './store-model'
 import { useAppStore } from './easy-peasy-helpers'
 import { InspectState, PortalInspector } from './Inspect'
+import PouchDB from 'pouchdb-browser'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
@@ -39,7 +40,9 @@ function NotesApp() {
 }
 
 function App() {
-  const store = useAppStore(storeModel)
+  const notesDb = useMemo(() => new PouchDB('notes-pdb'), [])
+  const store = useAppStore(storeModel, { injections: { notesDb } })
+  useEffect(() => () => notesDb.close(), [])
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
   useEffect(() => {
     const changesP = store.dispatch.notes
