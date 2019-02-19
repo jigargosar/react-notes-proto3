@@ -1,18 +1,12 @@
-import React, { useEffect, useMemo } from 'react'
+import React from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Inspector } from 'react-inspector'
-import {
-  createStore,
-  StoreProvider,
-  useActions,
-  useStore,
-} from 'easy-peasy'
+import { StoreProvider, useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
-import { getCached, setCache } from './dom-helpers'
-import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { Portal } from 'react-portal'
 import { storeModel } from './store-model'
+import { useAppStore } from './easy-peasy-helpers'
 
 function InspectState() {
   const { state } = useStore(state => ({
@@ -80,27 +74,10 @@ const NotesApp = React.memo(function NotesApp() {
   )
 })
 
-function useAppStore(storeModel) {
-  const store = useMemo(
-    () =>
-      createStore(storeModel, {
-        initialState: getCached('app-state'),
-        compose: composeWithDevTools({ trace: true }),
-      }),
-    [],
-  )
-  useEffect(() => {
-    return store.subscribe(() => {
-      setCache('app-state', store.getState())
-    })
-  }, [])
-  return store
-}
-
 function App() {
   const store = useAppStore(storeModel)
-
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
+
   return (
     <ErrorBoundary>
       <StoreProvider store={store}>
