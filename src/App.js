@@ -39,27 +39,30 @@ function NotesApp() {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex items-center">
         <button autoFocus onClick={() => add()}>
           ADD
         </button>
-        <div>
-          <form
-            onSubmit={e => {
-              e.preventDefault()
-              setRemoteUrl(ipt)
-            }}
-          >
-            <input
-              type="text"
-              name="remote-couch-url"
-              autoComplete="on"
-              value={ipt}
-              onChange={e => setIpt(e.target.value)}
-            />
-            <Inspector data={syncStatus} name="sync" />
-          </form>
-        </div>
+        <div className="flex-grow-1" />
+        <form
+          className="flex items-center"
+          onSubmit={e => {
+            e.preventDefault()
+            setRemoteUrl(ipt)
+          }}
+        >
+          <input
+            className="pa1 measure w-100"
+            type="text"
+            name="remote-couch-url"
+            autoComplete="on"
+            value={ipt}
+            onChange={e => setIpt(e.target.value)}
+          />
+          <div>
+            <Inspector data={syncStatus} />
+          </div>
+        </form>
       </div>
       {notes.map(note => (
         <NoteItem key={note._id} note={note} />
