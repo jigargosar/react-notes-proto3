@@ -56,8 +56,8 @@ export const storeModel = {
     },
     handleChange: (state, change) => {
       const note = change.doc
-      const mergeNote = pipe([R.assocPath(['byId', note._id])(note)])
-      const omitNote = pipe([R.dissocPath(['byId', note._id])])
+      const mergeNote = R.assocPath(['byId', note._id])(note)
+      const omitNote = R.dissocPath(['byId', note._id])
 
       const update = change.deleted ? omitNote : mergeNote
       return update(state)
