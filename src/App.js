@@ -88,30 +88,31 @@ const getVisibleNotes = pipe([
   R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
 ])
 
+const storeModel = {
+  debug: {
+    inspectorVisible: true,
+    toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
+  },
+  todos: {
+    items: ['Install easy-peasy', 'Build app', 'Profit'],
+    // 👇 define actions directly on your model
+    add: (state, payload) => {
+      // do simple mutation to update state, and we make it an immutable update
+      state.items.push(payload)
+      // (you can also return a new immutable instance if you prefer)
+    },
+  },
+  notes: {
+    byId: {},
+    selectedId: null,
+    visibleNotes: select(getVisibleNotes),
+    addNew: addNewNote,
+    remove: removeNote,
+  },
+}
+
 function createAppStore() {
-  const model = {
-    debug: {
-      inspectorVisible: true,
-      toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
-    },
-    todos: {
-      items: ['Install easy-peasy', 'Build app', 'Profit'],
-      // 👇 define actions directly on your model
-      add: (state, payload) => {
-        // do simple mutation to update state, and we make it an immutable update
-        state.items.push(payload)
-        // (you can also return a new immutable instance if you prefer)
-      },
-    },
-    notes: {
-      byId: {},
-      selectedId: null,
-      visibleNotes: select(getVisibleNotes),
-      addNew: addNewNote,
-      remove: removeNote,
-    },
-  }
-  return createStore(model, {
+  return createStore(storeModel, {
     initialState: getCached('app-state'),
     compose: composeWithDevTools({ trace: true }),
   })
