@@ -1,12 +1,13 @@
 import * as R from 'ramda'
+import { objFromList, overProp, pipe } from './ramda-helpers'
+import validate from 'aproba'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { objFromList, overProp, pipe } from './ramda-helpers'
 import { select, thunk } from 'easy-peasy'
-import validate from 'aproba'
 import PouchDB from 'pouchdb-browser'
 
 const db = new PouchDB('notes-pdb')
+
 let sync = null
 
 function cancelSync() {
@@ -37,7 +38,7 @@ function setLookupFromDocs(docs) {
   return R.assoc('byId')(pouchDocsToIdLookup(docs))
 }
 
-const notesModel = {
+export const notesModel = {
   byId: {},
   selectedId: null,
   visibleNotes: select(getVisibleNotes),
@@ -132,6 +133,11 @@ const notesModel = {
   }),
 }
 
+function pouchDocsToIdLookup(docs) {
+  validate('A', arguments)
+  return objFromList(R.prop('_id'))(docs)
+}
+
 const storeModel = {
   debug: {
     inspectorVisible: true,
@@ -139,19 +145,11 @@ const storeModel = {
   },
   todos: {
     items: ['Install easy-peasy', 'Build app', 'Profit'],
-    // 👇 define actions directly on your model
     add: (state, payload) => {
-      // do simple mutation to update state, and we make it an immutable update
       state.items.push(payload)
-      // (you can also return a new immutable instance if you prefer)
     },
   },
   notes: notesModel,
-}
-
-function pouchDocsToIdLookup(docs) {
-  validate('A', arguments)
-  return objFromList(R.prop('_id'))(docs)
 }
 
 export { storeModel }
