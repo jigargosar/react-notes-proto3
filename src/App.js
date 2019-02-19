@@ -1,46 +1,10 @@
 import React from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
-import { Inspector } from 'react-inspector'
 import { StoreProvider, useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
-
-import { Portal } from 'react-portal'
 import { storeModel } from './store-model'
 import { useAppStore } from './easy-peasy-helpers'
-
-function InspectState() {
-  const { state } = useStore(state => ({
-    state,
-  }))
-  return (
-    <PortalInspector
-      data={state}
-      name={'state'}
-      expandPaths={[
-        '$',
-        '$.todos',
-        '$.todos.items',
-        '$.notes',
-        '$.notes.visibleNotes',
-      ]}
-    />
-  )
-}
-function PortalInspector(props) {
-  const { visible } = useStore(state => ({
-    visible: state.debug.inspectorVisible,
-  }))
-
-  return (
-    visible && (
-      <Portal node={document.getElementById('portal-inspector')}>
-        <div className="ma2">
-          <Inspector {...props} />
-        </div>
-      </Portal>
-    )
-  )
-}
+import { InspectState, PortalInspector } from './Inspect'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
