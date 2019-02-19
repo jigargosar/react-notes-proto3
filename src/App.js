@@ -39,7 +39,7 @@ function NotesApp() {
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <button autoFocus onClick={() => add()}>
           ADD
         </button>
@@ -57,10 +57,10 @@ function NotesApp() {
               value={ipt}
               onChange={e => setIpt(e.target.value)}
             />
+            <Inspector data={syncStatus} name="sync" />
           </form>
         </div>
       </div>
-      <Inspector data={syncStatus} name="sync" />
       {notes.map(note => (
         <NoteItem key={note._id} note={note} />
       ))}
