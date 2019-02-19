@@ -9,7 +9,7 @@ export default function Tree() {
     ],
   }))
   return (
-    <div style={{ height: 100, width: '100vw', zIndex: -1 }}>
+    <div style={{ height: 200, width: '100vw', zIndex: -1 }}>
       <SortableTree
         treeData={state.treeData}
         onChange={treeData => setState({ treeData })}
