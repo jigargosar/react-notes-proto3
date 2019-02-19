@@ -1,13 +1,8 @@
 import React, { useEffect, useMemo } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
-import { overProp, pipe } from './ramda-helpers'
-import * as R from 'ramda'
-import nanoid from 'nanoid'
-import faker from 'faker'
 import { Inspector } from 'react-inspector'
 import {
   createStore,
-  select,
   StoreProvider,
   useActions,
   useStore,
@@ -17,21 +12,7 @@ import { getCached, setCache } from './dom-helpers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { Portal } from 'react-portal'
-
-function addNewNote(state) {
-  const note = {
-    _id: `m_${nanoid()}`,
-    _rev: null,
-    content: faker.lorem.lines(),
-    createdAt: Date.now(),
-    modifiedAt: Date.now(),
-  }
-  const id = note._id
-  return pipe([R.assocPath(['byId', id])(note)])(state)
-}
-function removeNote(state, note) {
-  return R.dissocPath(['byId', note._id])(state)
-}
+import { storeModel } from './store-model'
 
 function InspectState() {
   const { state } = useStore(state => ({
@@ -80,35 +61,6 @@ function NoteItem({ note }) {
       </div>
     </div>
   )
-}
-
-const getVisibleNotes = pipe([
-  R.prop('byId'),
-  R.values,
-  R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
-])
-
-const storeModel = {
-  debug: {
-    inspectorVisible: true,
-    toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
-  },
-  todos: {
-    items: ['Install easy-peasy', 'Build app', 'Profit'],
-    // 👇 define actions directly on your model
-    add: (state, payload) => {
-      // do simple mutation to update state, and we make it an immutable update
-      state.items.push(payload)
-      // (you can also return a new immutable instance if you prefer)
-    },
-  },
-  notes: {
-    byId: {},
-    selectedId: null,
-    visibleNotes: select(getVisibleNotes),
-    addNew: addNewNote,
-    remove: removeNote,
-  },
 }
 
 function createAppStore() {
