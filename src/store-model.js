@@ -94,14 +94,15 @@ const notesModel = {
     return { changes }
   }),
 
-  syncUpdate: (state, _info) => {
-    console.log('syncUpdate', _info, sync)
+  handleSyncUpdate: (state, info) => {
+    console.log('handleSyncUpdate', info, sync)
     const syncState = sync
       ? {
           push: R.path(['push', 'state'])(sync),
+          pull: R.path(['pull', 'state'])(sync),
         }
       : {}
-    return R.assoc('syncLastUpdate')({ ...syncState, _info })(state)
+    return R.assoc('syncLastUpdate')({ ...syncState, info })(state)
   },
   syncError: (state, err) => {
     console.error('syncError', err)
