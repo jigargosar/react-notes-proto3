@@ -18,10 +18,6 @@ function createNewNote() {
   }
 }
 
-function removeNote(state, note) {
-  return R.dissocPath(['byId', note._id])(state)
-}
-
 const getVisibleNotes = pipe([
   R.prop('byId'),
   R.values,
