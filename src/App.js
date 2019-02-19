@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import {
   createStore,
@@ -32,7 +32,12 @@ function NotesApp() {
     notes: state.notes.visibleNotes,
     remoteUrl,
   }))
-  const add = useActions(actions => actions.notes.addNew)
+  const [ipt, setIpt] = useState(() => remoteUrl || '')
+  const { add, setRemoteUrl } = useActions(actions => ({
+    add: actions.notes.addNew,
+    setRemoteUrl: actions.notes.setRemoteUrl,
+  }))
+
   return (
     <>
       <div className="flex justify-between">
@@ -40,7 +45,18 @@ function NotesApp() {
           ADD
         </button>
         <div>
-          <input type="text" value={remoteUrl} />
+          <form
+            onSubmit={e => {
+              e.preventDefault()
+              setRemoteUrl(ipt)
+            }}
+          >
+            <input
+              type="text"
+              value={ipt}
+              onChange={e => setIpt(e.target.value)}
+            />
+          </form>
         </div>
       </div>
       {notes.map(note => (
@@ -68,10 +84,7 @@ function App() {
     initResult.catch(console.error)
     return () => {
       initResult
-        .then(({ changes, sync }) => {
-          if (sync) {
-            sync.cancel()
-          }
+        .then(({ changes }) => {
           changes.cancel()
         })
         .catch(console.error)

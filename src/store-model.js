@@ -47,6 +47,9 @@ const notesModel = {
   selectedId: null,
   visibleNotes: select(getVisibleNotes),
   remoteUrl: null,
+  setRemoteUrl: (state, remoteUrl) => {
+    return R.assoc('remoteUrl')(remoteUrl)(state)
+  },
   add: (state, note) =>
     pipe([R.assocPath(['byId', note._id])(note)])(state),
   addNew: thunk(async (actions, payload) => {
@@ -74,12 +77,18 @@ const notesModel = {
       .changes({ include_docs: true, live: true, since: 'now' })
       .on('change', actions.handleChange)
       .on('error', console.error)
+    return { changes }
+  }),
+
+  startSync: thunk(async (actions, payload, { getState }) => {
     const remoteUrl = getState().remoteUrl
     if (remoteUrl) {
       cancelSync()
-      sync = db.sync(getState().remoteUrl)
+      sync = db
+        .sync(getState().remoteUrl, { live: true })
+        .on('change', console.log)
+        .on('error', console.error)
     }
-    return { changes, sync }
   }),
 }
 
