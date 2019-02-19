@@ -28,16 +28,22 @@ function NoteItem({ note }) {
 }
 
 function NotesApp() {
-  const visibleNotes = useStore(state => state.notes.visibleNotes)
+  const { notes, remoteUrl } = useStore(state => ({
+    notes: state.notes.visibleNotes,
+    remoteUrl,
+  }))
   const add = useActions(actions => actions.notes.addNew)
   return (
     <>
-      <div className="flex">
+      <div className="flex justify-between">
         <button autoFocus onClick={() => add()}>
           ADD
         </button>
+        <div>
+          <input type="text" value={remoteUrl} />
+        </div>
       </div>
-      {visibleNotes.map(note => (
+      {notes.map(note => (
         <NoteItem key={note._id} note={note} />
       ))}
     </>
