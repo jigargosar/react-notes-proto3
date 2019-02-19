@@ -66,7 +66,7 @@ const notesModel = {
     const update = change.deleted ? omitNote : mergeNote
     return update(state)
   },
-  initFromPouch: thunk(async (actions, payload) => {
+  initFromPouch: thunk(async (actions, payload, { getState }) => {
     const { rows } = await db.allDocs({ include_docs: true })
     const docs = rows.map(R.prop('doc'))
     actions.replaceAll(docs)
@@ -74,12 +74,13 @@ const notesModel = {
       .changes({ include_docs: true, live: true, since: 'now' })
       .on('change', actions.handleChange)
       .on('error', console.error)
-    return { changes }
+    const remoteUrl = getState().remoteUrl
+    if (remoteUrl) {
+      cancelSync()
+      sync = db.sync(getState().remoteUrl)
+    }
+    return { changes, sync }
   }),
-  startSync: async (actions, payload, { getState }) => {
-    cancelSync()
-    sync = db.sync(getState().remoteUrl)
-  },
 }
 
 export const storeModel = {

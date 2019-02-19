@@ -62,7 +62,10 @@ function App() {
     initResult.catch(console.error)
     return () => {
       initResult
-        .then(({ changes }) => changes.cancel())
+        .then(({ changes, sync }) => {
+          sync.cancel()
+          changes.cancel()
+        })
         .catch(console.error)
     }
   }, [])
