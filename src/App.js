@@ -44,7 +44,7 @@ function NotesApp() {
         </button>
         <div className="flex-grow-1" />
         <form
-          className="measure-narrow w-100 flex items-center"
+          className="flex items-center"
           onSubmit={e => {
             e.preventDefault()
             setRemoteUrl(ipt)
@@ -53,7 +53,8 @@ function NotesApp() {
           <label className="flex items-center w-100">
             <div className="mr2">{syncStatus}</div>
             <input
-              className="pa1 w-100"
+              className="pa1"
+              style={{ width: '15rem' }}
               type="text"
               name="remote-couch-url"
               autoComplete="on"
