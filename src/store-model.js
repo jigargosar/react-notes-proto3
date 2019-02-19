@@ -30,6 +30,11 @@ const getVisibleNotes = pipe([
   R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
 ])
 
+function setLookupFromDocs(docs) {
+  validate('A', arguments)
+  return R.assoc('byId')(pouchDocsToIdLookup(docs))
+}
+
 const notesModel = {
   byId: {},
   selectedId: null,
@@ -43,8 +48,7 @@ const notesModel = {
   remove: thunk(async (actions, note) => {
     await db.put({ ...note, _deleted: true })
   }),
-  replaceAll: (state, docs) =>
-    R.assoc('byId')(pouchDocsToIdLookup(docs))(state),
+  replaceAll: (state, docs) => setLookupFromDocs(docs)(state),
   handleChange: (state, change) => {
     console.log(`change`, change)
     const note = change.doc
