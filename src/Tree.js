@@ -21,7 +21,7 @@ export default function Tree({ data }) {
   const [treeData, set] = useState(() => getTreeDataFromObj(data, 0))
 
   return (
-    <div style={{ height: 200, width: '100vw', zIndex: -1 }}>
+    <div style={{ height: 300, width: '100vw', zIndex: -1 }}>
       <SortableTree treeData={treeData} onChange={set} canDrag={false} />
     </div>
   )
