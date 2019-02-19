@@ -57,7 +57,7 @@ function NoteItem({ note }) {
   )
 }
 
-const NotesApp = React.memo(function NotesApp() {
+function NotesApp() {
   const visibleNotes = useStore(state => state.notes.visibleNotes)
   const add = useActions(actions => actions.notes.addNew)
   return (
@@ -72,7 +72,7 @@ const NotesApp = React.memo(function NotesApp() {
       ))}
     </>
   )
-})
+}
 
 function App() {
   const store = useAppStore(storeModel)
