@@ -16,12 +16,6 @@ function cancelSync() {
   }
 }
 
-if (module.hot) {
-  module.hot.dispose(() => {
-    db.close()
-  })
-}
-
 function createNewNote() {
   return {
     _id: `m_${nanoid()}`,
@@ -138,7 +132,7 @@ const notesModel = {
   }),
 }
 
-export const storeModel = {
+const storeModel = {
   debug: {
     inspectorVisible: true,
     toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
@@ -159,3 +153,5 @@ function pouchDocsToIdLookup(docs) {
   validate('A', arguments)
   return objFromList(R.prop('_id'))(docs)
 }
+
+export { storeModel }
