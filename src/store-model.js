@@ -1,9 +1,10 @@
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { overProp, pipe } from './ramda-helpers'
-import { select } from 'easy-peasy'
+import { objFromList, overProp, pipe } from './ramda-helpers'
+import { select, thunk } from 'easy-peasy'
 import PouchDB from 'pouchdb-browser'
+import validate from 'aproba'
 
 const db = new PouchDB('notes-pdb')
 
@@ -49,5 +50,18 @@ export const storeModel = {
     visibleNotes: select(getVisibleNotes),
     addNew: addNewNote,
     remove: removeNote,
+    replaceAll(state, docs) {
+      state.byId = pouchDocsToIdLookup(docs)
+    },
+    loadAllFromPouch: thunk(async (actions, payload) => {
+      const { rows } = await db.allDocs({ include_docs: true })
+      const docs = rows.map(R.prop('doc'))
+      actions.replaceAll(docs)
+    }),
   },
+}
+
+function pouchDocsToIdLookup(docs) {
+  validate('A', arguments)
+  return objFromList(R.prop('_id'))(docs)
 }
