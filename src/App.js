@@ -3,7 +3,6 @@ import { ErrorBoundary } from './ErrorBoundary'
 import { useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
 import { PortalInspector, PortalInspectState } from './Inspect'
-import { Inspector } from 'react-inspector'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
@@ -39,29 +38,29 @@ function NotesApp() {
 
   return (
     <>
-      <div className="flex items-center">
+      <div className="ph3 flex items-center">
         <button autoFocus onClick={() => add()}>
           ADD
         </button>
         <div className="flex-grow-1" />
         <form
-          className="flex items-center"
+          className="measure-narrow w-100 flex items-center"
           onSubmit={e => {
             e.preventDefault()
             setRemoteUrl(ipt)
           }}
         >
-          <input
-            className="pa1 measure w-100"
-            type="text"
-            name="remote-couch-url"
-            autoComplete="on"
-            value={ipt}
-            onChange={e => setIpt(e.target.value)}
-          />
-          <div>
-            <Inspector data={syncStatus} />
-          </div>
+          <label className="flex items-center w-100">
+            <div className="mr2">{syncStatus}</div>
+            <input
+              className="pa1 w-100"
+              type="text"
+              name="remote-couch-url"
+              autoComplete="on"
+              value={ipt}
+              onChange={e => setIpt(e.target.value)}
+            />
+          </label>
         </form>
       </div>
       {notes.map(note => (
