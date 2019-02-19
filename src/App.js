@@ -17,7 +17,6 @@ import { getCached, setCache } from './dom-helpers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { Portal } from 'react-portal'
-import Tree from './Tree'
 
 function addNewNote(state) {
   const note = {
@@ -163,7 +162,6 @@ function App() {
       <StoreProvider store={store}>
         <InspectState />
         <PortalInspector data={store} name={'store'} />
-        <Tree data={store} />
         <NotesApp />
       </StoreProvider>
     </ErrorBoundary>
