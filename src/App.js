@@ -89,7 +89,10 @@ function NoteItem({ note }) {
   const remove = useActions(actions => actions.notes.remove)
   return (
     <div className="pa3 bb b--moon-gray flex justify-between ">
-      <div>{note.content}</div>
+      <label>
+        <input className="ma2" type="radio" name="note-item" />
+        {note.content}
+      </label>
       <div>
         <button onClick={() => remove(note)}>X</button>
       </div>
