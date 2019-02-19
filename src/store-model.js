@@ -52,23 +52,28 @@ export const storeModel = {
       const note = createNewNote()
       await db.put(note)
     }),
-    remove: removeNote,
+    remove: thunk(async (actions, note) => {
+      await db.put({ ...note, _deleted: true })
+    }),
     replaceAll(state, docs) {
       state.byId = pouchDocsToIdLookup(docs)
     },
     handleChange: (state, change) => {
       const note = change.doc
-      return pipe([R.assocPath(['byId', note._id])(note)])(state)
+      const mergeNote = pipe([R.assocPath(['byId', note._id])(note)])
+      const omitNote = pipe([R.dissocPath(['byId', note._id])])
+
+      const update = change.deleted ? omitNote : mergeNote
+      return update(state)
     },
     loadAllFromPouch: thunk(async (actions, payload) => {
       const { rows } = await db.allDocs({ include_docs: true })
       const docs = rows.map(R.prop('doc'))
       actions.replaceAll(docs)
-      const changes = db
+      return db
         .changes({ include_docs: true, live: true, from: 'now' })
         .on('change', actions.handleChange)
         .on('error', console.error)
-      return changes
     }),
   },
 }
