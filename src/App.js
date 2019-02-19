@@ -17,6 +17,13 @@ import { getCached, setCache } from './dom-helpers'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { Portal } from 'react-portal'
+import validate from 'aproba'
+
+function setSelectedId(id) {
+  validate('S|Z', arguments)
+
+  return R.assoc('selectedId')(id)
+}
 
 function addNewNote(state) {
   const note = {
@@ -26,7 +33,8 @@ function addNewNote(state) {
     createdAt: Date.now(),
     modifiedAt: Date.now(),
   }
-  return R.assocPath(['byId', note._id])(note)(state)
+  const id = note._id
+  return pipe([R.assocPath(['byId', id])(note), setSelectedId(id)])(state)
 }
 function removeNote(state, note) {
   return R.dissocPath(['byId', note._id])(state)
@@ -86,11 +94,28 @@ function PortalInspector(props) {
 }
 
 function NoteItem({ note }) {
-  const remove = useActions(actions => actions.notes.remove)
+  const { remove, setSelectedId } = useActions(actions => ({
+    remove: actions.notes.remove,
+    setSelectedId: actions.notes.setSelectedId,
+  }))
+
+  const selectedId = useStore(R.path(['notes', 'selectedId']))
+  const isSelected = selectedId === note._id
   return (
     <div className="pa3 bb b--moon-gray flex justify-between ">
       <label>
-        <input className="ma2" type="radio" name="note-item" />
+        <input
+          className="ma2"
+          type="radio"
+          name="note-item"
+          checked={isSelected}
+          onChange={e => {
+            const newIsSelected = e.target.checked
+            if (newIsSelected) {
+              setSelectedId(note._id)
+            }
+          }}
+        />
         {note.content}
       </label>
       <div>
@@ -123,7 +148,9 @@ function createAppStore() {
     },
     notes: {
       byId: {},
+      selectedId: null,
       visibleNotes: select(getVisibleNotes),
+      setSelectedId: (state, payload) => setSelectedId(payload)(state),
       addNew: addNewNote,
       remove: removeNote,
     },
