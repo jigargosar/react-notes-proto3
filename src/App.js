@@ -52,6 +52,8 @@ function NotesApp() {
           >
             <input
               type="text"
+              name="remote-couch-url"
+              autoComplete="on"
               value={ipt}
               onChange={e => setIpt(e.target.value)}
             />
