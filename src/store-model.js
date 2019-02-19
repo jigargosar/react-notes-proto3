@@ -80,14 +80,34 @@ const notesModel = {
     return { changes }
   }),
 
+  syncUpdate: (state, info) => {
+    console.log('syncUpdate', info, sync)
+  },
+  syncError: (state, err) => {
+    console.error('syncError', err)
+  },
+
   startSync: thunk(async (actions, payload, { getState }) => {
-    const remoteUrl = getState().remoteUrl
+    const remoteUrl = getState().notes.remoteUrl
+    console.log(`remoteUrl`, remoteUrl)
+    cancelSync()
     if (remoteUrl) {
-      cancelSync()
-      sync = db
-        .sync(getState().remoteUrl, { live: true })
-        .on('change', console.log)
-        .on('error', console.error)
+      try {
+        sync = db
+          .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
+            live: true,
+            retry: true,
+          })
+          .on('change', actions.syncUpdate)
+          .on('paused', actions.syncUpdate)
+          .on('active', actions.syncUpdate)
+          .on('complete', actions.syncUpdate)
+          .on('denied', actions.syncUpdate)
+          .on('error', (...args) => actions.syncError(args))
+      } catch (e) {
+        debugger
+        actions.syncError(e)
+      }
     }
   }),
 }
