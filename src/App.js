@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { StoreProvider, useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
@@ -41,6 +41,9 @@ function NotesApp() {
 function App() {
   const store = useAppStore(storeModel)
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
+  useEffect(() => {
+    store.dispatch.notes.loadAllFromPouch()
+  }, [])
 
   return (
     <ErrorBoundary>
