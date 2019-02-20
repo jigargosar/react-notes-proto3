@@ -28,9 +28,9 @@ function SyncStatusIconButton() {
   return (
     <IconButton color="inherit" onClick={() => openSettingsDialog()}>
       <SyncStatusIcon
-        className={`${
-          syncStatus === 'syncing' ? 'spin' : 'spin-stop'
-        }  smoothTransition`}
+        className={`spin ${
+          syncStatus === 'syncing' ? '' : 'spin-paused'
+        }  spinner-icon`}
       />
     </IconButton>
   )

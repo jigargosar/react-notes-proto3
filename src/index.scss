@@ -53,13 +53,10 @@ code {
   }
 }
 
-.spin {
-  animation: spinAnimation 1s linear infinite;
-}
-.spinStop {
-  animation: spinAnimation 1s linear;
+.spin.spin-paused {
+  animation-play-state: paused;
 }
 
-.smoothTransition {
-  transition: all 1s linear;
+.spin {
+  animation: spinAnimation 1s linear 0s infinite normal forwards;
 }
