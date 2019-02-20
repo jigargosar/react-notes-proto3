@@ -14,13 +14,12 @@ export const EditDialog = pipe([
   withMobileDialog({ breakpoint: 'xs' }),
   withStyles({ dialogActions: { justifyContent: 'flex-start' } }),
 ])(function EditDialog({ note, fullScreen, classes }) {
-  const { closeEditDialog, saveNoteContent } = useNoteActions()
+  const { closeEditDialog, saveEditingNoteContent } = useNoteActions()
 
   const [content, setContent] = useState(() => note.content)
-  const [origNote] = useState(() => note)
   const onClose = () => closeEditDialog()
   const onSave = () => {
-    saveNoteContent({ content, note: origNote })
+    saveEditingNoteContent(content)
   }
   return (
     <Dialog onClose={onClose} open={true} fullScreen={fullScreen}>

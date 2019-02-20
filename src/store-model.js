@@ -47,7 +47,7 @@ export const notesModel = {
   syncLastUpdate: null,
   editNote: null,
   closeEditDialog: R.assoc('editNote', null),
-  saveNoteContent: thunk(async (actions, { content }, { getState }) => {
+  saveEditingNoteContent: thunk(async (actions, content, { getState }) => {
     const editNote = getState().editNote
     const pdbNote = await db.get(editNote._id)
     await db.put({
