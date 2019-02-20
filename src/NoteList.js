@@ -6,12 +6,18 @@ import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
 import List from '@material-ui/core/List'
+import Checkbox from '@material-ui/core/Checkbox'
 
 function NoteItem({ note }) {
   const { startEditing } = useNoteActions()
 
   return (
-    <ListItem>
+    <ListItem button disableGutters>
+      <Checkbox
+        // checked={}
+        tabIndex={-1}
+        disableRipple
+      />
       <ListItemText>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => startEditing(note)}>
@@ -28,7 +34,7 @@ function NoteItem({ note }) {
 export function NoteList() {
   const { visibleNotes } = useNotes()
   return (
-    <List>
+    <List dense>
       {visibleNotes.map(note => (
         <NoteItem key={note._id} note={note} />
       ))}
