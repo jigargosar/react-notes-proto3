@@ -12,6 +12,7 @@ import { useNoteActions, useNotes } from './store-model'
 import TextField from '@material-ui/core/TextField'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
+import { withStyles } from '@material-ui/core/styles'
 
 function NoteItem({ note }) {
   const { remove, startEditing } = useNoteActions()
@@ -73,12 +74,24 @@ function NotesApp() {
         <NoteItem key={note._id} note={note} />
       ))}
       {editNote && <EditDialog note={editNote} />}
-      <Fab>
-        <AddIcon />
-      </Fab>
     </>
   )
 }
+
+const AddNoteFab = withStyles({
+  root: {
+    position: 'absolute',
+  },
+})(function AddNoteFab({ classes }) {
+  return (
+    <Fab
+      className={`absolute bottom-1 right-1 ${classes.root}`}
+      color="secondary"
+    >
+      <AddIcon />
+    </Fab>
+  )
+})
 
 function App({ store }) {
   useHotKeys('`', () => store.dispatch.debug.toggleInspector())
@@ -89,6 +102,7 @@ function App({ store }) {
       <PortalInspectState />
       <PortalInspector data={store} name={'store'} />
       <NotesApp />
+      <AddNoteFab />
     </ErrorBoundary>
   )
 }
