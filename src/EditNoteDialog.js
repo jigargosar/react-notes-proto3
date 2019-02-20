@@ -58,9 +58,10 @@ export const EditDialog = enhance(function EditDialog({
         <Button onClick={onSave} color="primary">
           Save
         </Button>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={onClose} color="default">
           Discard
         </Button>
+        <div className="flex-grow-1" />
         <Button onClick={onDelete} color="secondary">
           Delete
         </Button>

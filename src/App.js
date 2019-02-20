@@ -16,43 +16,10 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
 // import More from '@material-ui/icons/MoreVert'
-import EditIcon from '@material-ui/icons/Edit'
 import Settings from '@material-ui/icons/Settings'
 import AppBar from '@material-ui/core/AppBar'
 import { SettingsDialog } from './SettingsDialog'
-import ListItem from '@material-ui/core/ListItem'
-import List from '@material-ui/core/List'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-
-function NoteItem({ note }) {
-  const { startEditing } = useNoteActions()
-
-  return (
-    <ListItem>
-      <ListItemText>{note.content}</ListItemText>
-      <ListItemSecondaryAction>
-        <IconButton onClick={() => startEditing(note)}>
-          <EditIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
-      {/*<div className="pl3 pv3 flex flex-column">*/}
-      {/*  /!*<button onClick={() => remove(note)}>X</button>*!/*/}
-      {/*</div>*/}
-    </ListItem>
-  )
-}
-
-function NoteList() {
-  const { visibleNotes } = useNotes()
-  return (
-    <List>
-      {visibleNotes.map(note => (
-        <NoteItem key={note._id} note={note} />
-      ))}
-    </List>
-  )
-}
+import { NoteList } from './NoteList'
 
 const TopBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
