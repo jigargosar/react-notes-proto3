@@ -51,9 +51,6 @@ export const TopAppBar = withStyles(theme => ({
           </Typography>
           <div className="mh2 ttc">{syncStatus}</div>
           <SyncStatusIconButton />
-          <IconButton color="inherit" onClick={() => openSettingsDialog()}>
-            <SettingsIcon className="animate-rotate" />
-          </IconButton>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
