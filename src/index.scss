@@ -30,3 +30,29 @@ code {
 }
 
 // Rubik font family for text input: looks real nice
+
+@keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-flicker {
+  animation: flickerAnimation 1s infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-rotate {
+  animation: spin 4s linear infinite;
+}

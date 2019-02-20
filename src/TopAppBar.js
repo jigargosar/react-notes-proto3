@@ -5,7 +5,32 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import SettingsIcon from '@material-ui/icons/Settings'
+import SyncIcon from '@material-ui/icons/Sync'
+import SyncDisabled from '@material-ui/icons/SyncDisabled'
+import SyncProblem from '@material-ui/icons/SyncProblem'
+
 import React from 'react'
+
+function SyncStatusIconButton() {
+  const { syncStatus } = useNotes()
+  const iconMap = {
+    synced: SyncIcon,
+    disabled: SyncDisabled,
+    problem: SyncProblem,
+    syncing: SyncIcon,
+  }
+
+  console.log(syncStatus)
+
+  const SyncStatusIcon = iconMap[syncStatus] || SettingsIcon
+
+  const { openSettingsDialog } = useNoteActions()
+  return (
+    <IconButton color="inherit" onClick={() => openSettingsDialog()}>
+      <SyncStatusIcon />
+    </IconButton>
+  )
+}
 
 export const TopAppBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
@@ -21,8 +46,9 @@ export const TopAppBar = withStyles(theme => ({
             Notes
           </Typography>
           <div className="mh2 ttc">{syncStatus}</div>
+          <SyncStatusIconButton />
           <IconButton color="inherit" onClick={() => openSettingsDialog()}>
-            <SettingsIcon />
+            <SettingsIcon className="animate-rotate" />
           </IconButton>
         </Toolbar>
       </AppBar>
