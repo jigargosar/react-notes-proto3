@@ -50,6 +50,8 @@ function NotesApp() {
           ADD
         </Button>
         <div className="flex-grow-1" />
+        <div className="mh2">{syncStatus}</div>
+        <div className="mh2">{remoteUrl}</div>
         <form
           className="flex items-center"
           onSubmit={e => {
@@ -63,10 +65,9 @@ function NotesApp() {
             value={ipt}
             onChange={e => setIpt(e.target.value)}
             name="remote-couch-url"
-            // className={classes.textField}
-            // margin="normal"
+            margin="normal"
             fullWidth
-            // variant="outlined"
+            variant="outlined"
           />
         </form>
       </div>
