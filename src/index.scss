@@ -56,3 +56,7 @@ code {
 .spin {
   animation: spinAnimation 1s linear infinite;
 }
+
+.smoothTransition {
+  transition: all 1s linear;
+}
