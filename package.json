@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
     "@sentry/browser": "^4.6.2",
     "aproba": "latest",
     "easy-peasy": "^1.14.0",

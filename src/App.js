@@ -7,6 +7,7 @@ import {
   PortalInspectorToolbar,
   PortalInspectState,
 } from './Inspect'
+import Button from '@material-ui/core/Button'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
@@ -43,9 +44,9 @@ function NotesApp() {
   return (
     <>
       <div className="ph3 flex items-center">
-        <button autoFocus onClick={() => add()}>
+        <Button variant="outlined" color="primary" onClick={() => add()}>
           ADD
-        </button>
+        </Button>
         <div className="flex-grow-1" />
         <form
           className="flex items-center"

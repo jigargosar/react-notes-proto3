@@ -1,5 +1,5 @@
-const eruda = require('eruda')
-eruda.init()
+// const eruda = require('eruda')
+// eruda.init()
 
 // import * as Sentry from '@sentry/browser'
 // import React from 'react'
