@@ -16,6 +16,8 @@ import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
+// import More from '@material-ui/icons/MoreVert'
+import Settings from '@material-ui/icons/Settings'
 import AppBar from '@material-ui/core/AppBar'
 
 function NoteItem({ note }) {
@@ -61,6 +63,9 @@ const TopBar = withStyles(theme => ({
             Notes
           </Typography>
           <div className="mh2 ttc">{syncStatus}</div>
+          <IconButton color="inherit">
+            <Settings />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
