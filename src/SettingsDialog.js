@@ -19,16 +19,19 @@ export const SettingsDialog = enhance(function SettingsDialog({
   fullScreen,
   classes,
 }) {
-  const { setRemoteUrl } = useNoteActions()
+  const { setRemoteUrl, closeSettingsDialog } = useNoteActions()
 
   const { remoteUrl, isSettingsDialogOpen } = useNotes()
 
   const [ipt, setIpt] = useState(() => remoteUrl || '')
 
-  const onClose = () => {}
+  const onClose = () => {
+    closeSettingsDialog()
+  }
 
   const onSave = () => {
     setRemoteUrl(ipt)
+    onClose()
   }
   return (
     <Dialog
@@ -53,7 +56,7 @@ export const SettingsDialog = enhance(function SettingsDialog({
         classes={{ root: classes.dialogActions }}
       >
         <Button onClick={onSave} color="primary">
-          Start Sync
+          Save
         </Button>
         <Button onClick={onClose} color="primary">
           Discard
