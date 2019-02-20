@@ -21,7 +21,7 @@ import AppBar from '@material-ui/core/AppBar'
 import { SettingsDialog } from './SettingsDialog'
 import { NoteList } from './NoteList'
 
-const TopBar = withStyles(theme => ({
+const TopAppBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   menuIcon: { marginLeft: '-0.75rem' },
 }))(function TopBar({ classes }) {
@@ -56,7 +56,7 @@ function NotesApp() {
 
   return (
     <div className="pb5">
-      <TopBar />
+      <TopAppBar />
       <NoteList />
       {editNote && <EditDialog note={editNote} />}
       <SettingsDialog />
