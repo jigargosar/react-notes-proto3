@@ -12,6 +12,12 @@ import TextField from '@material-ui/core/TextField'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { withStyles } from '@material-ui/core/styles'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import MenuIcon from '@material-ui/icons/Menu'
+import AppBar from '@material-ui/core/AppBar'
 
 function NoteItem({ note }) {
   const { remove, startEditing } = useNoteActions()
@@ -37,28 +43,41 @@ function TopBar() {
   const [ipt, setIpt] = useState(() => remoteUrl || '')
   const { setRemoteUrl } = useNoteActions()
   return (
-    <div className="ph3 flex items-center">
-      <div className="flex-grow-1" />
-      <div className="mh2">{syncStatus}</div>
-      <div className="mh2">{remoteUrl}</div>
-      <form
-        className="flex items-center"
-        onSubmit={e => {
-          e.preventDefault()
-          setRemoteUrl(ipt)
-        }}
-      >
-        <TextField
-          label="CouchDB URL"
-          value={ipt}
-          onChange={e => setIpt(e.target.value)}
-          name="remote-couch-url"
-          margin="normal"
-          fullWidth
-          variant="outlined"
-        />
-      </form>
-    </div>
+    <>
+      <AppBar posit2ion="static">
+        <Toolbar>
+          <IconButton className="nl3" color="inherit" aria-label="Menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit" className="flex-grow-1">
+            News
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <div className="ph3 flex items-center">
+        <div className="flex-grow-1" />
+        <div className="mh2">{syncStatus}</div>
+        <div className="mh2">{remoteUrl}</div>
+        <form
+          className="flex items-center"
+          onSubmit={e => {
+            e.preventDefault()
+            setRemoteUrl(ipt)
+          }}
+        >
+          <TextField
+            label="CouchDB URL"
+            value={ipt}
+            onChange={e => setIpt(e.target.value)}
+            name="remote-couch-url"
+            margin="normal"
+            fullWidth
+            variant="outlined"
+          />
+        </form>
+      </div>
+    </>
   )
 }
 
