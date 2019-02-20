@@ -90,3 +90,7 @@ if (module.hot) {
     console.clear()
   })
 }
+
+setTimeout(() => {
+  throw new Error('foo')
+}, 1000)
