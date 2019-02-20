@@ -16,7 +16,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 // import MenuIcon from '@material-ui/icons/Menu'
 // import More from '@material-ui/icons/MoreVert'
-import Settings from '@material-ui/icons/Settings'
+import SettingsIcon from '@material-ui/icons/Settings'
 import AppBar from '@material-ui/core/AppBar'
 import { SettingsDialog } from './SettingsDialog'
 import { NoteList } from './NoteList'
@@ -36,7 +36,7 @@ const TopBar = withStyles(theme => ({
           </Typography>
           <div className="mh2 ttc">{syncStatus}</div>
           <IconButton color="inherit" onClick={() => openSettingsDialog()}>
-            <Settings />
+            <SettingsIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
