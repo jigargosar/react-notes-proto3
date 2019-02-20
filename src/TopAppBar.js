@@ -9,6 +9,7 @@ import SyncIcon from '@material-ui/icons/Sync'
 import SyncDisabledIcon from '@material-ui/icons/SyncDisabled'
 import SyncProblemIcon from '@material-ui/icons/SyncProblem'
 import SelectAllIcon from '@material-ui/icons/SelectAll'
+import ClearSelectionIcon from '@material-ui/icons/Clear'
 
 import React from 'react'
 
@@ -42,7 +43,7 @@ export const TopAppBar = withStyles(theme => ({
   menuIcon: { marginLeft: '-0.75rem' },
 }))(function TopBar({ classes }) {
   const { syncStatus } = useNotes()
-  const { selectAll } = useNotesActions()
+  const { selectAll, clearSelection } = useNotesActions()
   return (
     <>
       <AppBar position="fixed">
@@ -54,6 +55,9 @@ export const TopAppBar = withStyles(theme => ({
           <SyncStatusIconButton />
           <IconButton color="inherit" onClick={() => selectAll()}>
             <SelectAllIcon />
+          </IconButton>
+          <IconButton color="inherit" onClick={() => clearSelection()}>
+            <ClearSelectionIcon />
           </IconButton>
         </Toolbar>
       </AppBar>

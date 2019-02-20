@@ -53,6 +53,7 @@ export const notesModel = {
       R.zipObj(selectedIds, R.repeat(true)(selectedIds.length)),
     )(state)
   },
+  clearSelection: R.assoc('selectedIdDict')({}),
   setNoteSelected: (state, { selected, note }) =>
     R.assocPath(['selectedIdDict', note._id])(selected)(state),
   visibleNotes: select(getVisibleNotes),
