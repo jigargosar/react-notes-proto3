@@ -15,32 +15,29 @@ export const EditDialog = withMobileDialog({ breakpoint: 'xs' })(
 
     const [content, setContent] = useState(() => note.content)
     const onClose = () => close()
-    const onSubmit = e => {
-      e.preventDefault()
+    const onSave = () => {
       // setNoteContent(content, note)
     }
     return (
       <Dialog onClose={onClose} open={true} fullScreen={fullScreen}>
         <DialogTitle>Edit Note</DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
-          <form onSubmit={onSubmit}>
-            <TextField
-              autoFocus
-              multiline
-              value={content}
-              onChange={e => setContent(e.target.value)}
-              // className={classes.textField}
-              margin="normal"
-              fullWidth
-              variant="outlined"
-            />
-          </form>
+          <TextField
+            autoFocus
+            multiline
+            value={content}
+            onChange={e => setContent(e.target.value)}
+            // className={classes.textField}
+            margin="normal"
+            fullWidth
+            variant="outlined"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary">
             Discard
           </Button>
-          <Button onClick={onSubmit} color="primary">
+          <Button onClick={onSave} color="primary">
             Save
           </Button>
         </DialogActions>
