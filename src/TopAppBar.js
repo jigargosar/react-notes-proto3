@@ -10,6 +10,7 @@ import SyncDisabledIcon from '@material-ui/icons/SyncDisabled'
 import SyncProblemIcon from '@material-ui/icons/SyncProblem'
 import SelectAllIcon from '@material-ui/icons/SelectAll'
 import ClearSelectionIcon from '@material-ui/icons/Clear'
+import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 
 import React from 'react'
 
@@ -43,7 +44,11 @@ export const TopAppBar = withStyles(theme => ({
   menuIcon: { marginLeft: '-0.75rem' },
 }))(function TopBar({ classes }) {
   const { syncStatus } = useNotes()
-  const { selectAll, clearSelection } = useNotesActions()
+  const {
+    selectAll,
+    clearSelection,
+    deleteAllSelected,
+  } = useNotesActions()
   return (
     <>
       <AppBar position="fixed">
@@ -58,6 +63,9 @@ export const TopAppBar = withStyles(theme => ({
           </IconButton>
           <IconButton color="inherit" onClick={() => clearSelection()}>
             <ClearSelectionIcon />
+          </IconButton>
+          <IconButton color="inherit" onClick={() => deleteAllSelected()}>
+            <DeleteAllIcon />
           </IconButton>
         </Toolbar>
       </AppBar>

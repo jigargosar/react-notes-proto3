@@ -48,11 +48,17 @@ export const notesModel = {
   byId: {},
   selectedIdDict: {},
   selectAll: state => {
-    const selectedIds = state.visibleNotes.map(_idProp)
+    const visibleNoteIds = state.visibleNotes.map(_idProp)
     return R.assoc('selectedIdDict')(
-      R.zipObj(selectedIds, R.repeat(true)(selectedIds.length)),
+      R.zipObj(visibleNoteIds, R.repeat(true)(visibleNoteIds.length)),
     )(state)
   },
+  selectedIds: select(pipe([R.prop('selectedIdDict'), R.keys])),
+  deleteAllSelected: thunk(async (actions, payload, { getState }) => {
+    await Promise.all(
+      getState().notes.selectedIds.map(actions.removeNoteId),
+    )
+  }),
   clearSelection: R.assoc('selectedIdDict')({}),
   setNoteSelected: (state, { selected, note }) =>
     R.assocPath(['selectedIdDict', note._id])(selected)(state),
@@ -96,7 +102,11 @@ export const notesModel = {
     await db.put(note)
   }),
   remove: thunk(async (actions, note) => {
-    await db.put({ ...note, _deleted: true })
+    await actions.removeNoteId(note._id)
+  }),
+  removeNoteId: thunk(async (actions, noteId) => {
+    const note = await db.get(noteId)
+    await db.put({ ...note, _deleted: true, modifiedAt: Date.now() })
   }),
   replaceAll: (state, docs) => setLookupFromDocs(docs)(state),
   handleChange: (state, change) => {
