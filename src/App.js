@@ -15,7 +15,6 @@ import { withStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 import MenuIcon from '@material-ui/icons/Menu'
 import AppBar from '@material-ui/core/AppBar'
 
@@ -62,13 +61,12 @@ const TopBar = withStyles(theme => ({
             Notes
           </Typography>
           <div className="mh2">{syncStatus}</div>
-          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
       <div className="ph3 flex items-center">
         <div className="flex-grow-1" />
-        <div className="mh2">{remoteUrl}</div>
+
         <form
           className="flex items-center"
           onSubmit={e => {
