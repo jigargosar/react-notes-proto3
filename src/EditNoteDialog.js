@@ -52,6 +52,9 @@ export const EditDialog = enhance(function EditDialog({
         <Button onClick={onClose} color="primary">
           Discard
         </Button>
+        <Button onClick={onClose} color="secondary">
+          Delete
+        </Button>
       </DialogActions>
     </Dialog>
   )
