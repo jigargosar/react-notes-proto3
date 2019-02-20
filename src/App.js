@@ -61,13 +61,13 @@ const TopBar = withStyles(theme => ({
           <Typography variant="h6" color="inherit" className="flex-grow-1">
             Notes
           </Typography>
+          <div className="mh2">{syncStatus}</div>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
       <div className="ph3 flex items-center">
         <div className="flex-grow-1" />
-        <div className="mh2">{syncStatus}</div>
         <div className="mh2">{remoteUrl}</div>
         <form
           className="flex items-center"
