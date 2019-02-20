@@ -60,7 +60,7 @@ const TopBar = withStyles(theme => ({
           <Typography variant="h6" color="inherit" className="flex-grow-1">
             Notes
           </Typography>
-          <div className="mh2">{syncStatus}</div>
+          <div className="mh2 ttc">{syncStatus}</div>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
