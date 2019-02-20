@@ -41,7 +41,6 @@ export const TopAppBar = withStyles(theme => ({
   menuIcon: { marginLeft: '-0.75rem' },
 }))(function TopBar({ classes }) {
   const { syncStatus } = useNotes()
-  const { openSettingsDialog } = useNoteActions()
   return (
     <>
       <AppBar position="fixed">

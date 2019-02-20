@@ -19,23 +19,26 @@ export const SettingsDialog = enhance(function SettingsDialog({
   fullScreen,
   classes,
 }) {
-  const { setRemoteUrl, closeSettingsDialog } = useNoteActions()
+  const { setRemoteUrl, closeSettingsDialog: close } = useNoteActions()
 
   const { remoteUrl, isSettingsDialogOpen } = useNotes()
 
-  const [ipt, setIpt] = useState(() => remoteUrl || '')
-
-  const onClose = () => {
-    closeSettingsDialog()
-  }
+  const initState = () => remoteUrl || ''
+  const [ipt, setIpt] = useState(initState)
 
   const onSave = () => {
     setRemoteUrl(ipt)
-    onClose()
+    close()
   }
+
+  const onDiscard = () => {
+    setIpt(initState())
+    close()
+  }
+
   return (
     <Dialog
-      onClose={onClose}
+      onClose={onDiscard}
       open={isSettingsDialogOpen}
       fullScreen={fullScreen}
     >
@@ -58,7 +61,7 @@ export const SettingsDialog = enhance(function SettingsDialog({
         <Button onClick={onSave} color="primary">
           Save
         </Button>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={onDiscard} color="primary">
           Discard
         </Button>
       </DialogActions>
