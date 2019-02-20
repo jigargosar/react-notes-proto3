@@ -81,13 +81,13 @@ function NotesApp() {
   }, [remoteUrl])
 
   return (
-    <>
+    <div className="pb5">
       <TopBar />
       {renderNotes(visibleNotes)}
       {editNote && <EditDialog note={editNote} />}
       <SettingsDialog />
       <AddNoteFab />
-    </>
+    </div>
   )
 }
 
@@ -100,6 +100,7 @@ const AddNoteFab = withStyles({
   return (
     <Fab
       className={`absolute bottom-1 right-1 ${classes.root}`}
+      size="small"
       color="secondary"
       onClick={() => addNew()}
       {...otherProps}
