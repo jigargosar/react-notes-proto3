@@ -38,7 +38,10 @@ function renderNotes(notes) {
   return notes.map(note => <NoteItem key={note._id} note={note} />)
 }
 
-function TopBar() {
+const TopBar = withStyles(theme => ({
+  toolbar: theme.mixins.toolbar,
+  menuIcon: { marginLeft: '-0.75rem' },
+}))(function TopBar({ classes }) {
   const { remoteUrl, syncStatus } = useNotes()
   const [ipt, setIpt] = useState(() => remoteUrl || '')
   const { setRemoteUrl } = useNoteActions()
@@ -46,15 +49,22 @@ function TopBar() {
     <>
       <AppBar posit2ion="static">
         <Toolbar>
-          <IconButton className="nl3" color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
+          {false && (
+            <IconButton
+              className={classes.menuIcon}
+              color="inherit"
+              aria-label="Menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
           <Typography variant="h6" color="inherit" className="flex-grow-1">
-            News
+            Notes
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
+      <div className={classes.toolbar} />
       <div className="ph3 flex items-center">
         <div className="flex-grow-1" />
         <div className="mh2">{syncStatus}</div>
@@ -79,8 +89,7 @@ function TopBar() {
       </div>
     </>
   )
-}
-
+})
 function NotesApp() {
   const { visibleNotes, remoteUrl, editNote } = useNotes()
 
