@@ -29,7 +29,7 @@ const TopBar = withStyles(theme => ({
   const { openSettingsDialog } = useNoteActions()
   return (
     <>
-      <AppBar posit2ion="static">
+      <AppBar position="fixed">
         <Toolbar>
           {false && (
             <IconButton
