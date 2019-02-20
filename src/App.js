@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import useHotKeys from 'react-hotkeys-hook'
 import {
@@ -43,9 +43,8 @@ const TopBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   menuIcon: { marginLeft: '-0.75rem' },
 }))(function TopBar({ classes }) {
-  const { remoteUrl, syncStatus } = useNotes()
-  const [ipt, setIpt] = useState(() => remoteUrl || '')
-  const { setRemoteUrl, openSettingsDialog } = useNoteActions()
+  const { syncStatus } = useNotes()
+  const { openSettingsDialog } = useNoteActions()
   return (
     <>
       <AppBar posit2ion="static">
@@ -94,7 +93,7 @@ function NotesApp() {
 
 const AddNoteFab = withStyles({
   root: {
-    position: 'absolute',
+    position: 'fixed',
   },
 })(function AddNoteFab({ classes, ...otherProps }) {
   const { addNew } = useNoteActions()
