@@ -1,4 +1,4 @@
-import { useAction, useStore } from 'easy-peasy'
+import { useActions, useStore } from 'easy-peasy'
 import { Portal } from 'react-portal'
 import { Inspector } from 'react-inspector'
 import React from 'react'
@@ -43,7 +43,7 @@ export function PortalInspectorToolbar() {
     visible: state.debug.inspectorVisible,
   }))
 
-  const hideInspector = useAction(actions => actions.debug.hideInspector)
+  const hideInspector = useActions(actions => actions.debug.hideInspector)
 
   return (
     visible && (
