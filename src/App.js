@@ -13,13 +13,16 @@ import Dialog from '@material-ui/core/Dialog/Dialog'
 import * as R from 'ramda'
 
 function NoteItem({ note }) {
-  const { remove } = useActions(actions => ({
+  const { remove, startEditing } = useActions(actions => ({
     remove: actions.notes.remove,
+    startEditing: actions.notes.startEditing,
   }))
 
   return (
     <div className="pa3 bb b--moon-gray flex justify-between ">
-      <div className="">{note.content}</div>
+      <div className="" onClick={() => startEditing(note)}>
+        {note.content}
+      </div>
       <div>
         <button onClick={() => remove(note)}>X</button>
       </div>

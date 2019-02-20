@@ -46,7 +46,12 @@ export const notesModel = {
   syncErr: null,
   syncLastUpdate: null,
   isEditDialogOpen: false,
+  editNote: null,
   closeEditDialog: R.assoc('isEditDialogOpen', false),
+  startEditing: (state, note) =>
+    pipe([R.assoc('editNoteId')(note), R.assoc('isEditDialogOpen', true)])(
+      state,
+    ),
   syncStatus: select(state => {
     const mapping = {
       pending: 'synced',
