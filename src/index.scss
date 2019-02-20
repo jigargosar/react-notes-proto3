@@ -53,16 +53,6 @@ code {
   }
 }
 
-@keyframes restoreSpinAnimation {
-  100% {
-    transform: rotate(-360deg);
-  }
-}
-
 .spin {
   animation: spinAnimation 1s linear infinite;
-}
-
-.restore-spin{
-  animation: restoreSpinAnimation 1s linear;
 }
