@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
 import { useActions, useStore } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
-import { PortalInspector, PortalInspectState } from './Inspect'
+import {
+  PortalInspector,
+  PortalInspectorToolbar,
+  PortalInspectState,
+} from './Inspect'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
@@ -76,6 +80,7 @@ function App({ store }) {
 
   return (
     <ErrorBoundary>
+      <PortalInspectorToolbar />
       <PortalInspectState />
       <PortalInspector data={store} name={'store'} />
       <NotesApp />

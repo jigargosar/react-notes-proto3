@@ -142,6 +142,7 @@ const storeModel = {
   debug: {
     inspectorVisible: true,
     toggleInspector: state => overProp('inspectorVisible')(R.not)(state),
+    hideInspector: state => R.assoc('inspectorVisible')(false)(state),
   },
   notes: notesModel,
 }
