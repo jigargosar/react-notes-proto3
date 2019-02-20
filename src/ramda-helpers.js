@@ -93,3 +93,7 @@ export function toggleLens(ivLens) {
 }
 
 export const overById = overProp('byId')
+
+export function isNotNil(v) {
+  return !R.isNil(v)
+}

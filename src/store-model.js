@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { objFromList, overProp, pipe } from './ramda-helpers'
+import { isNotNil, objFromList, overProp, pipe } from './ramda-helpers'
 import validate from 'aproba'
 import nanoid from 'nanoid'
 import faker from 'faker'
@@ -45,13 +45,10 @@ export const notesModel = {
   remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
-  isEditDialogOpen: false,
   editNote: null,
-  closeEditDialog: R.assoc('isEditDialogOpen', false),
-  startEditing: (state, note) =>
-    pipe([R.assoc('editNoteId')(note), R.assoc('isEditDialogOpen', true)])(
-      state,
-    ),
+  closeEditDialog: R.assoc('editNote', null),
+  isEditingNote: select(pipe([R.prop('editNote'), isNotNil])),
+  startEditing: (state, note) => pipe([R.assoc('editNote')(note)])(state),
   syncStatus: select(state => {
     const mapping = {
       pending: 'synced',

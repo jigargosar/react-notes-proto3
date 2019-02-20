@@ -32,11 +32,14 @@ function NoteItem({ note }) {
 
 function EditDialog() {
   const close = useActions(R.path(['notes', 'closeEditDialog']))
-  const isOpen = useStore(R.path(['notes', 'isEditDialogOpen']))
+  const { isOpen, note } = useStore(state => ({
+    isOpen: R.path(['notes', 'isEditingNote'])(state),
+    note: R.path(['notes', 'editNote'])(state),
+  }))
   return (
     <Dialog onClose={() => close()} open={isOpen}>
       <DialogTitle>Edit Note</DialogTitle>
-      <div>Note Content</div>
+      <div>{note && note.content}</div>
     </Dialog>
   )
 }
