@@ -87,6 +87,7 @@ const TopBar = withStyles(theme => ({
             margin="normal"
             fullWidth
             variant="outlined"
+            style={{ width: '15rem' }}
           />
         </form>
       </div>
