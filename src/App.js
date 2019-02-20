@@ -6,7 +6,6 @@ import {
   PortalInspectorToolbar,
   PortalInspectState,
 } from './Inspect'
-import Button from '@material-ui/core/Button'
 import { EditDialog } from './EditNoteDialog'
 import { useNoteActions, useNotes } from './store-model'
 import TextField from '@material-ui/core/TextField'
@@ -32,7 +31,7 @@ function NoteItem({ note }) {
 function NotesApp() {
   const { visibleNotes, remoteUrl, syncStatus, editNote } = useNotes()
   const [ipt, setIpt] = useState(() => remoteUrl || '')
-  const { addNew, setRemoteUrl, startSync } = useNoteActions()
+  const { setRemoteUrl, startSync } = useNoteActions()
 
   useEffect(() => {
     startSync().catch(console.error)
@@ -41,13 +40,6 @@ function NotesApp() {
   return (
     <>
       <div className="ph3 flex items-center">
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => addNew()}
-        >
-          ADD
-        </Button>
         <div className="flex-grow-1" />
         <div className="mh2">{syncStatus}</div>
         <div className="mh2">{remoteUrl}</div>
