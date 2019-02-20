@@ -17,9 +17,10 @@ export const EditDialog = pipe([
   const { closeEditDialog, saveNoteContent } = useNoteActions()
 
   const [content, setContent] = useState(() => note.content)
+  const [origNote] = useState(() => note)
   const onClose = () => closeEditDialog()
   const onSave = () => {
-    saveNoteContent({ content, note })
+    saveNoteContent({ content, note: origNote })
   }
   return (
     <Dialog onClose={onClose} open={true} fullScreen={fullScreen}>
