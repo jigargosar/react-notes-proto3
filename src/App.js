@@ -18,7 +18,7 @@ function NoteItem({ note }) {
 
   return (
     <div className="pa3 bb b--moon-gray flex justify-between ">
-      <div className="" onClick={() => startEditing(note)}>
+      <div className="flex-auto" onClick={() => startEditing(note)}>
         {note.content}
       </div>
       <div>
