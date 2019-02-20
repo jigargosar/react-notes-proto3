@@ -24,8 +24,11 @@ function NoteItem({ note }) {
   const { remove, startEditing } = useNoteActions()
 
   return (
-    <div className="pa3 bb b--moon-gray flex justify-between ">
-      <div className="flex-auto" onClick={() => startEditing(note)}>
+    <div className="ph3 bb b--moon-gray flex justify-between ">
+      <div
+        className="pv3 flex-auto pointer"
+        onClick={() => startEditing(note)}
+      >
         {note.content}
       </div>
       <div>
