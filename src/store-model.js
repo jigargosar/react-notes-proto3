@@ -46,6 +46,7 @@ export const notesModel = {
   syncErr: null,
   syncLastUpdate: null,
   editNote: null,
+  isSettingsDialogOpen: false,
   closeEditDialog: R.assoc('editNote', null),
   saveEditingNoteContent: thunk(async (actions, content, { getState }) => {
     const editNote = getState().editNote
@@ -91,11 +92,17 @@ export const notesModel = {
     return update(state)
   },
   initFromPouch: thunk(async (actions, payload, { getState }) => {
-    const { rows } = await db.allDocs({ include_docs: true })
+    const { rows } = await db.allDocs({
+      include_docs: true,
+    })
     const docs = rows.map(R.prop('doc'))
     actions.replaceAll(docs)
     const changes = db
-      .changes({ include_docs: true, live: true, since: 'now' })
+      .changes({
+        include_docs: true,
+        live: true,
+        since: 'now',
+      })
       .on('change', actions.handleChange)
       .on('error', console.error)
     return { changes }
