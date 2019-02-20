@@ -34,7 +34,7 @@ export const SettingsDialog = enhance(function SettingsDialog({
     <Dialog
       onClose={onClose}
       open={isSettingsDialogOpen}
-      fullScreen={fullScreen}
+      // fullScreen={fullScreen}
     >
       <DialogTitle>Edit Note</DialogTitle>
       <DialogContent style={{ minWidth: '400px' }}>
@@ -46,7 +46,6 @@ export const SettingsDialog = enhance(function SettingsDialog({
           margin="normal"
           fullWidth
           // variant="outlined"
-          style={{ width: '15rem' }}
         />
       </DialogContent>
       <DialogActions

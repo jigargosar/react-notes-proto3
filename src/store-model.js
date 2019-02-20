@@ -47,6 +47,8 @@ export const notesModel = {
   syncLastUpdate: null,
   editNote: null,
   isSettingsDialogOpen: false,
+  openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
+  closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
   closeEditDialog: R.assoc('editNote', null),
   saveEditingNoteContent: thunk(async (actions, content, { getState }) => {
     const editNote = getState().editNote

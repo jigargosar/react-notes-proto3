@@ -19,6 +19,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 // import More from '@material-ui/icons/MoreVert'
 import Settings from '@material-ui/icons/Settings'
 import AppBar from '@material-ui/core/AppBar'
+import { SettingsDialog } from './SettingsDialog'
 
 function NoteItem({ note }) {
   const { remove, startEditing } = useNoteActions()
@@ -45,7 +46,7 @@ const TopBar = withStyles(theme => ({
 }))(function TopBar({ classes }) {
   const { remoteUrl, syncStatus } = useNotes()
   const [ipt, setIpt] = useState(() => remoteUrl || '')
-  const { setRemoteUrl } = useNoteActions()
+  const { setRemoteUrl, openSettingsDialog } = useNoteActions()
   return (
     <>
       <AppBar posit2ion="static">
@@ -63,7 +64,7 @@ const TopBar = withStyles(theme => ({
             Notes
           </Typography>
           <div className="mh2 ttc">{syncStatus}</div>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={() => openSettingsDialog()}>
             <Settings />
           </IconButton>
         </Toolbar>
@@ -108,6 +109,7 @@ function NotesApp() {
       <TopBar />
       {renderNotes(visibleNotes)}
       {editNote && <EditDialog note={editNote} />}
+      <SettingsDialog />
       <AddNoteFab />
     </>
   )
