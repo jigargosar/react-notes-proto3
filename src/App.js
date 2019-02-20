@@ -31,8 +31,9 @@ function NoteItem({ note }) {
       >
         {note.content}
       </div>
-      <div className="pv3">
+      <div className="pl3 pv3 flex flex-column">
         <button onClick={() => remove(note)}>X</button>
+        <button onClick={() => startEditing(note)}>E</button>
       </div>
     </div>
   )
