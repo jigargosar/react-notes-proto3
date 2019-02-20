@@ -20,12 +20,21 @@ export const EditDialog = enhance(function EditDialog({
   fullScreen,
   classes,
 }) {
-  const { closeEditDialog, saveEditingNoteContent } = useNoteActions()
+  const {
+    remove,
+    closeEditDialog,
+    saveEditingNoteContent,
+  } = useNoteActions()
 
   const [content, setContent] = useState(() => note.content)
   const onClose = () => closeEditDialog()
   const onSave = () => {
     saveEditingNoteContent(content)
+  }
+
+  const onDelete = () => {
+    remove(note)
+    onClose()
   }
   return (
     <Dialog onClose={onClose} open={true} fullScreen={fullScreen}>
@@ -52,7 +61,7 @@ export const EditDialog = enhance(function EditDialog({
         <Button onClick={onClose} color="primary">
           Discard
         </Button>
-        <Button onClick={onClose} color="secondary">
+        <Button onClick={onDelete} color="secondary">
           Delete
         </Button>
       </DialogActions>
