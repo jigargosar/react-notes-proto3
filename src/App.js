@@ -8,6 +8,9 @@ import {
   PortalInspectState,
 } from './Inspect'
 import Button from '@material-ui/core/Button'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Dialog from '@material-ui/core/Dialog/Dialog'
+import * as R from 'ramda'
 
 function NoteItem({ note }) {
   const { remove } = useActions(actions => ({
@@ -21,6 +24,17 @@ function NoteItem({ note }) {
         <button onClick={() => remove(note)}>X</button>
       </div>
     </div>
+  )
+}
+
+function EditDialog() {
+  const close = useActions(R.path(['notes', 'closeEditDialog']))
+  const isOpen = useStore(R.path(['notes', 'isEditDialogOpen']))
+  return (
+    <Dialog onClose={() => close()} open={isOpen}>
+      <DialogTitle>Edit Note</DialogTitle>
+      <div>Note Content</div>
+    </Dialog>
   )
 }
 
@@ -85,6 +99,7 @@ function App({ store }) {
       <PortalInspectState />
       <PortalInspector data={store} name={'store'} />
       <NotesApp />
+      <EditDialog />
     </ErrorBoundary>
   )
 }

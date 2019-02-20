@@ -45,6 +45,8 @@ export const notesModel = {
   remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
+  isEditDialogOpen: false,
+  closeEditDialog: R.assoc('isEditDialogOpen', false),
   syncStatus: select(state => {
     const mapping = {
       pending: 'synced',
