@@ -21,7 +21,7 @@ import AppBar from '@material-ui/core/AppBar'
 import { SettingsDialog } from './SettingsDialog'
 
 function NoteItem({ note }) {
-  const { remove, startEditing } = useNoteActions()
+  const { startEditing } = useNoteActions()
 
   return (
     <div className="ph3 bb b--moon-gray flex justify-between ">
