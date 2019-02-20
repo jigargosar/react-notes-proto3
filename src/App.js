@@ -14,7 +14,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-import MenuIcon from '@material-ui/icons/Menu'
+// import MenuIcon from '@material-ui/icons/Menu'
 // import More from '@material-ui/icons/MoreVert'
 import Settings from '@material-ui/icons/Settings'
 import AppBar from '@material-ui/core/AppBar'
@@ -31,15 +31,6 @@ const TopBar = withStyles(theme => ({
     <>
       <AppBar position="fixed">
         <Toolbar>
-          {false && (
-            <IconButton
-              className={classes.menuIcon}
-              color="inherit"
-              aria-label="Menu"
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
           <Typography variant="h6" color="inherit" className="flex-grow-1">
             Notes
           </Typography>
