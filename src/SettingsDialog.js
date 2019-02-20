@@ -36,7 +36,7 @@ export const SettingsDialog = enhance(function SettingsDialog({
       open={isSettingsDialogOpen}
       fullScreen={fullScreen}
     >
-      <DialogTitle>Edit Note</DialogTitle>
+      <DialogTitle>Sync with CouchDB</DialogTitle>
       <DialogContent style={{ minWidth: '400px' }}>
         <TextField
           label="CouchDB URL"
