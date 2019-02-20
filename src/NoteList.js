@@ -12,7 +12,7 @@ function NoteItem({ note }) {
   const { startEditing } = useNoteActions()
 
   return (
-    <ListItem button disableGutters>
+    <ListItem button disableGutters={false}>
       <Checkbox
         // checked={}
         tabIndex={-1}
@@ -34,7 +34,7 @@ function NoteItem({ note }) {
 export function NoteList() {
   const { visibleNotes } = useNotes()
   return (
-    <List dense>
+    <List>
       {visibleNotes.map(note => (
         <NoteItem key={note._id} note={note} />
       ))}
