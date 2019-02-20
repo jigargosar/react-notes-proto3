@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
-import { useActions, useStore } from 'easy-peasy'
+import { useActions } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
 import {
   PortalInspector,
@@ -9,6 +9,7 @@ import {
 } from './Inspect'
 import Button from '@material-ui/core/Button'
 import { EditDialog } from './EditNoteDialog'
+import { useNoteActions, useNotes } from './store-model'
 
 function NoteItem({ note }) {
   const { remove, startEditing } = useActions(actions => ({
@@ -29,23 +30,9 @@ function NoteItem({ note }) {
 }
 
 function NotesApp() {
-  const { visibleNotes, remoteUrl, syncStatus, editNote } = useStore(
-    state => {
-      const notes = state.notes
-      return {
-        visibleNotes: notes.visibleNotes,
-        remoteUrl: notes.remoteUrl,
-        syncStatus: notes.syncStatus,
-        editNote: notes.editNote,
-      }
-    },
-  )
+  const { visibleNotes, remoteUrl, syncStatus, editNote } = useNotes()
   const [ipt, setIpt] = useState(() => remoteUrl || '')
-  const { add, setRemoteUrl, startSync } = useActions(actions => ({
-    add: actions.notes.addNew,
-    setRemoteUrl: actions.notes.setRemoteUrl,
-    startSync: actions.notes.startSync,
-  }))
+  const { addNew, setRemoteUrl, startSync } = useNoteActions()
 
   useEffect(() => {
     startSync().catch(console.error)
@@ -54,7 +41,11 @@ function NotesApp() {
   return (
     <>
       <div className="ph3 flex items-center">
-        <Button variant="outlined" color="primary" onClick={() => add()}>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => addNew()}
+        >
           ADD
         </Button>
         <div className="flex-grow-1" />
