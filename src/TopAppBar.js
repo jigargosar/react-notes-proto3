@@ -42,6 +42,7 @@ export const TopAppBar = withStyles(theme => ({
   menuIcon: { marginLeft: '-0.75rem' },
 }))(function TopBar({ classes }) {
   const { syncStatus } = useNotes()
+  const { selectAll } = useNoteActions()
   return (
     <>
       <AppBar position="fixed">
@@ -51,7 +52,7 @@ export const TopAppBar = withStyles(theme => ({
           </Typography>
           <div className="mh2 ttc">{syncStatus}</div>
           <SyncStatusIconButton />
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={() => selectAll()}>
             <SelectAllIcon />
           </IconButton>
         </Toolbar>

@@ -1,5 +1,11 @@
 import * as R from 'ramda'
-import { isNotNil, objFromList, overProp, pipe } from './ramda-helpers'
+import {
+  _idProp,
+  isNotNil,
+  objFromList,
+  overProp,
+  pipe,
+} from './ramda-helpers'
 import validate from 'aproba'
 import nanoid from 'nanoid'
 import faker from 'faker'
@@ -40,7 +46,10 @@ function setLookupFromDocs(docs) {
 
 export const notesModel = {
   byId: {},
-  selectedId: null,
+  selectedIds: [],
+  selectAll: state => {
+    R.assoc('selectedIds')(state.visibleNotes.map(_idProp))(state)
+  },
   visibleNotes: select(getVisibleNotes),
   remoteUrl: null,
   syncErr: null,
