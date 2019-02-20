@@ -65,6 +65,7 @@ function NotesApp() {
         <NoteItem key={note._id} note={note} />
       ))}
       {editNote && <EditDialog note={editNote} />}
+      <AddNoteFab />
     </>
   )
 }
@@ -96,7 +97,6 @@ function App({ store }) {
       <PortalInspectState />
       <PortalInspector data={store} name={'store'} />
       <NotesApp />
-      <AddNoteFab />
     </ErrorBoundary>
   )
 }
