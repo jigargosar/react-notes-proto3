@@ -60,7 +60,6 @@ function NotesApp() {
         >
           <TextField
             label="CouchDB URL"
-            autoFocus
             value={ipt}
             onChange={e => setIpt(e.target.value)}
             name="remote-couch-url"
