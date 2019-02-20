@@ -53,6 +53,7 @@ const TopBar = withStyles(theme => ({
     </>
   )
 })
+
 function NotesApp() {
   const { remoteUrl, editNote } = useNotes()
 
