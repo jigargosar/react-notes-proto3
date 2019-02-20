@@ -50,6 +50,7 @@ export const notesModel = {
   saveNoteContent: thunk(async (actions, { content, note }) => {
     const pdbNote = await db.get(note._id)
     await db.put({ ...pdbNote, content })
+    actions.closeEditDialog()
   }),
   isEditingNote: select(pipe([R.prop('editNote'), isNotNil])),
   startEditing: (state, note) => pipe([R.assoc('editNote')(note)])(state),
