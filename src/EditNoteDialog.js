@@ -24,6 +24,7 @@ export const EditDialog = withMobileDialog({ breakpoint: 'xs' })(
               e.preventDefault()
               // setNoteContent(content, note)
             }}
+            style={{ minWidth: '300px' }}
           >
             <TextField
               autoFocus
