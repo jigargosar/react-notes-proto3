@@ -32,10 +32,40 @@ function renderNotes(notes) {
   return notes.map(note => <NoteItem key={note._id} note={note} />)
 }
 
-function NotesApp() {
-  const { visibleNotes, remoteUrl, syncStatus, editNote } = useNotes()
+function TopBar() {
+  const { remoteUrl, syncStatus } = useNotes()
   const [ipt, setIpt] = useState(() => remoteUrl || '')
-  const { setRemoteUrl, startSync } = useNoteActions()
+  const { setRemoteUrl } = useNoteActions()
+  return (
+    <div className="ph3 flex items-center">
+      <div className="flex-grow-1" />
+      <div className="mh2">{syncStatus}</div>
+      <div className="mh2">{remoteUrl}</div>
+      <form
+        className="flex items-center"
+        onSubmit={e => {
+          e.preventDefault()
+          setRemoteUrl(ipt)
+        }}
+      >
+        <TextField
+          label="CouchDB URL"
+          value={ipt}
+          onChange={e => setIpt(e.target.value)}
+          name="remote-couch-url"
+          margin="normal"
+          fullWidth
+          variant="outlined"
+        />
+      </form>
+    </div>
+  )
+}
+
+function NotesApp() {
+  const { visibleNotes, remoteUrl, editNote } = useNotes()
+
+  const { startSync } = useNoteActions()
 
   useEffect(() => {
     startSync().catch(console.error)
@@ -43,28 +73,7 @@ function NotesApp() {
 
   return (
     <>
-      <div className="ph3 flex items-center">
-        <div className="flex-grow-1" />
-        <div className="mh2">{syncStatus}</div>
-        <div className="mh2">{remoteUrl}</div>
-        <form
-          className="flex items-center"
-          onSubmit={e => {
-            e.preventDefault()
-            setRemoteUrl(ipt)
-          }}
-        >
-          <TextField
-            label="CouchDB URL"
-            value={ipt}
-            onChange={e => setIpt(e.target.value)}
-            name="remote-couch-url"
-            margin="normal"
-            fullWidth
-            variant="outlined"
-          />
-        </form>
-      </div>
+      <TopBar />
       {renderNotes(visibleNotes)}
       {editNote && <EditDialog note={editNote} />}
       <AddNoteFab />
