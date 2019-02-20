@@ -21,6 +21,7 @@ import Settings from '@material-ui/icons/Settings'
 import AppBar from '@material-ui/core/AppBar'
 import { SettingsDialog } from './SettingsDialog'
 import ListItem from '@material-ui/core/ListItem'
+import List from '@material-ui/core/List'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 
@@ -42,8 +43,15 @@ function NoteItem({ note }) {
   )
 }
 
-function renderNotes(notes) {
-  return notes.map(note => <NoteItem key={note._id} note={note} />)
+function NoteList() {
+  const { visibleNotes } = useNotes()
+  return (
+    <List>
+      {visibleNotes.map(note => (
+        <NoteItem key={note._id} note={note} />
+      ))}
+    </List>
+  )
 }
 
 const TopBar = withStyles(theme => ({
@@ -79,7 +87,7 @@ const TopBar = withStyles(theme => ({
   )
 })
 function NotesApp() {
-  const { visibleNotes, remoteUrl, editNote } = useNotes()
+  const { remoteUrl, editNote } = useNotes()
 
   const { startSync } = useNoteActions()
 
@@ -90,7 +98,7 @@ function NotesApp() {
   return (
     <div className="pb5">
       <TopBar />
-      {renderNotes(visibleNotes)}
+      <NoteList />
       {editNote && <EditDialog note={editNote} />}
       <SettingsDialog />
       <AddNoteFab />
