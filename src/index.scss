@@ -47,12 +47,12 @@ code {
   animation: flickerAnimation 1s infinite;
 }
 
-@keyframes spin {
+@keyframes spinAnimation {
   100% {
     transform: rotate(-360deg);
   }
 }
 
-.animate-rotate {
-  animation: spin 4s linear infinite;
+.spin {
+  animation: spinAnimation 4s linear infinite;
 }

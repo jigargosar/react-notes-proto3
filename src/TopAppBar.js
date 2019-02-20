@@ -27,7 +27,7 @@ function SyncStatusIconButton() {
   const { openSettingsDialog } = useNoteActions()
   return (
     <IconButton color="inherit" onClick={() => openSettingsDialog()}>
-      <SyncStatusIcon />
+      <SyncStatusIcon className={syncStatus === 'syncing' ? 'spin' : ''} />
     </IconButton>
   )
 }
