@@ -82,11 +82,14 @@ const AddNoteFab = withStyles({
   root: {
     position: 'absolute',
   },
-})(function AddNoteFab({ classes }) {
+})(function AddNoteFab({ classes, ...otherProps }) {
+  const { addNew } = useNoteActions()
   return (
     <Fab
       className={`absolute bottom-1 right-1 ${classes.root}`}
       color="secondary"
+      onClick={() => addNew()}
+      {...otherProps}
     >
       <AddIcon />
     </Fab>
