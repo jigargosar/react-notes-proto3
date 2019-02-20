@@ -25,12 +25,7 @@ function NoteItem({ note }) {
 
   return (
     <div className="ph3 bb b--moon-gray flex justify-between ">
-      <div
-        className="pv3 flex-auto pointer"
-        onClick={() => startEditing(note)}
-      >
-        {note.content}
-      </div>
+      <div className="pv3 flex-auto ">{note.content}</div>
       <div className="pl3 pv3 flex flex-column">
         <button onClick={() => remove(note)}>X</button>
         <button onClick={() => startEditing(note)}>E</button>
