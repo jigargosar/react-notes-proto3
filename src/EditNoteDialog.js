@@ -1,5 +1,3 @@
-import { useActions } from 'easy-peasy'
-import * as R from 'ramda'
 import React, { useState } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -8,15 +6,16 @@ import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
+import { useNoteActions } from './store-model'
 
 export const EditDialog = withMobileDialog({ breakpoint: 'xs' })(
   function EditDialog({ note, fullScreen }) {
-    const close = useActions(R.path(['notes', 'closeEditDialog']))
+    const { closeEditDialog, saveNoteContent } = useNoteActions()
 
     const [content, setContent] = useState(() => note.content)
-    const onClose = () => close()
+    const onClose = () => closeEditDialog()
     const onSave = () => {
-      // setNoteContent(content, note)
+      saveNoteContent({ content, note })
     }
     return (
       <Dialog onClose={onClose} open={true} fullScreen={fullScreen}>

@@ -3,7 +3,7 @@ import { isNotNil, objFromList, overProp, pipe } from './ramda-helpers'
 import validate from 'aproba'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { select, thunk } from 'easy-peasy'
+import { select, thunk, useActions, useStore } from 'easy-peasy'
 import PouchDB from 'pouchdb-browser'
 
 const db = new PouchDB('notes-pdb')
@@ -47,6 +47,10 @@ export const notesModel = {
   syncLastUpdate: null,
   editNote: null,
   closeEditDialog: R.assoc('editNote', null),
+  saveNoteContent: thunk(async (actions, { content, note }) => {
+    const pdbNote = await db.get(note._id)
+    await db.put({ ...pdbNote, content })
+  }),
   isEditingNote: select(pipe([R.prop('editNote'), isNotNil])),
   startEditing: (state, note) => pipe([R.assoc('editNote')(note)])(state),
   syncStatus: select(state => {
@@ -152,3 +156,10 @@ const storeModel = {
 }
 
 export { storeModel }
+
+export function useNoteActions() {
+  return useActions(R.prop('notes'))
+}
+export function useNotes() {
+  return useStore(R.prop('notes'))
+}
