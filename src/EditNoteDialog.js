@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
-import { useNoteActions } from './store-model'
+import { useNotesActions } from './store-model'
 import { pipe } from './ramda-helpers'
 
 const enhance = pipe([
@@ -24,7 +24,7 @@ export const EditDialog = enhance(function EditDialog({
     remove,
     closeEditDialog,
     saveEditingNoteContent,
-  } = useNoteActions()
+  } = useNotesActions()
 
   const [content, setContent] = useState(() => note.content)
   const onClose = () => closeEditDialog()

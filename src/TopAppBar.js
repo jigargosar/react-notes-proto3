@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core'
-import { useNoteActions, useNotes } from './store-model'
+import { useNotes, useNotesActions } from './store-model'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -25,7 +25,7 @@ function SyncStatusIconButton() {
 
   const SyncStatusIcon = iconMap[syncStatus] || SettingsIcon
 
-  const { openSettingsDialog } = useNoteActions()
+  const { openSettingsDialog } = useNotesActions()
   return (
     <IconButton color="inherit" onClick={() => openSettingsDialog()}>
       <SyncStatusIcon
@@ -42,7 +42,7 @@ export const TopAppBar = withStyles(theme => ({
   menuIcon: { marginLeft: '-0.75rem' },
 }))(function TopBar({ classes }) {
   const { syncStatus } = useNotes()
-  const { selectAll } = useNoteActions()
+  const { selectAll } = useNotesActions()
   return (
     <>
       <AppBar position="fixed">

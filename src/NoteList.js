@@ -1,4 +1,4 @@
-import { useNoteActions, useNotes } from './store-model'
+import { useNotes, useNotesActions } from './store-model'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
@@ -8,16 +8,16 @@ import React from 'react'
 import List from '@material-ui/core/List'
 import Checkbox from '@material-ui/core/Checkbox'
 
-function NoteItem({ note }) {
-  const { startEditing } = useNoteActions()
+function NoteItem({ note, isSelected }) {
+  const { startEditing, setNoteSelected } = useNotesActions()
 
   return (
-    <ListItem button disableGutters={true}>
-      <Checkbox
-        // checked={}
-        tabIndex={-1}
-        disableRipple
-      />
+    <ListItem
+      button
+      disableGutters={true}
+      onClick={() => setNoteSelected({ note, selected: !isSelected })}
+    >
+      <Checkbox checked={isSelected} tabIndex={-1} disableRipple />
       <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => startEditing(note)}>
@@ -32,12 +32,19 @@ function NoteItem({ note }) {
 }
 
 export function NoteList() {
-  const { visibleNotes } = useNotes()
+  const { visibleNotes, selectedIdDict } = useNotes()
   return (
     <List>
-      {visibleNotes.map(note => (
-        <NoteItem key={note._id} note={note} />
-      ))}
+      {visibleNotes.map(note => {
+        const id = note._id
+        return (
+          <NoteItem
+            key={id}
+            note={note}
+            isSelected={!!selectedIdDict[id]}
+          />
+        )
+      })}
     </List>
   )
 }

@@ -7,7 +7,7 @@ import {
   PortalInspectState,
 } from './Inspect'
 import { EditDialog } from './EditNoteDialog'
-import { useNoteActions, useNotes } from './store-model'
+import { useNotes, useNotesActions } from './store-model'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { withStyles } from '@material-ui/core/styles'
@@ -20,7 +20,7 @@ import { TopAppBar } from './TopAppBar'
 function NotesApp() {
   const { remoteUrl, editNote } = useNotes()
 
-  const { startSync } = useNoteActions()
+  const { startSync } = useNotesActions()
 
   useEffect(() => {
     startSync().catch(console.error)
@@ -42,7 +42,7 @@ const AddNoteFab = withStyles({
     position: 'fixed',
   },
 })(function AddNoteFab({ classes, ...otherProps }) {
-  const { addNew } = useNoteActions()
+  const { addNew } = useNotesActions()
   return (
     <Fab
       className={`absolute bottom-1 right-1 ${classes.root}`}

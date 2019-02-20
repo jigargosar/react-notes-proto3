@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
-import { useNoteActions, useNotes } from './store-model'
+import { useNotes, useNotesActions } from './store-model'
 import { pipe } from './ramda-helpers'
 
 const enhance = pipe([
@@ -19,7 +19,7 @@ export const SettingsDialog = enhance(function SettingsDialog({
   fullScreen,
   classes,
 }) {
-  const { setRemoteUrl, closeSettingsDialog: close } = useNoteActions()
+  const { setRemoteUrl, closeSettingsDialog: close } = useNotesActions()
 
   const { remoteUrl, isSettingsDialogOpen } = useNotes()
 

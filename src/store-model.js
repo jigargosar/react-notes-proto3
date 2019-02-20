@@ -46,10 +46,15 @@ function setLookupFromDocs(docs) {
 
 export const notesModel = {
   byId: {},
-  selectedIds: [],
+  selectedIdDict: {},
   selectAll: state => {
-    R.assoc('selectedIds')(state.visibleNotes.map(_idProp))(state)
+    const selectedIds = state.visibleNotes.map(_idProp)
+    return R.assoc('selectedIdDict')(
+      R.zipObj(selectedIds, R.repeat(true)(selectedIds.length)),
+    )(state)
   },
+  setNoteSelected: (state, { selected, note }) =>
+    R.assocPath(['selectedIdDict', note._id])(selected)(state),
   visibleNotes: select(getVisibleNotes),
   remoteUrl: null,
   syncErr: null,
@@ -182,7 +187,7 @@ const storeModel = {
 
 export { storeModel }
 
-export function useNoteActions() {
+export function useNotesActions() {
   return useActions(R.prop('notes'))
 }
 export function useNotes() {
