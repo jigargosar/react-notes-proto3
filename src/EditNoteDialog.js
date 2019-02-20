@@ -18,13 +18,12 @@ export const EditDialog = withMobileDialog({ breakpoint: 'xs' })(
     return (
       <Dialog onClose={onClose} open={true} fullScreen={fullScreen}>
         <DialogTitle>Edit Note</DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ minWidth: '400px' }}>
           <form
             onSubmit={e => {
               e.preventDefault()
               // setNoteContent(content, note)
             }}
-            style={{ minWidth: '300px' }}
           >
             <TextField
               autoFocus
@@ -34,6 +33,7 @@ export const EditDialog = withMobileDialog({ breakpoint: 'xs' })(
               // className={classes.textField}
               margin="normal"
               fullWidth
+              variant="outlined"
             />
           </form>
         </DialogContent>
