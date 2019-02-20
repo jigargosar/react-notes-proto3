@@ -8,9 +8,7 @@ import {
   PortalInspectState,
 } from './Inspect'
 import Button from '@material-ui/core/Button'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Dialog from '@material-ui/core/Dialog/Dialog'
-import * as R from 'ramda'
+import { EditDialog } from './EditNoteDialog'
 
 function NoteItem({ note }) {
   const { remove, startEditing } = useActions(actions => ({
@@ -30,26 +28,18 @@ function NoteItem({ note }) {
   )
 }
 
-function EditDialog() {
-  const close = useActions(R.path(['notes', 'closeEditDialog']))
-  const { isOpen, note } = useStore(state => ({
-    isOpen: R.path(['notes', 'isEditingNote'])(state),
-    note: R.path(['notes', 'editNote'])(state),
-  }))
-  return (
-    <Dialog onClose={() => close()} open={isOpen}>
-      <DialogTitle>Edit Note</DialogTitle>
-      <div>{note && note.content}</div>
-    </Dialog>
-  )
-}
-
 function NotesApp() {
-  const { notes, remoteUrl, syncStatus } = useStore(state => ({
-    notes: state.notes.visibleNotes,
-    remoteUrl: state.notes.remoteUrl,
-    syncStatus: state.notes.syncStatus,
-  }))
+  const { visibleNotes, remoteUrl, syncStatus, editNote } = useStore(
+    state => {
+      const notes = state.notes
+      return {
+        visibleNotes: notes.visibleNotes,
+        remoteUrl: notes.remoteUrl,
+        syncStatus: notes.syncStatus,
+        editNote: notes.editNote,
+      }
+    },
+  )
   const [ipt, setIpt] = useState(() => remoteUrl || '')
   const { add, setRemoteUrl, startSync } = useActions(actions => ({
     add: actions.notes.addNew,
@@ -89,9 +79,10 @@ function NotesApp() {
           </label>
         </form>
       </div>
-      {notes.map(note => (
+      {visibleNotes.map(note => (
         <NoteItem key={note._id} note={note} />
       ))}
+      {editNote && <EditDialog note={editNote} />}
     </>
   )
 }
@@ -105,7 +96,6 @@ function App({ store }) {
       <PortalInspectState />
       <PortalInspector data={store} name={'store'} />
       <NotesApp />
-      <EditDialog />
     </ErrorBoundary>
   )
 }
