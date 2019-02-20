@@ -8,7 +8,6 @@ import {
 } from './Inspect'
 import { EditDialog } from './EditNoteDialog'
 import { useNoteActions, useNotes } from './store-model'
-import TextField from '@material-ui/core/TextField'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { withStyles } from '@material-ui/core/styles'
@@ -70,28 +69,6 @@ const TopBar = withStyles(theme => ({
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
-      <div className="ph3 flex items-center">
-        <div className="flex-grow-1" />
-
-        <form
-          className="flex items-center"
-          onSubmit={e => {
-            e.preventDefault()
-            setRemoteUrl(ipt)
-          }}
-        >
-          <TextField
-            label="CouchDB URL"
-            value={ipt}
-            onChange={e => setIpt(e.target.value)}
-            name="remote-couch-url"
-            margin="normal"
-            fullWidth
-            variant="outlined"
-            style={{ width: '15rem' }}
-          />
-        </form>
-      </div>
     </>
   )
 })
