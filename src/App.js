@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { ErrorBoundary } from './ErrorBoundary'
-import { useActions } from 'easy-peasy'
 import useHotKeys from 'react-hotkeys-hook'
 import {
   PortalInspector,
@@ -11,12 +10,11 @@ import Button from '@material-ui/core/Button'
 import { EditDialog } from './EditNoteDialog'
 import { useNoteActions, useNotes } from './store-model'
 import TextField from '@material-ui/core/TextField'
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add'
 
 function NoteItem({ note }) {
-  const { remove, startEditing } = useActions(actions => ({
-    remove: actions.notes.remove,
-    startEditing: actions.notes.startEditing,
-  }))
+  const { remove, startEditing } = useNoteActions()
 
   return (
     <div className="pa3 bb b--moon-gray flex justify-between ">
@@ -75,6 +73,9 @@ function NotesApp() {
         <NoteItem key={note._id} note={note} />
       ))}
       {editNote && <EditDialog note={editNote} />}
+      <Fab>
+        <AddIcon />
+      </Fab>
     </>
   )
 }
