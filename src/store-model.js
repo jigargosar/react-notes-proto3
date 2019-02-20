@@ -51,7 +51,7 @@ export const notesModel = {
   closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
   closeEditDialog: R.assoc('editNote', null),
   saveEditingNoteContent: thunk(async (actions, content, { getState }) => {
-    const editNote = getState().editNote
+    const editNote = getState().notes.editNote
     const pdbNote = await db.get(editNote._id)
     await db.put({
       ...pdbNote,

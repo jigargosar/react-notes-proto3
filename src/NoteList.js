@@ -12,13 +12,13 @@ function NoteItem({ note }) {
   const { startEditing } = useNoteActions()
 
   return (
-    <ListItem button disableGutters={false}>
+    <ListItem button disableGutters={true}>
       <Checkbox
         // checked={}
         tabIndex={-1}
         disableRipple
       />
-      <ListItemText>{note.content}</ListItemText>
+      <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => startEditing(note)}>
           <EditIcon />
