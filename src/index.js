@@ -1,3 +1,4 @@
+// import "./pre-boot"
 import React from 'react'
 import 'tachyons'
 import './index.scss'
