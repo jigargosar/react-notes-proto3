@@ -6,8 +6,9 @@ import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import SettingsIcon from '@material-ui/icons/Settings'
 import SyncIcon from '@material-ui/icons/Sync'
-import SyncDisabled from '@material-ui/icons/SyncDisabled'
-import SyncProblem from '@material-ui/icons/SyncProblem'
+import SyncDisabledIcon from '@material-ui/icons/SyncDisabled'
+import SyncProblemIcon from '@material-ui/icons/SyncProblem'
+import SelectAllIcon from '@material-ui/icons/SelectAll'
 
 import React from 'react'
 
@@ -15,8 +16,8 @@ function SyncStatusIconButton() {
   const { syncStatus } = useNotes()
   const iconMap = {
     synced: SyncIcon,
-    disabled: SyncDisabled,
-    problem: SyncProblem,
+    disabled: SyncDisabledIcon,
+    problem: SyncProblemIcon,
     syncing: SyncIcon,
   }
 
@@ -50,6 +51,9 @@ export const TopAppBar = withStyles(theme => ({
           </Typography>
           <div className="mh2 ttc">{syncStatus}</div>
           <SyncStatusIconButton />
+          <IconButton color="inherit">
+            <SelectAllIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
