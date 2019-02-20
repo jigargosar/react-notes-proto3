@@ -11,39 +11,11 @@ import { useNoteActions, useNotes } from './store-model'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { withStyles } from '@material-ui/core/styles'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
 // import MenuIcon from '@material-ui/icons/Menu'
 // import More from '@material-ui/icons/MoreVert'
-import SettingsIcon from '@material-ui/icons/Settings'
-import AppBar from '@material-ui/core/AppBar'
 import { SettingsDialog } from './SettingsDialog'
 import { NoteList } from './NoteList'
-
-const TopAppBar = withStyles(theme => ({
-  toolbar: theme.mixins.toolbar,
-  menuIcon: { marginLeft: '-0.75rem' },
-}))(function TopBar({ classes }) {
-  const { syncStatus } = useNotes()
-  const { openSettingsDialog } = useNoteActions()
-  return (
-    <>
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" className="flex-grow-1">
-            Notes
-          </Typography>
-          <div className="mh2 ttc">{syncStatus}</div>
-          <IconButton color="inherit" onClick={() => openSettingsDialog()}>
-            <SettingsIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <div className={classes.toolbar} />
-    </>
-  )
-})
+import { TopAppBar } from './TopAppBar'
 
 function NotesApp() {
   const { remoteUrl, editNote } = useNotes()
