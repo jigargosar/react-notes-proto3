@@ -30,7 +30,7 @@ function SyncStatusIconButton() {
       <SyncStatusIcon
         className={`spin ${
           syncStatus === 'syncing' ? '' : 'spin-paused'
-        }  spinner-icon`}
+        }  `}
       />
     </IconButton>
   )
