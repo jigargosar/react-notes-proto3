@@ -20,7 +20,7 @@ function SyncStatusIconButton() {
     syncing: SyncIcon,
   }
 
-  console.log(syncStatus)
+  //console.log(syncStatus)
 
   const SyncStatusIcon = iconMap[syncStatus] || SettingsIcon
 
