@@ -10,6 +10,7 @@ import {
 import Button from '@material-ui/core/Button'
 import { EditDialog } from './EditNoteDialog'
 import { useNoteActions, useNotes } from './store-model'
+import TextField from '@material-ui/core/TextField'
 
 function NoteItem({ note }) {
   const { remove, startEditing } = useActions(actions => ({
@@ -56,18 +57,17 @@ function NotesApp() {
             setRemoteUrl(ipt)
           }}
         >
-          <label className="flex items-center w-100">
-            <div className="mr2">{syncStatus}</div>
-            <input
-              className="pa1"
-              style={{ width: '15rem' }}
-              type="text"
-              name="remote-couch-url"
-              autoComplete="on"
-              value={ipt}
-              onChange={e => setIpt(e.target.value)}
-            />
-          </label>
+          <TextField
+            label="CouchDB URL"
+            autoFocus
+            value={ipt}
+            onChange={e => setIpt(e.target.value)}
+            name="remote-couch-url"
+            // className={classes.textField}
+            // margin="normal"
+            fullWidth
+            // variant="outlined"
+          />
         </form>
       </div>
       {visibleNotes.map(note => (
