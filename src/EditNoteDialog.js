@@ -10,10 +10,16 @@ import withMobileDialog from '@material-ui/core/withMobileDialog'
 import { useNoteActions } from './store-model'
 import { pipe } from './ramda-helpers'
 
-export const EditDialog = pipe([
+const enhance = pipe([
   withMobileDialog({ breakpoint: 'xs' }),
   withStyles({ dialogActions: { justifyContent: 'flex-start' } }),
-])(function EditDialog({ note, fullScreen, classes }) {
+])
+
+export const EditDialog = enhance(function EditDialog({
+  note,
+  fullScreen,
+  classes,
+}) {
   const { closeEditDialog, saveEditingNoteContent } = useNoteActions()
 
   const [content, setContent] = useState(() => note.content)
