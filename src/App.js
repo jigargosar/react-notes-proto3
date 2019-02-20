@@ -28,6 +28,10 @@ function NoteItem({ note }) {
   )
 }
 
+function renderNotes(notes) {
+  return notes.map(note => <NoteItem key={note._id} note={note} />)
+}
+
 function NotesApp() {
   const { visibleNotes, remoteUrl, syncStatus, editNote } = useNotes()
   const [ipt, setIpt] = useState(() => remoteUrl || '')
@@ -61,9 +65,7 @@ function NotesApp() {
           />
         </form>
       </div>
-      {visibleNotes.map(note => (
-        <NoteItem key={note._id} note={note} />
-      ))}
+      {renderNotes(visibleNotes)}
       {editNote && <EditDialog note={editNote} />}
       <AddNoteFab />
     </>
