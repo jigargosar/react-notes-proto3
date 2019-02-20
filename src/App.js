@@ -31,7 +31,7 @@ function NoteItem({ note }) {
       >
         {note.content}
       </div>
-      <div>
+      <div className="pv3">
         <button onClick={() => remove(note)}>X</button>
       </div>
     </div>
