@@ -13,6 +13,7 @@ import ClearSelectionIcon from '@material-ui/icons/Clear'
 import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 
 import React from 'react'
+import clsx from 'clsx'
 
 function SyncStatusIcon() {
   const { syncStatus } = useNotes()
@@ -26,9 +27,10 @@ function SyncStatusIcon() {
   //console.log(syncStatus)
 
   const SyncStatusIcon = iconMap[syncStatus] || SettingsIcon
+
   return (
     <SyncStatusIcon
-      className={`spin ${syncStatus === 'syncing' ? '' : 'spin-paused'}  `}
+      className={clsx('spin', { 'spin-paused': syncStatus !== 'syncing' })}
     />
   )
 }
