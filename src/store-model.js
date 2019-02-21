@@ -99,7 +99,6 @@ export const notesModel = {
       R.assoc('editingNoteContent')(note.content),
       R.assoc('isEditNoteDialogOpen')(true),
     ])(state),
-
   updateEditingNoteContent: (state, content) =>
     pipe([R.assoc('editingNoteContent', content)])(state),
   saveEditingNoteDialog: thunk(async (actions, payload, { getState }) => {
