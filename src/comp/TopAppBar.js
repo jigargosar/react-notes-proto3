@@ -14,7 +14,7 @@ import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 
 import React from 'react'
 
-function SyncStatusIcon(props) {
+function SyncStatusIcon() {
   const { syncStatus } = useNotes()
   const iconMap = {
     synced: SyncIcon,
