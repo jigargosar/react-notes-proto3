@@ -153,7 +153,7 @@ export const notesModel = {
   }),
 
   handleSyncUpdate: (state, info) => {
-    //     console.log('handleSyncUpdate', info, sync)
+    console.debug('handleSyncUpdate', info, sync)
     const syncState = sync
       ? {
           push: R.path(['push', 'state'])(sync),
