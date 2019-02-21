@@ -40,7 +40,6 @@ export const EditDialog = enhance(function EditDialog({
           multiline
           value={content}
           onChange={e => setContent(e.target.value)}
-          // className={classes.textField}
           margin="normal"
           fullWidth
           variant="outlined"
