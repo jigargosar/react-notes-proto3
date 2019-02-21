@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react'
-import { ErrorBoundary } from './ErrorBoundary'
+import { ErrorBoundary } from './comp/ErrorBoundary'
 import useHotKeys from 'react-hotkeys-hook'
 import {
   PortalInspector,
   PortalInspectorToolbar,
   PortalInspectState,
-} from './Inspect'
-import { EditDialog } from './EditNoteDialog'
+} from './comp/Inspect'
+import { EditDialog } from './comp/EditNoteDialog'
 import { useNotes, useNotesActions } from './store-model'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { withStyles } from '@material-ui/core/styles'
 // import MenuIcon from '@material-ui/icons/Menu'
 // import More from '@material-ui/icons/MoreVert'
-import { SettingsDialog } from './SettingsDialog'
-import { NoteList } from './NoteList'
-import { TopAppBar } from './TopAppBar'
+import { SettingsDialog } from './comp/SettingsDialog'
+import { NoteList } from './comp/NoteList'
+import { TopAppBar } from './comp/TopAppBar'
 
 function NotesApp() {
   const { remoteUrl, editNote } = useNotes()
