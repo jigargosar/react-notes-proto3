@@ -39,6 +39,10 @@ function SyncStatusIconButton() {
   )
 }
 
+function HeaderIconBtn(props) {
+  return <IconButton color="inherit" {...props} />
+}
+
 export const TopAppBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   menuIcon: { marginLeft: '-0.75rem' },
@@ -58,15 +62,15 @@ export const TopAppBar = withStyles(theme => ({
           </Typography>
           <div className="mh2 ttc">{syncStatus}</div>
           <SyncStatusIconButton />
-          <IconButton color="inherit" onClick={() => selectAll()}>
+          <HeaderIconBtn color="inherit" onClick={() => selectAll()}>
             <SelectAllIcon />
-          </IconButton>
-          <IconButton color="inherit" onClick={() => clearSelection()}>
+          </HeaderIconBtn>
+          <HeaderIconBtn onClick={() => clearSelection()}>
             <ClearSelectionIcon />
-          </IconButton>
-          <IconButton color="inherit" onClick={() => deleteAllSelected()}>
+          </HeaderIconBtn>
+          <HeaderIconBtn onClick={() => deleteAllSelected()}>
             <DeleteAllIcon />
-          </IconButton>
+          </HeaderIconBtn>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
