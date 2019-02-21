@@ -137,7 +137,7 @@ export const notesModel = {
     }
     return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
   }),
-  addNew: thunk(async () => {
+  addNewNote: thunk(async () => {
     const note = createNewNote()
     await db.put(note)
   }),

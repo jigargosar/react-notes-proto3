@@ -25,13 +25,13 @@ const AddNoteFab = withStyles({
     position: 'fixed',
   },
 })(function AddNoteFab({ classes, ...otherProps }) {
-  const { addNew } = useNotesActions()
+  const { addNewNote } = useNotesActions()
   return (
     <Fab
       className={`absolute bottom-1 right-1 ${classes.root}`}
       size="small"
       color="secondary"
-      onClick={() => addNew()}
+      onClick={() => addNewNote()}
       {...otherProps}
     >
       <AddIcon />
