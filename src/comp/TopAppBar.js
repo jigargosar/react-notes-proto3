@@ -19,6 +19,8 @@ import React, { useRef, useState } from 'react'
 import clsx from 'clsx'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 
 function SyncStatusIcon() {
   const { syncStatus } = useNotes()
@@ -81,6 +83,7 @@ function MoreMenu({ classes }) {
       >
         <MoreVertIcon />
       </HeaderIconBtn>
+
       <Menu
         anchorEl={anchorRef.current}
         anchorOrigin={{
@@ -95,17 +98,20 @@ function MoreMenu({ classes }) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleBatchMode}>
-          <div className="flex items-center">
+          <ListItemIcon>
             {isMultiSelectMode ? (
               <CheckBoxOutlineBlankIcon />
             ) : (
               <CheckBoxOutlinedIcon />
             )}
-            <div className="ml1">Select Multiple</div>
-          </div>
+          </ListItemIcon>
+          <ListItemText>Select Multiple</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleSyncSettings}>
-          <div className="ml4">Sync Settings</div>
+          <ListItemIcon>
+            <SyncIcon />
+          </ListItemIcon>
+          <ListItemText>Sync Settings</ListItemText>
         </MenuItem>
       </Menu>
     </>
