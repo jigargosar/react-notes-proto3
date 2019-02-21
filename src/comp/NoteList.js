@@ -22,7 +22,6 @@ const NoteItem = withStyles({
 
   return (
     <ListItem
-      button
       disableGutters={true}
       onClick={() => setNoteSelected({ note, selected: !isSelected })}
       selected={isSelected}
