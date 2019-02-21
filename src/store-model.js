@@ -64,7 +64,6 @@ export const notesModel = {
   }),
   deleteAllSelected: thunk(async (actions, payload, { getState }) => {
     const selectedNotes = getState().notes.selectedNotes
-    debugger
     await Promise.all(selectedNotes.map(actions.removeNote))
     actions.clearSelection()
   }),
