@@ -50,6 +50,8 @@ export const notesModel = {
   visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
   selectionMode: 'single',
+  setNoteSelected: (state, { selected, note }) =>
+    R.assocPath(['selectedIdDict', note._id])(selected)(state),
   selectedIdDict: {},
   selectAll: state => {
     const visibleNoteIds = state.visibleNotes.map(_idProp)
@@ -72,8 +74,6 @@ export const notesModel = {
     actions.clearSelection()
   }),
   clearSelection: R.assoc('selectedIdDict')({}),
-  setNoteSelected: (state, { selected, note }) =>
-    R.assocPath(['selectedIdDict', note._id])(selected)(state),
 
   editingNote: null,
   editingNoteContent: '',
