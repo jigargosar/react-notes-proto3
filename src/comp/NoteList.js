@@ -13,7 +13,7 @@ import { withStyles } from '@material-ui/core/styles'
 const NoteItem = withStyles({
   root: {
     '&$selected, &$selected:hover, &$selected:focus': {
-      backgroundColor: 'yellow',
+      backgroundColor: 'lightyellow',
     },
   },
   selected: {},
