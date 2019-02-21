@@ -74,7 +74,13 @@ export const TopAppBar = withStyles(theme => ({
             Notes
           </Typography>
           <SyncStatusIconButton />
-          <div className="mh2 ttc">{syncStatus}</div>
+          <Typography
+            variant="body2"
+            color="inherit"
+            className={classes.logo}
+          >
+            {syncStatus}
+          </Typography>
           <div className="flex-grow-1" />
           {isAnySelected && (
             <>
