@@ -19,7 +19,10 @@ export const EditNoteDialog = enhance(function EditNoteDialog({
   fullScreen,
   classes,
 }) {
-  const { editingNoteContent } = useNotes()
+  const { editingNoteContent, isEditingNote } = useNotes()
+  if (!isEditingNote) {
+    return false
+  }
   const {
     deleteEditingNote,
     discardEditNoteDialog,
