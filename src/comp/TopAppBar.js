@@ -52,6 +52,8 @@ function HeaderIconBtn(props) {
 export const TopAppBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   menuIcon: { marginLeft: '-0.75rem' },
+  moreButton: { marginRight: '-0.75rem' },
+  logo: { marginRight: '0rem' },
 }))(function TopBar({ classes }) {
   const { syncStatus, selectedNotesCount } = useNotes()
   const isAnySelected = selectedNotesCount > 0
@@ -64,7 +66,11 @@ export const TopAppBar = withStyles(theme => ({
     <>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography variant="h6" color="inherit">
+          <Typography
+            variant="h6"
+            color="inherit"
+            className={classes.logo}
+          >
             Notes
           </Typography>
           <SyncStatusIconButton />
@@ -84,7 +90,7 @@ export const TopAppBar = withStyles(theme => ({
               </HeaderIconBtn>
             </>
           )}
-          <HeaderIconBtn>
+          <HeaderIconBtn className={classes.moreButton}>
             <MoreVertIcon />
           </HeaderIconBtn>
         </Toolbar>
