@@ -199,7 +199,6 @@ export const notesModel = {
   startSync: thunk(async (actions, payload, { getState }) => {
     actions.clearSync()
     const remoteUrl = getState().notes.remoteUrl
-    console.log(`remoteUrl`, remoteUrl)
     if (remoteUrl) {
       try {
         sync = db
