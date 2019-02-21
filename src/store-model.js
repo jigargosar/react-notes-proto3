@@ -54,7 +54,7 @@ export const notesModel = {
   clearSelection: R.assoc('selectedIdDict')({}),
   setNoteSelected: (state, { selected, note }) => {
     if (state.selectionMode === 'single') {
-      return R.assoc('selectedIdDict')({ [note.id]: selected })(state)
+      return R.assoc('selectedIdDict')({ [note._id]: selected })(state)
     } else {
       return R.assocPath(['selectedIdDict', note._id])(selected)(state)
     }
