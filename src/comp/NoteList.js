@@ -25,14 +25,15 @@ const NoteItem = withStyles({
       disableGutters={isMultiSelectMode}
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
+      onClick={() => setNoteSelected({ note, selected: !isSelected })}
     >
       {isMultiSelectMode && (
         <Checkbox
           checked={isSelected}
           tabIndex={-1}
-          onChange={e =>
-            setNoteSelected({ note, selected: e.target.checked })
-          }
+          // onChange={e =>
+          //   setNoteSelected({ note, selected: e.target.checked })
+          // }
         />
       )}
       <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
