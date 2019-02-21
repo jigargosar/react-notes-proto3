@@ -66,11 +66,21 @@ export const notesModel = {
   remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
-  editNote: null,
   isSettingsDialogOpen: false,
   openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
   closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
+
+  editNote: null,
   closeEditDialog: R.assoc('editNote', null),
+  deleteEditingNote: thunk(async (actions, content, { getState }) => {
+    const editNote = getState().notes.editNote
+    await db.put({
+      ...editNote,
+      _deleted: true,
+      modifiedAt: Date.now(),
+    })
+    actions.closeEditDialog()
+  }),
   saveEditingNoteContent: thunk(async (actions, content, { getState }) => {
     const editNote = getState().notes.editNote
     const pdbNote = await db.get(editNote._id)
@@ -92,6 +102,7 @@ export const notesModel = {
     }
     return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
   }),
+
   setRemoteUrl: (state, remoteUrl) => {
     return R.assoc('remoteUrl')(remoteUrl)(state)
   },
