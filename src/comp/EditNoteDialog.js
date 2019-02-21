@@ -20,9 +20,7 @@ export const EditNoteDialog = enhance(function EditNoteDialog({
   classes,
 }) {
   const { editingNoteContent, isEditingNote } = useNotes()
-  if (!isEditingNote) {
-    return false
-  }
+
   const {
     deleteEditingNote,
     discardEditNoteDialog,
@@ -34,14 +32,15 @@ export const EditNoteDialog = enhance(function EditNoteDialog({
   const onSave = () => saveEditingNoteDialog()
 
   const onDelete = () => deleteEditingNote()
+
   return (
-    <Dialog onClose={onClose} open={true} fullScreen={fullScreen}>
+    <Dialog onClose={onClose} open={isEditingNote} fullScreen={fullScreen}>
       <DialogTitle>Edit Note</DialogTitle>
       <DialogContent style={{ minWidth: '400px' }}>
         <TextField
           autoFocus
           multiline
-          value={editingNoteContent}
+          value={editingNoteContent || ''}
           onChange={e => updateEditingNoteContent(e.target.value)}
           margin="normal"
           fullWidth
