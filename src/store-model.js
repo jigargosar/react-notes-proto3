@@ -75,10 +75,18 @@ export const notesModel = {
   setNoteSelected: (state, { selected, note }) =>
     R.assocPath(['selectedIdDict', note._id])(selected)(state),
 
-  remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
+  syncStatus: select(state => {
+    const mapping = {
+      pending: 'synced',
+      stopped: 'problem',
+      active: 'syncing',
+    }
+    return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
+  }),
 
+  remoteUrl: null,
   isSettingsDialogOpen: false,
   openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
   closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
@@ -119,6 +127,7 @@ export const notesModel = {
     })
     actions.discardEditNoteDialog()
   }),
+
   deleteEditingNote: thunk(async (actions, content, { getState }) => {
     const editingNote = getState().notes.editingNote
     await db.put({
@@ -127,15 +136,6 @@ export const notesModel = {
       modifiedAt: Date.now(),
     })
     actions.discardEditNoteDialog()
-  }),
-
-  syncStatus: select(state => {
-    const mapping = {
-      pending: 'synced',
-      stopped: 'problem',
-      active: 'syncing',
-    }
-    return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
   }),
   addNewNote: thunk(async () => {
     const note = createNewNote()
