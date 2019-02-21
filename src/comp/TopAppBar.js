@@ -68,6 +68,7 @@ function MoreMenu({ classes }) {
   }
   const handleBatchMode = () => {
     setSelectionModeMultiple()
+    closeMenu()
   }
   const anchorRef = useRef(null)
   return (
