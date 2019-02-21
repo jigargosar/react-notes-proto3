@@ -52,8 +52,13 @@ export const notesModel = {
   selectionMode: 'single',
   selectedIdDict: {},
   clearSelection: R.assoc('selectedIdDict')({}),
-  setNoteSelected: (state, { selected, note }) =>
-    R.assocPath(['selectedIdDict', note._id])(selected)(state),
+  setNoteSelected: (state, { selected, note }) => {
+    if (state.selectionMode === 'single') {
+      return R.assoc('selectedIdDict')({ [note.id]: selected })(state)
+    } else {
+      return R.assocPath(['selectedIdDict', note._id])(selected)(state)
+    }
+  },
   selectAll: state => {
     const visibleNoteIds = state.visibleNotes.map(_idProp)
     return R.assoc('selectedIdDict')(
