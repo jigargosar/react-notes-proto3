@@ -81,6 +81,14 @@ export const notesModel = {
   setRemoteUrl: (state, remoteUrl) => {
     return R.assoc('remoteUrl')(remoteUrl)(state)
   },
+  discardSettingsDialog: thunk(actions => {
+    actions.closeSettingsDialog()
+  }),
+  saveSettingsDialog: thunk(async (actions, newRemoteUrl) => {
+    actions.closeSettingsDialog()
+    actions.setRemoteUrl(newRemoteUrl)
+    await actions.startSync()
+  }),
 
   editNote: null,
   closeEditDialog: R.assoc('editNote', null),
