@@ -39,7 +39,7 @@ const NoteItem = withStyles({
   )
 })
 export function NoteList() {
-  const { visibleNotes, selectedIdDict, editNote } = useNotes()
+  const { visibleNotes, selectedIdDict, editingNote } = useNotes()
   return (
     <>
       <List>
@@ -54,7 +54,7 @@ export function NoteList() {
           )
         })}
       </List>
-      {editNote && <EditDialog note={editNote} />}
+      {editingNote && <EditDialog note={editingNote} />}
     </>
   )
 }

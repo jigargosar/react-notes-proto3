@@ -92,23 +92,23 @@ export const notesModel = {
     await actions.startSync()
   }),
 
-  editNote: null,
+  editingNote: null,
   editingNoteContent: null,
-  isEditingNote: select(pipe([R.prop('editNote'), isNotNil])),
+  isEditingNote: select(pipe([R.prop('editingNote'), isNotNil])),
   closeEditDialog: R.pipe([
-    R.assoc('editNote', null),
+    R.assoc('editingNote', null),
     R.assoc('editingNoteContent')(null),
   ]),
   openEditNoteDialog: (state, note) =>
     pipe([
-      R.assoc('editNote')(note),
+      R.assoc('editingNote')(note),
       R.assoc('editingNoteContent')(note.content),
     ])(state),
   updateEditingNoteContent: (state, content) =>
     pipe([R.assoc('editingNoteContent', content)])(state),
   saveEditingNoteContent: thunk(async (actions, payload, { getState }) => {
     const notes = getState().notes
-    const note = notes.editNote
+    const note = notes.editingNote
     const content = notes.editingNoteContent
     await db.put({
       ...note,
@@ -118,9 +118,9 @@ export const notesModel = {
     actions.closeEditDialog()
   }),
   deleteEditingNote: thunk(async (actions, content, { getState }) => {
-    const editNote = getState().notes.editNote
+    const editingNote = getState().notes.editingNote
     await db.put({
-      ...editNote,
+      ...editingNote,
       _deleted: true,
       modifiedAt: Date.now(),
     })
