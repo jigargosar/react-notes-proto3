@@ -74,21 +74,6 @@ export const notesModel = {
   setNoteSelected: (state, { selected, note }) =>
     R.assocPath(['selectedIdDict', note._id])(selected)(state),
 
-  isSettingsDialogOpen: false,
-  openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
-  closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
-  setRemoteUrl: (state, remoteUrl) => {
-    return R.assoc('remoteUrl')(remoteUrl)(state)
-  },
-  discardSettingsDialog: thunk(actions => {
-    actions.closeSettingsDialog()
-  }),
-  saveSettingsDialog: thunk(async (actions, newRemoteUrl) => {
-    actions.closeSettingsDialog()
-    actions.setRemoteUrl(newRemoteUrl)
-    await actions.startSync()
-  }),
-
   editingNote: null,
   editingNoteContent: '',
   isEditNoteDialogOpen: false,
@@ -155,6 +140,21 @@ export const notesModel = {
       .on('error', console.error)
     actions.startSync()
     return { changes }
+  }),
+
+  isSettingsDialogOpen: false,
+  openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
+  closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
+  setRemoteUrl: (state, remoteUrl) => {
+    return R.assoc('remoteUrl')(remoteUrl)(state)
+  },
+  discardSettingsDialog: thunk(actions => {
+    actions.closeSettingsDialog()
+  }),
+  saveSettingsDialog: thunk(async (actions, newRemoteUrl) => {
+    actions.closeSettingsDialog()
+    actions.setRemoteUrl(newRemoteUrl)
+    await actions.startSync()
   }),
 
   remoteUrl: null,
