@@ -12,6 +12,7 @@ import SelectAllIcon from '@material-ui/icons/SelectAll'
 import ClearSelectionIcon from '@material-ui/icons/Clear'
 import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
+import CheckIcon from '@material-ui/icons/Check'
 
 import React, { useRef, useState } from 'react'
 import clsx from 'clsx'
@@ -52,10 +53,9 @@ function HeaderIconBtn(props) {
 }
 
 function MoreMenu({ classes }) {
-  const {
-    openSettingsDialog,
-    setSelectionModeMultiple,
-  } = useNotesActions()
+  const { openSettingsDialog, toggleSelectionMode } = useNotesActions()
+  const { isMultiSelectMode } = useNotes()
+
   const [menuOpen, setMenuOpen] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
@@ -67,7 +67,7 @@ function MoreMenu({ classes }) {
     closeMenu()
   }
   const handleBatchMode = () => {
-    setSelectionModeMultiple()
+    toggleSelectionMode()
     closeMenu()
   }
   const anchorRef = useRef(null)
@@ -93,7 +93,12 @@ function MoreMenu({ classes }) {
         open={menuOpen}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleBatchMode}>Batch Mode</MenuItem>
+        <MenuItem onClick={handleBatchMode}>
+          <div className={clsx({ 'o-0': !isMultiSelectMode })}>
+            <CheckIcon />
+          </div>
+          Bulk Mode
+        </MenuItem>
         <MenuItem onClick={handleSyncSettings}>Sync Settings</MenuItem>
       </Menu>
     </>

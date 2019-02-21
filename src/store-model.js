@@ -51,6 +51,12 @@ export const notesModel = {
 
   selectionMode: 'single',
   setSelectionModeMultiple: R.assoc('selectionMode', 'multiple'),
+  toggleSelectionMode: state => {
+    const assocSelectionMode = R.assoc('selectionMode')
+    const newMode =
+      state.selectionMode === 'single' ? 'multiple' : 'single'
+    return assocSelectionMode(newMode)(state)
+  },
   isMultiSelectMode: select(R.propEq('selectionMode')('multiple')),
   selectedIdDict: {},
   clearSelection: R.assoc('selectedIdDict')({}),
