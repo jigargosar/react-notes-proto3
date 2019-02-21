@@ -52,9 +52,17 @@ function HeaderIconBtn(props) {
 }
 
 function MoreMenu({ classes }) {
+  const { openSettingsDialog } = useNotesActions()
   const [menuOpen, setMenuOpen] = useState(false)
-  const handleClose = () => setMenuOpen(false)
+
+  const closeMenu = () => setMenuOpen(false)
+
+  const handleClose = () => closeMenu()
   const handleOpen = () => setMenuOpen(true)
+  const handleSyncSettings = () => {
+    openSettingsDialog()
+    closeMenu()
+  }
   const anchorRef = useRef(null)
   return (
     <>
@@ -78,8 +86,7 @@ function MoreMenu({ classes }) {
         open={menuOpen}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleSyncSettings}>Sync Settings</MenuItem>
       </Menu>
     </>
   )
