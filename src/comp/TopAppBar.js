@@ -100,9 +100,9 @@ function MoreMenu({ classes }) {
         <MenuItem onClick={handleBatchMode}>
           <ListItemIcon>
             {isMultiSelectMode ? (
-              <CheckBoxOutlineBlankIcon />
-            ) : (
               <CheckBoxOutlinedIcon />
+            ) : (
+              <CheckBoxOutlineBlankIcon />
             )}
           </ListItemIcon>
           <ListItemText>Select Multiple</ListItemText>
