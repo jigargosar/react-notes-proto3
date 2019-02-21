@@ -11,6 +11,7 @@ import SyncProblemIcon from '@material-ui/icons/SyncProblem'
 import SelectAllIcon from '@material-ui/icons/SelectAll'
 import ClearSelectionIcon from '@material-ui/icons/Clear'
 import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 import React from 'react'
 import clsx from 'clsx'
@@ -83,6 +84,9 @@ export const TopAppBar = withStyles(theme => ({
               </HeaderIconBtn>
             </>
           )}
+          <HeaderIconBtn>
+            <MoreVertIcon />
+          </HeaderIconBtn>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
