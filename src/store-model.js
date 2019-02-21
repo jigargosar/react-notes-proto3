@@ -129,6 +129,13 @@ export const notesModel = {
     const note = createNewNote()
     await db.put(note)
   }),
+  deleteNotes: thunk(async (actions, notes) => {
+    const bulkNotes = notes.map(
+      R.mergeLeft({ _deleted: true, modifiedAt: Date.now() }),
+    )
+    const bulkRes = await db.bulkDocs(bulkNotes)
+    console.log(bulkRes)
+  }),
   removeNote: thunk(async (actions, note) => {
     await actions.removeNoteId(note._id)
   }),
