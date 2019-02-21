@@ -51,6 +51,7 @@ export const notesModel = {
 
   selectionMode: 'single',
   selectedIdDict: {},
+  clearSelection: R.assoc('selectedIdDict')({}),
   setNoteSelected: (state, { selected, note }) =>
     R.assocPath(['selectedIdDict', note._id])(selected)(state),
   selectAll: state => {
@@ -73,7 +74,6 @@ export const notesModel = {
     await actions.deleteNotes(getState().notes.selectedNotes)
     actions.clearSelection()
   }),
-  clearSelection: R.assoc('selectedIdDict')({}),
 
   editingNote: null,
   editingNoteContent: '',
