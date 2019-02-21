@@ -19,7 +19,6 @@ const NoteItem = withStyles({
   selected: {},
 })(({ note, isSelected, classes }) => {
   const { startEditing, setNoteSelected } = useNotesActions()
-  console.log(`classes.root`, classes.root)
 
   return (
     <ListItem
