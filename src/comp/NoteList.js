@@ -8,9 +8,18 @@ import React from 'react'
 import List from '@material-ui/core/List'
 import Checkbox from '@material-ui/core/Checkbox'
 import { EditDialog } from './EditNoteDialog'
+import { withStyles } from '@material-ui/core/styles'
 
-function NoteItem({ note, isSelected }) {
+const NoteItem = withStyles({
+  root: {
+    '&$selected, &$selected:hover, &$selected:focus': {
+      backgroundColor: 'yellow',
+    },
+  },
+  selected: {},
+})(({ note, isSelected, classes }) => {
   const { startEditing, setNoteSelected } = useNotesActions()
+  console.log(`classes.root`, classes.root)
 
   return (
     <ListItem
@@ -18,6 +27,7 @@ function NoteItem({ note, isSelected }) {
       disableGutters={true}
       onClick={() => setNoteSelected({ note, selected: !isSelected })}
       selected={isSelected}
+      classes={{ root: classes.root, selected: classes.selected }}
     >
       <Checkbox checked={isSelected} tabIndex={-1} disableRipple />
       <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
@@ -28,8 +38,7 @@ function NoteItem({ note, isSelected }) {
       </ListItemSecondaryAction>
     </ListItem>
   )
-}
-
+})
 export function NoteList() {
   const { visibleNotes, selectedIdDict, editNote } = useNotes()
   return (
