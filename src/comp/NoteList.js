@@ -18,7 +18,7 @@ const NoteItem = withStyles({
   },
   selected: {},
 })(({ note, isSelected, classes }) => {
-  const { startEditing, setNoteSelected } = useNotesActions()
+  const { openEditNoteDialog, setNoteSelected } = useNotesActions()
 
   return (
     <ListItem
@@ -31,7 +31,7 @@ const NoteItem = withStyles({
       <Checkbox checked={isSelected} tabIndex={-1} disableRipple />
       <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
       <ListItemSecondaryAction>
-        <IconButton onClick={() => startEditing(note)}>
+        <IconButton onClick={() => openEditNoteDialog(note)}>
           <EditIcon />
         </IconButton>
       </ListItemSecondaryAction>
