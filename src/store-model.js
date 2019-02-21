@@ -53,10 +53,19 @@ export const notesModel = {
       R.zipObj(visibleNoteIds, R.repeat(true)(visibleNoteIds.length)),
     )(state)
   },
-  selectedIds: select(pipe([R.prop('selectedIdDict'), R.keys])),
+  selectedNotes: select(state => {
+    return pipe([
+      R.prop('selectedIdDict'),
+      R.filter(R.identity),
+      R.keys,
+      R.map(R.prop(R.__, state.byId)),
+      R.filter(isNotNil),
+    ])(state)
+  }),
   deleteAllSelected: thunk(async (actions, payload, { getState }) => {
-    const selectedIds = getState().notes.selectedIds
-    await Promise.all(selectedIds.map(actions.removeNoteId))
+    const selectedNotes = getState().notes.selectedNotes
+    debugger
+    await Promise.all(selectedNotes.map(actions.removeNote))
     actions.clearSelection()
   }),
   clearSelection: R.assoc('selectedIdDict')({}),
@@ -112,7 +121,7 @@ export const notesModel = {
     const note = createNewNote()
     await db.put(note)
   }),
-  remove: thunk(async (actions, note) => {
+  removeNote: thunk(async (actions, note) => {
     await actions.removeNoteId(note._id)
   }),
   removeNoteId: thunk(async (actions, noteId) => {
