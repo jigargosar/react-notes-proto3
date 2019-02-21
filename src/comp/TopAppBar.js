@@ -103,7 +103,7 @@ export const TopAppBar = withStyles(theme => ({
   const {
     selectAll,
     clearSelection,
-    deleteAllSelected,
+    deleteSelectedNotes,
   } = useNotesActions()
 
   return (
@@ -135,7 +135,7 @@ export const TopAppBar = withStyles(theme => ({
               <HeaderIconBtn onClick={() => clearSelection()}>
                 <ClearSelectionIcon />
               </HeaderIconBtn>
-              <HeaderIconBtn onClick={() => deleteAllSelected()}>
+              <HeaderIconBtn onClick={() => deleteSelectedNotes()}>
                 <DeleteAllIcon />
               </HeaderIconBtn>
             </>

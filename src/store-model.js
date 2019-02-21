@@ -66,7 +66,7 @@ export const notesModel = {
     ])(state)
   }),
   selectedNotesCount: select(pipe([R.prop('selectedNotes'), R.length])),
-  deleteAllSelected: thunk(async (actions, payload, { getState }) => {
+  deleteSelectedNotes: thunk(async (actions, payload, { getState }) => {
     const selectedNotes = getState().notes.selectedNotes
     await Promise.all(selectedNotes.map(actions.removeNote))
     actions.clearSelection()
