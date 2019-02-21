@@ -95,8 +95,8 @@ export const notesModel = {
   editingNote: null,
   editingNoteContent: null,
   isEditingNote: select(pipe([R.prop('editingNote'), isNotNil])),
-  discardEditNoteDialog: R.pipe([
-    R.assoc('editingNote', null),
+  discardEditNoteDialog: pipe([
+    R.assoc('editingNote')(null),
     R.assoc('editingNoteContent')(null),
   ]),
   openEditNoteDialog: (state, note) =>
@@ -110,11 +110,13 @@ export const notesModel = {
     const notes = getState().notes
     const note = notes.editingNote
     const content = notes.editingNoteContent
+    debugger
     await db.put({
       ...note,
       content,
       modifiedAt: Date.now(),
     })
+    debugger
     actions.discardEditNoteDialog()
   }),
   deleteEditingNote: thunk(async (actions, content, { getState }) => {
