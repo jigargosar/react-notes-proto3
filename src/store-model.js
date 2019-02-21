@@ -91,7 +91,9 @@ export const notesModel = {
     actions.setRemoteUrl(newRemoteUrl)
     await actions.startSync()
   }),
+
   editNote: null,
+  editingNoteContent: null,
   isEditingNote: select(pipe([R.prop('editNote'), isNotNil])),
   closeEditDialog: R.pipe([
     R.assoc('editNote', null),
