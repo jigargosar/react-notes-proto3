@@ -137,7 +137,7 @@ export const notesModel = {
     const update = change.deleted ? omitNote : mergeNote
     return update(state)
   },
-  initFromPouch: thunk(async (actions, payload, { getState }) => {
+  initFromPouch: thunk(async actions => {
     const { rows } = await db.allDocs({
       include_docs: true,
     })
