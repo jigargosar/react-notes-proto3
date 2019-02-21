@@ -62,6 +62,7 @@ export const notesModel = {
       R.filter(isNotNil),
     ])(state)
   }),
+  selectedNotesCount: select(pipe([R.prop('selectedNotes'), R.length])),
   deleteAllSelected: thunk(async (actions, payload, { getState }) => {
     const selectedNotes = getState().notes.selectedNotes
     await Promise.all(selectedNotes.map(actions.removeNote))
@@ -71,6 +72,7 @@ export const notesModel = {
   setNoteSelected: (state, { selected, note }) =>
     R.assocPath(['selectedIdDict', note._id])(selected)(state),
   visibleNotes: select(getVisibleNotes),
+  visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
   remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
