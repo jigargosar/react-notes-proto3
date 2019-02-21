@@ -46,6 +46,9 @@ function setLookupFromDocs(docs) {
 
 export const notesModel = {
   byId: {},
+  visibleNotes: select(getVisibleNotes),
+  visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
+
   selectedIdDict: {},
   selectAll: state => {
     const visibleNoteIds = state.visibleNotes.map(_idProp)
@@ -71,8 +74,7 @@ export const notesModel = {
   clearSelection: R.assoc('selectedIdDict')({}),
   setNoteSelected: (state, { selected, note }) =>
     R.assocPath(['selectedIdDict', note._id])(selected)(state),
-  visibleNotes: select(getVisibleNotes),
-  visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
+
   remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
