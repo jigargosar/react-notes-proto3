@@ -24,9 +24,6 @@ function NoteItem({ note, isSelected }) {
           <EditIcon />
         </IconButton>
       </ListItemSecondaryAction>
-      {/*<div className="pl3 pv3 flex flex-column">*/}
-      {/*  /!*<button onClick={() => remove(note)}>X</button>*!/*/}
-      {/*</div>*/}
     </ListItem>
   )
 }
