@@ -1,12 +1,7 @@
 import React, { useEffect } from 'react'
 import { ErrorBoundary } from './comp/ErrorBoundary'
 import useHotKeys from 'react-hotkeys-hook'
-import {
-  InspectorDialog,
-  PortalInspector,
-  PortalInspectorToolbar,
-  PortalInspectState,
-} from './comp/Inspect'
+import { InspectorDialog } from './comp/Inspect'
 import { EditDialog } from './comp/EditNoteDialog'
 import { useNotes, useNotesActions } from './store-model'
 import Fab from '@material-ui/core/Fab'
@@ -62,9 +57,6 @@ function App({ store }) {
 
   return (
     <ErrorBoundary>
-      <PortalInspectorToolbar />
-      <PortalInspectState />
-      <PortalInspector data={store} name={'store'} />
       <NotesApp />
       <InspectorDialog store={store} />
     </ErrorBoundary>
