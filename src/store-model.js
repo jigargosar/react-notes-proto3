@@ -145,7 +145,7 @@ export const notesModel = {
 
   replaceAll: (state, docs) => setLookupFromDocs(docs)(state),
   handleChange: (state, change) => {
-    console.log(`change`, change)
+    console.debug(`change`, change)
     const note = change.doc
     const mergeNote = R.assocPath(['byId', note._id])(note)
     const omitNote = R.dissocPath(['byId', note._id])
