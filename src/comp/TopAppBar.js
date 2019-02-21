@@ -95,18 +95,18 @@ function MoreMenu({ classes }) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleBatchMode}>
-          <div className="flex">
-            <div>
-              {isMultiSelectMode ? (
-                <CheckBoxOutlineBlankIcon />
-              ) : (
-                <CheckBoxOutlinedIcon />
-              )}
-            </div>
-            <div>Select Multiple</div>
+          <div className="flex items-center">
+            {isMultiSelectMode ? (
+              <CheckBoxOutlineBlankIcon />
+            ) : (
+              <CheckBoxOutlinedIcon />
+            )}
+            <div className="ml1">Select Multiple</div>
           </div>
         </MenuItem>
-        <MenuItem onClick={handleSyncSettings}>Sync Settings</MenuItem>
+        <MenuItem onClick={handleSyncSettings}>
+          <div className="ml4">Sync Settings</div>
+        </MenuItem>
       </Menu>
     </>
   )
