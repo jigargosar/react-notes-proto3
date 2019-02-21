@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { EditDialog } from './EditNoteDialog'
 import { useNotes, useNotesActions } from '../store-model'
 import Fab from '@material-ui/core/Fab'
@@ -11,13 +11,7 @@ import { NoteList } from './NoteList'
 import { TopAppBar } from './TopAppBar'
 
 export function NotesApp() {
-  const { remoteUrl, editNote } = useNotes()
-
-  const { startSync } = useNotesActions()
-
-  useEffect(() => {
-    startSync().catch(console.error)
-  }, [remoteUrl])
+  const { editNote } = useNotes()
 
   return (
     <div className="pb5">

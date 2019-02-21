@@ -144,7 +144,7 @@ export const notesModel = {
     const update = change.deleted ? omitNote : mergeNote
     return update(state)
   },
-  initFromPouch: thunk(async actions => {
+  initPouch: thunk(async actions => {
     const { rows } = await db.allDocs({
       include_docs: true,
     })
@@ -158,6 +158,7 @@ export const notesModel = {
       })
       .on('change', actions.handleChange)
       .on('error', console.error)
+    actions.startSync()
     return { changes }
   }),
 
