@@ -14,7 +14,7 @@ import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 
 import React from 'react'
 
-function SyncStatusIconButton() {
+function SyncStatusIcon(props) {
   const { syncStatus } = useNotes()
   const iconMap = {
     synced: SyncIcon,
@@ -26,15 +26,18 @@ function SyncStatusIconButton() {
   //console.log(syncStatus)
 
   const SyncStatusIcon = iconMap[syncStatus] || SettingsIcon
+  return (
+    <SyncStatusIcon
+      className={`spin ${syncStatus === 'syncing' ? '' : 'spin-paused'}  `}
+    />
+  )
+}
 
+function SyncStatusIconButton() {
   const { openSettingsDialog } = useNotesActions()
   return (
     <IconButton color="inherit" onClick={() => openSettingsDialog()}>
-      <SyncStatusIcon
-        className={`spin ${
-          syncStatus === 'syncing' ? '' : 'spin-paused'
-        }  `}
-      />
+      <SyncStatusIcon />
     </IconButton>
   )
 }
