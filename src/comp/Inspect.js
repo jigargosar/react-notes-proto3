@@ -2,6 +2,7 @@ import { useActions, useStore } from 'easy-peasy'
 import { Portal } from 'react-portal'
 import { Inspector } from 'react-inspector'
 import React from 'react'
+import Dialog from '@material-ui/core/Dialog'
 
 export function PortalInspectState() {
   const { state } = useStore(state => ({
@@ -56,12 +57,31 @@ export function PortalInspectorToolbar() {
   )
 }
 
-export function InspectorDialog(store) {
+export function InspectorDialog({ store }) {
+  const { state } = useStore(state => ({
+    state,
+  }))
+
+  const { visible } = useStore(state => ({
+    visible: state.debug.inspectorVisible,
+  }))
+
+  const hideInspector = useActions(actions => actions.debug.hideInspector)
+
   return (
-    <>
-      <PortalInspectorToolbar />
-      <PortalInspectState />
-      <PortalInspector data={store} name={'store'} />
-    </>
+    <Dialog open={visible} onClose={() => hideInspector()}>
+      <Inspector
+        data={state}
+        name={'state'}
+        expandPaths={[
+          '$',
+          '$.todos',
+          '$.todos.items',
+          '$.notes',
+          '$.notes.visibleNotes',
+        ]}
+      />
+      <Inspector data={store} />
+    </Dialog>
   )
 }
