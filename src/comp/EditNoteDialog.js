@@ -44,7 +44,7 @@ export const EditNoteDialog = enhance(function EditNoteDialog({
         <TextField
           autoFocus
           multiline
-          value={editingNoteContent || ''}
+          value={editingNoteContent}
           onChange={e => updateEditingNoteContent(e.target.value)}
           margin="normal"
           fullWidth

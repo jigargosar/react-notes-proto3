@@ -90,7 +90,7 @@ export const notesModel = {
   }),
 
   editingNote: null,
-  editingNoteContent: null,
+  editingNoteContent: '',
   isEditNoteDialogOpen: false,
   closeEditNoteDialog: pipe([R.assoc('isEditNoteDialogOpen')(false)]),
   openEditNoteDialog: (state, note) =>
