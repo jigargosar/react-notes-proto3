@@ -19,16 +19,6 @@ code {
     monospace;
 }
 
-#portal-inspector {
-  background: #ffffff;
-  border: 1px solid dodgerblue;
-  overflow: scroll;
-  position: absolute;
-  max-height: 100vh;
-  max-width: 100vw;
-  z-index: 1;
-}
-
 // Rubik font family for text input: looks real nice
 
 @keyframes flickerAnimation {
