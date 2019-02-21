@@ -52,7 +52,8 @@ export const TopAppBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   menuIcon: { marginLeft: '-0.75rem' },
 }))(function TopBar({ classes }) {
-  const { syncStatus } = useNotes()
+  const { syncStatus, selectedNotesCount } = useNotes()
+  const isAnySelected = selectedNotesCount > 0
   const {
     selectAll,
     clearSelection,
@@ -62,20 +63,26 @@ export const TopAppBar = withStyles(theme => ({
     <>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography variant="h6" color="inherit" className="flex-grow-1">
+          <Typography variant="h6" color="inherit">
             Notes
           </Typography>
-          <div className="mh2 ttc">{syncStatus}</div>
           <SyncStatusIconButton />
-          <HeaderIconBtn color="inherit" onClick={() => selectAll()}>
-            <SelectAllIcon />
-          </HeaderIconBtn>
-          <HeaderIconBtn onClick={() => clearSelection()}>
-            <ClearSelectionIcon />
-          </HeaderIconBtn>
-          <HeaderIconBtn onClick={() => deleteAllSelected()}>
-            <DeleteAllIcon />
-          </HeaderIconBtn>
+          <div className="mh2 ttc">{syncStatus}</div>
+          <div className="flex-grow-1" />
+          {isAnySelected && (
+            <>
+              <div className="ta-c tc w2 ">{selectedNotesCount}</div>
+              <HeaderIconBtn color="inherit" onClick={() => selectAll()}>
+                <SelectAllIcon />
+              </HeaderIconBtn>
+              <HeaderIconBtn onClick={() => clearSelection()}>
+                <ClearSelectionIcon />
+              </HeaderIconBtn>
+              <HeaderIconBtn onClick={() => deleteAllSelected()}>
+                <DeleteAllIcon />
+              </HeaderIconBtn>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
