@@ -110,13 +110,11 @@ export const notesModel = {
     const notes = getState().notes
     const note = notes.editingNote
     const content = notes.editingNoteContent
-    debugger
     await db.put({
       ...note,
       content,
       modifiedAt: Date.now(),
     })
-    debugger
     actions.discardEditNoteDialog()
   }),
   deleteEditingNote: thunk(async (actions, content, { getState }) => {
