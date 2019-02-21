@@ -17,6 +17,7 @@ function NoteItem({ note, isSelected }) {
       button
       disableGutters={true}
       onClick={() => setNoteSelected({ note, selected: !isSelected })}
+      selected={isSelected}
     >
       <Checkbox checked={isSelected} tabIndex={-1} disableRipple />
       <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
