@@ -135,13 +135,6 @@ export const notesModel = {
     const bulkRes = await db.bulkDocs(bulkNotes)
     console.log(bulkRes)
   }),
-  removeNote: thunk(async (actions, note) => {
-    await actions.removeNoteId(note._id)
-  }),
-  removeNoteId: thunk(async (actions, noteId) => {
-    const note = await db.get(noteId)
-    await db.put({ ...note, _deleted: true, modifiedAt: Date.now() })
-  }),
 
   replaceAll: (state, docs) => setLookupFromDocs(docs)(state),
   handleChange: (state, change) => {
