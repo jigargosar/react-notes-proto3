@@ -52,7 +52,10 @@ function HeaderIconBtn(props) {
 }
 
 function MoreMenu({ classes }) {
-  const { openSettingsDialog } = useNotesActions()
+  const {
+    openSettingsDialog,
+    setSelectionModeMultiple,
+  } = useNotesActions()
   const [menuOpen, setMenuOpen] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
@@ -62,6 +65,9 @@ function MoreMenu({ classes }) {
   const handleSyncSettings = () => {
     openSettingsDialog()
     closeMenu()
+  }
+  const handleBatchMode = () => {
+    setSelectionModeMultiple()
   }
   const anchorRef = useRef(null)
   return (
@@ -86,6 +92,7 @@ function MoreMenu({ classes }) {
         open={menuOpen}
         onClose={handleClose}
       >
+        <MenuItem onClick={handleBatchMode}>Batch Mode</MenuItem>
         <MenuItem onClick={handleSyncSettings}>Sync Settings</MenuItem>
       </Menu>
     </>
