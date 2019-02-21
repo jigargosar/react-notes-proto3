@@ -23,12 +23,12 @@ export const EditNoteDialog = enhance(function EditNoteDialog({
 
   const {
     deleteEditingNote,
-    discardEditNoteDialog,
+    closeEditNoteDialog,
     saveEditingNoteDialog,
     updateEditingNoteContent,
   } = useNotesActions()
 
-  const onClose = () => discardEditNoteDialog()
+  const onClose = () => closeEditNoteDialog()
   const onSave = () => saveEditingNoteDialog()
 
   const onDelete = () => deleteEditingNote()
