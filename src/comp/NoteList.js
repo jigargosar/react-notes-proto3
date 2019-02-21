@@ -23,11 +23,16 @@ const NoteItem = withStyles({
   return (
     <ListItem
       disableGutters={true}
-      onClick={() => setNoteSelected({ note, selected: !isSelected })}
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
     >
-      <Checkbox checked={isSelected} tabIndex={-1} disableRipple />
+      <Checkbox
+        checked={isSelected}
+        tabIndex={-1}
+        onChange={e =>
+          setNoteSelected({ note, selected: e.target.checked })
+        }
+      />
       <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => openEditNoteDialog(note)}>
