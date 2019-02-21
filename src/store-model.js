@@ -106,13 +106,13 @@ export const notesModel = {
     ])(state),
   updateEditingNoteContent: (state, content) =>
     pipe([R.assoc('editingNoteContent', content)])(state),
-  saveEditingNoteContent: thunk(async (actions, content, { getState }) => {
-    const editNote = getState().notes.editNote
-    const pdbNote = await db.get(editNote._id)
+  saveEditingNoteContent: thunk(async (actions, payload, { getState }) => {
+    const notes = getState().notes
+    const note = notes.editNote
+    const content = notes.editingNoteContent
     await db.put({
-      ...pdbNote,
+      ...note,
       content,
-      _rev: editNote._rev,
       modifiedAt: Date.now(),
     })
     actions.closeEditDialog()
