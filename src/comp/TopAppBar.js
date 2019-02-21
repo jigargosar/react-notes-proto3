@@ -51,6 +51,40 @@ function HeaderIconBtn(props) {
   return <IconButton color="inherit" {...props} />
 }
 
+function MoreMenu({ classes }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const handleClose = () => setMenuOpen(false)
+  const handleOpen = () => setMenuOpen(true)
+  const anchorRef = useRef(null)
+  return (
+    <>
+      <HeaderIconBtn
+        buttonRef={anchorRef}
+        className={classes.moreButton}
+        onClick={handleOpen}
+      >
+        <MoreVertIcon />
+      </HeaderIconBtn>
+      <Menu
+        anchorEl={anchorRef.current}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={menuOpen}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleClose}>My account</MenuItem>
+      </Menu>
+    </>
+  )
+}
+
 export const TopAppBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   menuIcon: { marginLeft: '-0.75rem' },
@@ -65,10 +99,6 @@ export const TopAppBar = withStyles(theme => ({
     deleteAllSelected,
   } = useNotesActions()
 
-  const [menuOpen, setMenuOpen] = useState(false)
-  const handleClose = () => setMenuOpen(false)
-  const handleOpen = () => setMenuOpen(true)
-  const anchorRef = useRef(null)
   return (
     <>
       <AppBar position="fixed">
@@ -103,29 +133,7 @@ export const TopAppBar = withStyles(theme => ({
               </HeaderIconBtn>
             </>
           )}
-          <HeaderIconBtn
-            buttonRef={anchorRef}
-            className={classes.moreButton}
-            onClick={handleOpen}
-          >
-            <MoreVertIcon />
-          </HeaderIconBtn>
-          <Menu
-            anchorEl={anchorRef.current}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={menuOpen}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-          </Menu>
+          <MoreMenu classes={classes} />
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
