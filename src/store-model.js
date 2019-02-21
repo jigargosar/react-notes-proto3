@@ -55,9 +55,9 @@ export const notesModel = {
   },
   selectedIds: select(pipe([R.prop('selectedIdDict'), R.keys])),
   deleteAllSelected: thunk(async (actions, payload, { getState }) => {
-    await Promise.all(
-      getState().notes.selectedIds.map(actions.removeNoteId),
-    )
+    const selectedIds = getState().notes.selectedIds
+    await Promise.all(selectedIds.map(actions.removeNoteId))
+    actions.clearSelection()
   }),
   clearSelection: R.assoc('selectedIdDict')({}),
   setNoteSelected: (state, { selected, note }) =>
