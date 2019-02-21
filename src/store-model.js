@@ -50,6 +50,7 @@ export const notesModel = {
   visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
   selectionMode: 'single',
+  setSelectionModeMultiple: R.assoc('selectionMode', 'multiple'),
   selectedIdDict: {},
   clearSelection: R.assoc('selectedIdDict')({}),
   setNoteSelected: (state, { selected, note }) => {
