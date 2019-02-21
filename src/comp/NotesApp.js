@@ -1,6 +1,5 @@
 import React from 'react'
-import { EditDialog } from './EditNoteDialog'
-import { useNotes, useNotesActions } from '../store-model'
+import { useNotesActions } from '../store-model'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import { withStyles } from '@material-ui/core/styles'
@@ -11,13 +10,10 @@ import { NoteList } from './NoteList'
 import { TopAppBar } from './TopAppBar'
 
 export function NotesApp() {
-  const { editNote } = useNotes()
-
   return (
     <div className="pb5">
       <TopAppBar />
       <NoteList />
-      {editNote && <EditDialog note={editNote} />}
       <SettingsDialog />
       <AddNoteFab />
     </div>

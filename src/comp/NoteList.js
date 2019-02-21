@@ -7,6 +7,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
 import List from '@material-ui/core/List'
 import Checkbox from '@material-ui/core/Checkbox'
+import { EditDialog } from './EditNoteDialog'
 
 function NoteItem({ note, isSelected }) {
   const { startEditing, setNoteSelected } = useNotesActions()
@@ -29,19 +30,22 @@ function NoteItem({ note, isSelected }) {
 }
 
 export function NoteList() {
-  const { visibleNotes, selectedIdDict } = useNotes()
+  const { visibleNotes, selectedIdDict, editNote } = useNotes()
   return (
-    <List>
-      {visibleNotes.map(note => {
-        const id = note._id
-        return (
-          <NoteItem
-            key={id}
-            note={note}
-            isSelected={!!selectedIdDict[id]}
-          />
-        )
-      })}
-    </List>
+    <>
+      <List>
+        {visibleNotes.map(note => {
+          const id = note._id
+          return (
+            <NoteItem
+              key={id}
+              note={note}
+              isSelected={!!selectedIdDict[id]}
+            />
+          )
+        })}
+      </List>
+      {editNote && <EditDialog note={editNote} />}
+    </>
   )
 }
