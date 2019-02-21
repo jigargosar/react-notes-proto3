@@ -94,16 +94,17 @@ export const notesModel = {
 
   editNote: null,
   isEditingNote: select(pipe([R.prop('editNote'), isNotNil])),
-  closeEditDialog: R.assoc('editNote', null),
-  deleteEditingNote: thunk(async (actions, content, { getState }) => {
-    const editNote = getState().notes.editNote
-    await db.put({
-      ...editNote,
-      _deleted: true,
-      modifiedAt: Date.now(),
-    })
-    actions.closeEditDialog()
-  }),
+  closeEditDialog: R.pipe([
+    R.assoc('editNote', null),
+    R.assoc('editingNoteContent')(null),
+  ]),
+  openEditNoteDialog: (state, note) =>
+    pipe([
+      R.assoc('editNote')(note),
+      R.assoc('editingNoteContent')(note.content),
+    ])(state),
+  updateEditingNoteContent: (state, content) =>
+    pipe([R.assoc('editingNoteContent', content)])(state),
   saveEditingNoteContent: thunk(async (actions, content, { getState }) => {
     const editNote = getState().notes.editNote
     const pdbNote = await db.get(editNote._id)
@@ -115,13 +116,15 @@ export const notesModel = {
     })
     actions.closeEditDialog()
   }),
-  openEditNoteDialog: (state, note) =>
-    pipe([
-      R.assoc('editNote')(note),
-      R.assoc('editingNoteContent')(note.content),
-    ])(state),
-  updateEditingNoteContent: (state, content) =>
-    pipe([R.assoc('editingNoteContent', content)])(state),
+  deleteEditingNote: thunk(async (actions, content, { getState }) => {
+    const editNote = getState().notes.editNote
+    await db.put({
+      ...editNote,
+      _deleted: true,
+      modifiedAt: Date.now(),
+    })
+    actions.closeEditDialog()
+  }),
 
   syncStatus: select(state => {
     const mapping = {
