@@ -12,7 +12,8 @@ import SelectAllIcon from '@material-ui/icons/SelectAll'
 import ClearSelectionIcon from '@material-ui/icons/Clear'
 import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import CheckIcon from '@material-ui/icons/Check'
+import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined'
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 
 import React, { useRef, useState } from 'react'
 import clsx from 'clsx'
@@ -94,10 +95,16 @@ function MoreMenu({ classes }) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleBatchMode}>
-          <div className={clsx({ 'o-0': !isMultiSelectMode })}>
-            <CheckIcon />
+          <div className="flex">
+            <div>
+              {isMultiSelectMode ? (
+                <CheckBoxOutlineBlankIcon />
+              ) : (
+                <CheckBoxOutlinedIcon />
+              )}
+            </div>
+            <div>Select Multiple</div>
           </div>
-          Bulk Mode
         </MenuItem>
         <MenuItem onClick={handleSyncSettings}>Sync Settings</MenuItem>
       </Menu>
