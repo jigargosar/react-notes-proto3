@@ -19,23 +19,20 @@ const NoteItem = withStyles({
   selected: {},
 })(({ note, isSelected, classes }) => {
   const { openEditNoteDialog, setNoteSelected } = useNotesActions()
-  const { isMultiSelectMode } = useNotes()
+
   return (
     <ListItem
-      disableGutters={isMultiSelectMode}
+      disableGutters={true}
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
-      onClick={() => setNoteSelected({ note, selected: !isSelected })}
     >
-      {isMultiSelectMode && (
-        <Checkbox
-          checked={isSelected}
-          tabIndex={-1}
-          // onChange={e =>
-          //   setNoteSelected({ note, selected: e.target.checked })
-          // }
-        />
-      )}
+      <Checkbox
+        checked={isSelected}
+        tabIndex={-1}
+        onChange={e =>
+          setNoteSelected({ note, selected: e.target.checked })
+        }
+      />
       <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => openEditNoteDialog(note)}>
