@@ -75,18 +75,6 @@ export const notesModel = {
   setNoteSelected: (state, { selected, note }) =>
     R.assocPath(['selectedIdDict', note._id])(selected)(state),
 
-  syncErr: null,
-  syncLastUpdate: null,
-  syncStatus: select(state => {
-    const mapping = {
-      pending: 'synced',
-      stopped: 'problem',
-      active: 'syncing',
-    }
-    return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
-  }),
-
-  remoteUrl: null,
   isSettingsDialogOpen: false,
   openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
   closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
@@ -148,6 +136,7 @@ export const notesModel = {
     const note = await db.get(noteId)
     await db.put({ ...note, _deleted: true, modifiedAt: Date.now() })
   }),
+
   replaceAll: (state, docs) => setLookupFromDocs(docs)(state),
   handleChange: (state, change) => {
     console.log(`change`, change)
@@ -176,6 +165,17 @@ export const notesModel = {
     return { changes }
   }),
 
+  remoteUrl: null,
+  syncErr: null,
+  syncLastUpdate: null,
+  syncStatus: select(state => {
+    const mapping = {
+      pending: 'synced',
+      stopped: 'problem',
+      active: 'syncing',
+    }
+    return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
+  }),
   handleSyncUpdate: (state, info) => {
     console.debug('handleSyncUpdate', info, sync)
     const syncState = sync
