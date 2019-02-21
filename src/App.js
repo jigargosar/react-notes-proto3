@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { ErrorBoundary } from './comp/ErrorBoundary'
 import useHotKeys from 'react-hotkeys-hook'
 import {
+  InspectorDialog,
   PortalInspector,
   PortalInspectorToolbar,
   PortalInspectState,
@@ -65,6 +66,7 @@ function App({ store }) {
       <PortalInspectState />
       <PortalInspector data={store} name={'store'} />
       <NotesApp />
+      <InspectorDialog store={store} />
     </ErrorBoundary>
   )
 }

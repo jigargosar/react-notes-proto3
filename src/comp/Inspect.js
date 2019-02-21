@@ -55,3 +55,13 @@ export function PortalInspectorToolbar() {
     )
   )
 }
+
+export function InspectorDialog(store) {
+  return (
+    <>
+      <PortalInspectorToolbar />
+      <PortalInspectState />
+      <PortalInspector data={store} name={'store'} />
+    </>
+  )
+}
