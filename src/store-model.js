@@ -115,7 +115,6 @@ export const notesModel = {
     })
     actions.discardEditNoteDialog()
   }),
-
   deleteEditingNote: thunk(async (actions, content, { getState }) => {
     const editingNote = getState().notes.editingNote
     await db.put({
@@ -125,6 +124,7 @@ export const notesModel = {
     })
     actions.discardEditNoteDialog()
   }),
+
   addNewNote: thunk(async () => {
     const note = createNewNote()
     await db.put(note)
