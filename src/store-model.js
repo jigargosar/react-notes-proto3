@@ -51,12 +51,13 @@ export const notesModel = {
 
   selectionMode: 'single',
   setSelectionModeMultiple: R.assoc('selectionMode', 'multiple'),
+  isMultiSelectMode: R.propEq('multiple')('selectionMode'),
   selectedIdDict: {},
   clearSelection: R.assoc('selectedIdDict')({}),
   setNoteSelected: (state, { selected, note }) => {
     if (state.selectionMode === 'single') {
       return R.assoc('selectedIdDict')({ [note._id]: selected })(state)
-    } else {
+    } else if (state.selectionMode === 'multiple') {
       return R.assocPath(['selectedIdDict', note._id])(selected)(state)
     }
   },

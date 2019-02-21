@@ -106,8 +106,7 @@ export const TopAppBar = withStyles(theme => ({
   moreButton: { marginRight: '-0.75rem' },
   logo: { marginRight: '0rem' },
 }))(function TopBar({ classes }) {
-  const { syncStatus, selectedNotesCount } = useNotes()
-  const isAnySelected = selectedNotesCount > 0
+  const { syncStatus, selectedNotesCount, isMultiSelectMode } = useNotes()
   const {
     selectAll,
     clearSelection,
@@ -134,7 +133,7 @@ export const TopAppBar = withStyles(theme => ({
             {syncStatus}
           </Typography>
           <div className="flex-grow-1" />
-          {isAnySelected && (
+          {isMultiSelectMode && (
             <>
               <div className="ta-c tc w2 ">{selectedNotesCount}</div>
               <HeaderIconBtn color="inherit" onClick={() => selectAll()}>
