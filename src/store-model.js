@@ -49,6 +49,7 @@ export const notesModel = {
   visibleNotes: select(getVisibleNotes),
   visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
+  selectionMode: 'single',
   selectedIdDict: {},
   selectAll: state => {
     const visibleNoteIds = state.visibleNotes.map(_idProp)
