@@ -74,9 +74,13 @@ export const notesModel = {
   remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
+
   isSettingsDialogOpen: false,
   openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
   closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
+  setRemoteUrl: (state, remoteUrl) => {
+    return R.assoc('remoteUrl')(remoteUrl)(state)
+  },
 
   editNote: null,
   closeEditDialog: R.assoc('editNote', null),
@@ -102,6 +106,7 @@ export const notesModel = {
   }),
   isEditingNote: select(pipe([R.prop('editNote'), isNotNil])),
   startEditing: (state, note) => pipe([R.assoc('editNote')(note)])(state),
+
   syncStatus: select(state => {
     const mapping = {
       pending: 'synced',
@@ -110,10 +115,6 @@ export const notesModel = {
     }
     return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
   }),
-
-  setRemoteUrl: (state, remoteUrl) => {
-    return R.assoc('remoteUrl')(remoteUrl)(state)
-  },
   addNew: thunk(async () => {
     const note = createNewNote()
     await db.put(note)
