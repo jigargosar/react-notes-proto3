@@ -95,7 +95,7 @@ export const notesModel = {
   editingNote: null,
   editingNoteContent: null,
   isEditingNote: select(pipe([R.prop('editingNote'), isNotNil])),
-  closeEditDialog: R.pipe([
+  discardEditNoteDialog: R.pipe([
     R.assoc('editingNote', null),
     R.assoc('editingNoteContent')(null),
   ]),
@@ -106,7 +106,7 @@ export const notesModel = {
     ])(state),
   updateEditingNoteContent: (state, content) =>
     pipe([R.assoc('editingNoteContent', content)])(state),
-  saveEditingNoteContent: thunk(async (actions, payload, { getState }) => {
+  saveEditingNoteDialog: thunk(async (actions, payload, { getState }) => {
     const notes = getState().notes
     const note = notes.editingNote
     const content = notes.editingNoteContent
@@ -115,7 +115,7 @@ export const notesModel = {
       content,
       modifiedAt: Date.now(),
     })
-    actions.closeEditDialog()
+    actions.discardEditNoteDialog()
   }),
   deleteEditingNote: thunk(async (actions, content, { getState }) => {
     const editingNote = getState().notes.editingNote
@@ -124,7 +124,7 @@ export const notesModel = {
       _deleted: true,
       modifiedAt: Date.now(),
     })
-    actions.closeEditDialog()
+    actions.discardEditNoteDialog()
   }),
 
   syncStatus: select(state => {

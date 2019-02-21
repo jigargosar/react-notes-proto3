@@ -7,7 +7,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
 import List from '@material-ui/core/List'
 import Checkbox from '@material-ui/core/Checkbox'
-import { EditDialog } from './EditNoteDialog'
+import { EditNoteDialog } from './EditNoteDialog'
 import { withStyles } from '@material-ui/core/styles'
 
 const NoteItem = withStyles({
@@ -54,7 +54,7 @@ export function NoteList() {
           )
         })}
       </List>
-      {editingNote && <EditDialog note={editingNote} />}
+      {editingNote && <EditNoteDialog note={editingNote} />}
     </>
   )
 }
