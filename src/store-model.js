@@ -91,7 +91,7 @@ export const notesModel = {
 
   editingNote: null,
   editingNoteContent: null,
-  isEditingNote: select(pipe([R.prop('editingNote'), isNotNil])),
+  isEditNoteDialogOpen: select(pipe([R.prop('editingNote'), isNotNil])),
   discardEditNoteDialog: pipe([
     R.assoc('editingNote')(null),
     R.assoc('editingNoteContent')(null),

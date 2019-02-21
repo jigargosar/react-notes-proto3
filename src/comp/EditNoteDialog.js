@@ -19,7 +19,7 @@ export const EditNoteDialog = enhance(function EditNoteDialog({
   fullScreen,
   classes,
 }) {
-  const { editingNoteContent, isEditingNote } = useNotes()
+  const { editingNoteContent, isEditNoteDialogOpen } = useNotes()
 
   const {
     deleteEditingNote,
@@ -34,7 +34,11 @@ export const EditNoteDialog = enhance(function EditNoteDialog({
   const onDelete = () => deleteEditingNote()
 
   return (
-    <Dialog onClose={onClose} open={isEditingNote} fullScreen={fullScreen}>
+    <Dialog
+      onClose={onClose}
+      open={isEditNoteDialogOpen}
+      fullScreen={fullScreen}
+    >
       <DialogTitle>Edit Note</DialogTitle>
       <DialogContent style={{ minWidth: '400px' }}>
         <TextField
