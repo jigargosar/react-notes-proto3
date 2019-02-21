@@ -13,8 +13,10 @@ import ClearSelectionIcon from '@material-ui/icons/Clear'
 import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import clsx from 'clsx'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 function SyncStatusIcon() {
   const { syncStatus } = useNotes()
@@ -62,6 +64,11 @@ export const TopAppBar = withStyles(theme => ({
     clearSelection,
     deleteAllSelected,
   } = useNotesActions()
+
+  const [menuOpen, setMenuOpen] = useState(false)
+  const handleClose = () => setMenuOpen(false)
+  const handleOpen = () => setMenuOpen(true)
+  const anchorRef = useRef(null)
   return (
     <>
       <AppBar position="fixed">
@@ -96,9 +103,29 @@ export const TopAppBar = withStyles(theme => ({
               </HeaderIconBtn>
             </>
           )}
-          <HeaderIconBtn className={classes.moreButton}>
+          <HeaderIconBtn
+            buttonRef={anchorRef}
+            className={classes.moreButton}
+            onClick={handleOpen}
+          >
             <MoreVertIcon />
           </HeaderIconBtn>
+          <Menu
+            anchorEl={anchorRef.current}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={menuOpen}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
