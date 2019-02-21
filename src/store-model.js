@@ -114,7 +114,7 @@ export const notesModel = {
   setRemoteUrl: (state, remoteUrl) => {
     return R.assoc('remoteUrl')(remoteUrl)(state)
   },
-  addNew: thunk(async (actions, payload) => {
+  addNew: thunk(async () => {
     const note = createNewNote()
     await db.put(note)
   }),
