@@ -21,21 +21,16 @@ export const EditDialog = enhance(function EditDialog({
   classes,
 }) {
   const {
-    remove,
+    deleteEditingNote,
     closeEditDialog,
     saveEditingNoteContent,
   } = useNotesActions()
 
   const [content, setContent] = useState(() => note.content)
   const onClose = () => closeEditDialog()
-  const onSave = () => {
-    saveEditingNoteContent(content)
-  }
+  const onSave = () => saveEditingNoteContent(content)
 
-  const onDelete = () => {
-    remove(note)
-    onClose()
-  }
+  const onDelete = () => deleteEditingNote()
   return (
     <Dialog onClose={onClose} open={true} fullScreen={fullScreen}>
       <DialogTitle>Edit Note</DialogTitle>
