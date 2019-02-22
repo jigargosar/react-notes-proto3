@@ -52,22 +52,21 @@ const NoteItem = withStyles({
   },
   selected: {},
 })(({ note, isSelected, classes }) => {
-  const { isSingleSelectMode, isMultiSelectMode } = useNotes()
+  const { isMultiSelectMode } = useNotes()
   const { openEditNoteDialog, setNoteSelected } = useNotesActions()
 
+  const handleClick = isMultiSelectMode
+    ? () =>
+        setNoteSelected({
+          note,
+          selected: !isSelected,
+        })
+    : null
   return (
     <ListItem
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
-      onClick={
-        isMultiSelectMode
-          ? () =>
-              setNoteSelected({
-                note,
-                selected: isSingleSelectMode ? true : !isSelected,
-              })
-          : null
-      }
+      onClick={handleClick}
       // dense={true}
     >
       <NoteAvatar note={note} isSelected={isSelected} />
