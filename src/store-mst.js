@@ -1,7 +1,7 @@
 import {
   addDisposer,
-  applySnapshot as ap,
-  getSnapshot as snap,
+  applySnapshot,
+  getSnapshot,
   types as t,
 } from 'mobx-state-tree'
 import faker from 'faker'
@@ -10,7 +10,7 @@ import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
 import idx from 'idx.macro'
-import { autorun as ar } from 'mobx'
+import { autorun } from 'mobx'
 import { setCache } from './dom-helpers'
 
 const db = new PouchDB('notes-pdb')
@@ -58,17 +58,20 @@ const RootStore = t
   }))
   .views(s => ({
     get snap() {
-      return snap(s)
+      return getSnapshot(s)
     },
   }))
   .actions(s => ({
-    autoD(d) {
+    addDisposer(d) {
       return addDisposer(s, d)
     },
   }))
   .actions(s => ({
-    ar(...a) {
-      return s.autoD(ar(...a))
+    ar(a, b) {
+      return addDisposer(s, autorun(a, b))
+    },
+    ap(snap) {
+      return applySnapshot(s, snap)
     },
   }))
   .actions(s => ({
@@ -89,13 +92,13 @@ export { rs }
 
 if (module.hot) {
   try {
-    ap(rs, idx(module, _ => _.hot.data.snap) || dSnap)
+    rs.ap(idx(module, _ => _.hot.data.snap) || dSnap)
   } catch (e) {
     debugger
   }
   module.hot.dispose(data => {
     try {
-      data.snap = snap(rs)
+      data.snap = rs.snap
     } catch (e) {
       debugger
     }
