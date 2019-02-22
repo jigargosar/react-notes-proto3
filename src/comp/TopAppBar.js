@@ -9,7 +9,7 @@ import SyncIcon from '@material-ui/icons/Sync'
 import SyncDisabledIcon from '@material-ui/icons/SyncDisabled'
 import SyncProblemIcon from '@material-ui/icons/SyncProblem'
 import SelectAllIcon from '@material-ui/icons/SelectAll'
-import ClearSelectionIcon from '@material-ui/icons/Clear'
+import SelectOffIcon from 'mdi-material-ui/SelectOff'
 import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined'
@@ -147,7 +147,7 @@ export const TopAppBar = withStyles(theme => ({
                 <SelectAllIcon />
               </HeaderIconBtn>
               <HeaderIconBtn onClick={() => clearSelection()}>
-                <ClearSelectionIcon />
+                <SelectOffIcon />
               </HeaderIconBtn>
               <HeaderIconBtn onClick={() => deleteSelectedNotes()}>
                 <DeleteAllIcon />
