@@ -62,7 +62,7 @@ const RootStore = t
     _updateMsgTmp() {
       s.msg = faker.name.lastName()
     },
-    initFromLS() {
+    initCache() {
       try {
         s.applySnap(getCached('rs'))
       } catch (e) {
@@ -75,13 +75,30 @@ const RootStore = t
   .actions(s => {
     return {
       afterCreate() {
-        return s.initFromLS()
+        return s.initCache()
       },
 
       async onAddNewNoteClicked() {
         const note = createNewNote()
         await db.put(note)
         s._updateMsgTmp()
+      },
+      async initPouch() {
+        const { rows } = await db.allDocs({
+          include_docs: true,
+        })
+        const docs = rows.map(R.prop('doc'))
+        console.log(`docs`, docs)
+        // actions.replaceAll(docs)
+        // const changes = db
+        //   .changes({
+        //     include_docs: true,
+        //     live: true,
+        //     since: 'now',
+        //   })
+        //   .on('change', actions.handleChange)
+        //   .on('error', console.error)
+        // actions.startSync()
       },
     }
   })
