@@ -24,7 +24,11 @@ function noteAvatarText(note) {
   return pipe([R.trim, R.take(2)])(note.content)
 }
 
-function NoteAvatar({ note, isSelected, ...otherProps }) {
+const NoteAvatar = mc(function NoteAvatar({
+  note,
+  isSelected,
+  ...otherProps
+}) {
   const { isMultiSelectMode } = useNotes()
   const isSelectedInMultiSelectMode = isSelected && isMultiSelectMode
 
@@ -46,9 +50,9 @@ function NoteAvatar({ note, isSelected, ...otherProps }) {
       {avatarContent}
     </Avatar>
   )
-}
+})
 
-const NoteItem = ({ note, isSelected }) => {
+const NoteItem = mc(function NoteItem({ note, isSelected }) {
   const { isMultiSelectMode } = useNotes()
 
   const {
@@ -69,6 +73,7 @@ const NoteItem = ({ note, isSelected }) => {
     e.preventDefault()
     toggleNoteMultiSelection(note)
   }
+
   return (
     <ListItem selected={isSelected} onClick={handleClick}>
       <ListItemAvatar>
@@ -89,8 +94,7 @@ const NoteItem = ({ note, isSelected }) => {
       </ListItemSecondaryAction>
     </ListItem>
   )
-}
-
+})
 export const NoteList = mc(function NoteList() {
   const { visibleNotes, selectedIdDict } = useNotes()
   return (
