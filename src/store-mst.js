@@ -6,11 +6,11 @@ import {
   types as t,
 } from 'mobx-state-tree'
 import faker from 'faker'
-import { dotPath, pipe } from './ramda-helpers'
+import { dotPath, objFromList, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
-import { autorun } from 'mobx'
+import { autorun, values } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
 
@@ -40,9 +40,21 @@ const Note = t
     },
   }))
 
-const NotesStore = t.model('NotesStore', {
-  byId: t.map(Note),
-})
+const NotesStore = t
+  .model('NotesStore', {
+    byId: t.map(Note),
+  })
+  .views(s => ({
+    get all() {
+      return values(s.byId)
+    },
+  }))
+  .actions(s => ({
+    replaceAll(docs) {
+      validate('A', arguments)
+      s.byId.replace(pouchDocsToIdLookup(docs))
+    },
+  }))
 
 const RootStore = t
   .model('RootStore', {
@@ -52,6 +64,7 @@ const RootStore = t
   .views(s => ({
     get visNotes() {
       return pipe([
+        R.prop('notes'),
         R.prop('byId'),
         R.values,
         R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
@@ -90,7 +103,7 @@ const RootStore = t
         })
         const docs = rows.map(R.prop('doc'))
         console.log(`docs`, docs)
-        // actions.replaceAll(docs)
+        s.notes.replaceAll(docs)
         // const changes = db
         //   .changes({
         //     include_docs: true,
@@ -110,6 +123,13 @@ const rs = RootStore.create()
 rs.initPouch().catch(console.error)
 
 export { rs }
+
+// Helpers
+
+function pouchDocsToIdLookup(docs) {
+  validate('A', arguments)
+  return objFromList(R.prop('_id'))(docs)
+}
 
 // BOILER PLATE
 
