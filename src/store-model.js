@@ -9,7 +9,7 @@ import {
 import validate from 'aproba'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { select, thunk, useActions, useStore } from 'easy-peasy'
+import { listen, select, thunk, useActions, useStore } from 'easy-peasy'
 import PouchDB from 'pouchdb-browser'
 
 const db = new PouchDB('notes-pdb')
@@ -50,6 +50,7 @@ export const notesModel = {
   visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
   selectionMode: 'single',
+  setSelectionModeSingle: R.assoc('selectionMode', 'single'),
   setSelectionModeMultiple: R.assoc('selectionMode', 'multiple'),
   toggleSelectionMode: state => {
     const assocSelectionMode = R.assoc('selectionMode')
@@ -65,13 +66,21 @@ export const notesModel = {
     R.assoc('selectionMode', 'single'),
   ]),
   setNoteSelected: (state, { selected, note }) => {
-    console.log(state.selectedNotesCount)
     if (state.selectionMode === 'single') {
       return R.assoc('selectedIdDict')({ [note._id]: selected })(state)
     } else if (state.selectionMode === 'multiple') {
       return R.assocPath(['selectedIdDict', note._id])(selected)(state)
     }
   },
+  listenOnSelectionChange: listen(on => {
+    on(notesModel.setNoteSelected, (actions, payload, { getState }) => {
+      const selectedNotesCount = getState().notes.selectedNotesCount
+      console.log(`selectedNotesCount`, selectedNotesCount)
+      if (selectedNotesCount === 0) {
+        actions.setSelectionModeSingle()
+      }
+    })
+  }),
   selectAll: state => {
     const visibleNoteIds = state.visibleNotes.map(_idProp)
     return R.assoc('selectedIdDict')(
