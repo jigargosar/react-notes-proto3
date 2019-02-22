@@ -22,8 +22,12 @@ const NoteItem = withStyles({
   },
   selected: {},
 })(({ note, isSelected, classes }) => {
-  const { openEditNoteDialog, setNoteSelected } = useNotesActions()
   const { isSingleSelectMode } = useNotes()
+  const {
+    openEditNoteDialog,
+    setNoteSelected,
+    setSelectionModeMultiple,
+  } = useNotesActions()
   const avatarContent = pipe([R.trim, R.take(2)])(note.content)
 
   return (
@@ -34,7 +38,7 @@ const NoteItem = withStyles({
       onClick={() => setNoteSelected({ note, selected: true })}
     >
       {isSingleSelectMode ? (
-        <ListItemAvatar>
+        <ListItemAvatar onClick={e => setSelectionModeMultiple()}>
           <Avatar style={toMaterialStyle(note._id)}>
             {avatarContent}
           </Avatar>
