@@ -6,7 +6,6 @@ import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
 import List from '@material-ui/core/List'
-// import Checkbox from '@material-ui/core/Checkbox'
 import CheckIcon from '@material-ui/icons/Check'
 import { EditNoteDialog } from './EditNoteDialog'
 import { withStyles } from '@material-ui/core/styles'
@@ -38,7 +37,6 @@ const NoteItem = withStyles({
   }
   return (
     <ListItem
-      // disableGutters={!isSingleSelectMode}
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
       onClick={() =>
@@ -69,20 +67,9 @@ const NoteItem = withStyles({
           >
             {isSelected ? <CheckIcon /> : avatarContent}
           </Avatar>
-          // <Checkbox
-          //   checked={isSelected}
-          //   tabIndex={-1}
-          //   onChange={e =>
-          //     setNoteSelected({ note, selected: e.target.checked })
-          //   }
-          // />
         )}
       </ListItemAvatar>
-      <ListItemText
-      // style={{ padding: 0 }}
-      >
-        {note.content}
-      </ListItemText>
+      <ListItemText>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => openEditNoteDialog(note)}>
           <EditIcon />
