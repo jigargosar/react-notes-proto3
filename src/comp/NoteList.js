@@ -20,7 +20,6 @@ import { Fab } from '@material-ui/core'
 
 function noteAvatarText(note) {
   validate('O', arguments)
-
   return pipe([R.trim, R.take(2)])(note.content)
 }
 
