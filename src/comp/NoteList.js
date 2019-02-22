@@ -39,9 +39,9 @@ function NoteAvatar({ note, isSelected, ...otherProps }) {
     : toMaterialStyle(note._id)
 
   return (
-    <ListItemAvatar style={style} {...otherProps}>
-      <Avatar>{avatarContent}</Avatar>
-    </ListItemAvatar>
+    <Avatar style={style} {...otherProps}>
+      {avatarContent}
+    </Avatar>
   )
 }
 
@@ -68,11 +68,13 @@ const NoteItem = ({ note, isSelected }) => {
   }
   return (
     <ListItem selected={isSelected} onClick={handleClick}>
-      <NoteAvatar
-        note={note}
-        isSelected={isSelected}
-        onClick={handleAvatarClick}
-      />
+      <ListItemAvatar>
+        <NoteAvatar
+          note={note}
+          isSelected={isSelected}
+          onClick={handleAvatarClick}
+        />
+      </ListItemAvatar>
       <ListItemText>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton
