@@ -102,6 +102,9 @@ export const NoteList = mc(function NoteList() {
         <div className="flex-grow-1">{rs.msg}</div>
         <Fab onClick={rs.onAddNewNoteClicked}>AN</Fab>
       </div>
+      {rs.visNotes.map(n => (
+        <div key={n.id} className="" />
+      ))}
       <List>
         {visibleNotes.map(note => {
           const id = note._id

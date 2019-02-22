@@ -25,13 +25,19 @@ function createNewNote() {
   }
 }
 
-const Note = t.model('Note', {
-  _id: t.identifier,
-  _rev: t.maybeNull(t.string),
-  content: t.string,
-  createdAt: t.integer,
-  modifiedAt: t.integer,
-})
+const Note = t
+  .model('Note', {
+    _id: t.identifier,
+    _rev: t.maybeNull(t.string),
+    content: t.string,
+    createdAt: t.integer,
+    modifiedAt: t.integer,
+  })
+  .views(s => ({
+    get id() {
+      return s._id
+    },
+  }))
 
 const NotesStore = t.model('NotesStore', {
   byId: t.map(Note),
@@ -43,7 +49,7 @@ const RootStore = t
     msg: t.optional(t.string, () => 'HW RS'),
   })
   .views(s => ({
-    get vn() {
+    get visNotes() {
       return pipe([
         R.prop('byId'),
         R.values,
