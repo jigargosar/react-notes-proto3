@@ -49,8 +49,8 @@ function toggleNoteSelection(note) {
   return overProp('selectedIdDict')(toggleProp(note._id))
 }
 
-const turnOffMultiSelectMode = R.assoc('isMultiSelectMode')(false)
-const turnOnMultiSelectMode = R.assoc('isMultiSelectMode')(true)
+// const turnOffMultiSelectMode = R.assoc('isMultiSelectMode')(false)
+// const turnOnMultiSelectMode = R.assoc('isMultiSelectMode')(true)
 const clearSelectIdDict = R.assoc('selectedIdDict')({})
 
 export const notesModel = {
@@ -58,20 +58,19 @@ export const notesModel = {
   visibleNotes: select(getVisibleNotes),
   visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
-  isMultiSelectMode: false,
+  isMultiSelectMode: select(
+    R.propSatisfies(R.gt(R.__, 0))('selectedNotesCount'),
+  ),
+
   selectedIdDict: {},
-  clearSelection: pipe([clearSelectIdDict, turnOffMultiSelectMode]),
+  clearSelection: clearSelectIdDict,
   toggleNoteMultiSelection: (state, note) => {
     const isMultiSelectMode = state.isMultiSelectMode
 
     if (isMultiSelectMode) {
       return toggleNoteSelection(note)(state)
     } else {
-      return pipe([
-        turnOnMultiSelectMode,
-        clearSelectIdDict,
-        toggleNoteSelection(note),
-      ])(state)
+      return pipe([toggleNoteSelection(note)])(state)
     }
   },
   listenOnToggleMultiSelection: listen(on => {
@@ -95,7 +94,6 @@ export const notesModel = {
       debugger
     }
     return pipe([
-      R.tap(console.log),
       R.prop('selectedIdDict'),
       R.filter(R.identity),
       R.keys,
