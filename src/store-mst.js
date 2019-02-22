@@ -16,6 +16,8 @@ const Note = t.model('Note', {
   _id: t.identifier,
   _rev: t.maybeNull(t.string),
   content: t.string,
+  createdAt: t.integer,
+  modifiedAt: t.integer,
 })
 
 function createNewNote() {
