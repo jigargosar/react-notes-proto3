@@ -22,6 +22,6 @@ export { App }
 
 if (module.hot) {
   module.hot.dispose(() => {
-    // console.clear()
+    console.clear()
   })
 }
