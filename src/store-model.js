@@ -62,9 +62,6 @@ export const notesModel = {
     )(state)
   },
   selectedNotes: select(state => {
-    if (R.is(Function)(state)) {
-      debugger
-    }
     return pipe([
       R.prop('selectedIdDict'),
       R.filter(R.identity),
