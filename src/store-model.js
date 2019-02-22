@@ -68,6 +68,18 @@ export const notesModel = {
       return R.assocPath(['selectedIdDict', note._id])(selected)(state)
     }
   },
+  toggleNoteSelection: (state, note) => {
+    const wasNoteSelected = !!state.selectedIdDict[note._id]
+    if (state.selectionMode === 'single') {
+      return R.assoc('selectedIdDict')({
+        [note._id]: !wasNoteSelected,
+      })(state)
+    } else if (state.selectionMode === 'multiple') {
+      return R.assocPath(['selectedIdDict', note._id])(!wasNoteSelected)(
+        state,
+      )
+    }
+  },
   listenOnSelectionChange: listen(on => {
     on(notesModel.setNoteSelected, (actions, payload, { getState }) => {
       const selectedNotesCount = getState().notes.selectedNotesCount
