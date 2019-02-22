@@ -15,14 +15,6 @@ import validate from 'aproba'
 
 const db = new PouchDB('notes-pdb')
 
-const Note = t.model('Note', {
-  _id: t.identifier,
-  _rev: t.maybeNull(t.string),
-  content: t.string,
-  createdAt: t.integer,
-  modifiedAt: t.integer,
-})
-
 function createNewNote() {
   return {
     _id: `m_${nanoid()}`,
@@ -32,6 +24,14 @@ function createNewNote() {
     modifiedAt: Date.now(),
   }
 }
+
+const Note = t.model('Note', {
+  _id: t.identifier,
+  _rev: t.maybeNull(t.string),
+  content: t.string,
+  createdAt: t.integer,
+  modifiedAt: t.integer,
+})
 
 const NotesStore = t.model('NotesStore', {
   byId: t.map(Note),
