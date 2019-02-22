@@ -54,13 +54,13 @@ const NotesStore = t
       validate('A', arguments)
       s.byId.replace(pouchDocsToIdLookup(docs))
     },
-    put(note) {
+    put(doc) {
       validate('O', arguments)
-      s.byId.put(note)
+      s.byId.put(Note.create(doc))
     },
-    remove(note) {
+    remove(doc) {
       validate('O', arguments)
-      s.byId.delete(note.id)
+      s.byId.delete(Note.create(doc).id)
     },
   }))
 
