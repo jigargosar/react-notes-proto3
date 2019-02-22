@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Dialog from '@material-ui/core/Dialog'
-import { withStyles } from '@material-ui/core/styles'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import TextField from '@material-ui/core/TextField'
@@ -10,14 +9,10 @@ import withMobileDialog from '@material-ui/core/withMobileDialog'
 import { useNotes, useNotesActions } from '../store-model'
 import { pipe } from '../ramda-helpers'
 
-const enhance = pipe([
-  withMobileDialog({ breakpoint: 'xs' }),
-  withStyles({ dialogActions: { justifyContent: 'flex-start' } }),
-])
+const enhance = pipe([withMobileDialog({ breakpoint: 'xs' })])
 
 export const SettingsDialog = enhance(function SettingsDialog({
   fullScreen,
-  classes,
 }) {
   const { setRemoteUrl, closeSettingsDialog: close } = useNotesActions()
 
@@ -54,10 +49,7 @@ export const SettingsDialog = enhance(function SettingsDialog({
           // variant="outlined"
         />
       </DialogContent>
-      <DialogActions
-        className="flex flex-row-reverse justify-start"
-        classes={{ root: classes.dialogActions }}
-      >
+      <DialogActions className="flex flex-row-reverse justify-start">
         <Button onClick={onSave} color="primary">
           Save
         </Button>

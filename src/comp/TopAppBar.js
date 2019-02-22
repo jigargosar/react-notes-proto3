@@ -55,7 +55,7 @@ function HeaderIconBtn(props) {
   return <IconButton color="inherit" {...props} />
 }
 
-function MoreMenu({ classes }) {
+function MoreMenu() {
   const { openSettingsDialog, toggleSelectionMode } = useNotesActions()
   const { isMultiSelectMode } = useNotes()
 
@@ -78,7 +78,7 @@ function MoreMenu({ classes }) {
     <>
       <HeaderIconBtn
         buttonRef={anchorRef}
-        className={classes.moreButton}
+        className="nr2"
         onClick={handleOpen}
       >
         <MoreVertIcon />
@@ -120,9 +120,6 @@ function MoreMenu({ classes }) {
 
 export const TopAppBar = withStyles(theme => ({
   toolbar: theme.mixins.toolbar,
-  menuIcon: { marginLeft: '-0.75rem' },
-  moreButton: { marginRight: '-0.75rem' },
-  logo: { marginRight: '0rem' },
 }))(function TopBar({ classes }) {
   const { syncStatus, selectedNotesCount, isMultiSelectMode } = useNotes()
   const {
@@ -135,19 +132,11 @@ export const TopAppBar = withStyles(theme => ({
     <>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography
-            variant="h6"
-            color="inherit"
-            className={classes.logo}
-          >
+          <Typography variant="h6" color="inherit">
             Notes
           </Typography>
           <SyncStatusIconButton />
-          <Typography
-            variant="body2"
-            color="inherit"
-            className={classes.logo}
-          >
+          <Typography variant="body2" color="inherit">
             {syncStatus}
           </Typography>
           <div className="flex-grow-1" />
@@ -165,7 +154,7 @@ export const TopAppBar = withStyles(theme => ({
               </HeaderIconBtn>
             </>
           )}
-          <MoreMenu classes={classes} />
+          <MoreMenu />
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />
