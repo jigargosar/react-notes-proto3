@@ -58,8 +58,7 @@ const RootStore = t
     },
     initFromLS() {
       try {
-        const cached = getCached('rs')
-        s.applySnap(cached)
+        s.applySnap(getCached('rs'))
       } catch (e) {
         debugger
       }
