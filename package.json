@@ -12,6 +12,7 @@
     "eruda": "^1.5.4",
     "faker": "^4.1.0",
     "jss": "latest",
+    "mdi-material-ui": "^5.9.0",
     "nanoid": "^2.0.1",
     "node-sass": "^4.11.0",
     "pouchdb-browser": "^7.0.0",

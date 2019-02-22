@@ -22,6 +22,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 
+import CoffeeIcon from 'mdi-material-ui/Coffee'
+import FoodIcon from 'mdi-material-ui/Food'
+
 function SyncStatusIcon() {
   const { syncStatus } = useNotes()
   const iconMap = {
@@ -76,6 +79,14 @@ function MoreMenu() {
   const anchorRef = useRef(null)
   return (
     <>
+      <HeaderIconBtn
+        buttonRef={anchorRef}
+        className="nr2"
+        onClick={handleOpen}
+      >
+        <CoffeeIcon />
+        <FoodIcon />
+      </HeaderIconBtn>
       <HeaderIconBtn
         buttonRef={anchorRef}
         className="nr2"
