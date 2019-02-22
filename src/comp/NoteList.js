@@ -9,7 +9,7 @@ import List from '@material-ui/core/List'
 import Checkbox from '@material-ui/core/Checkbox'
 import { EditNoteDialog } from './EditNoteDialog'
 import { withStyles } from '@material-ui/core/styles'
-import { Avatar, ListItemAvatar } from '@material-ui/core'
+import { Avatar } from '@material-ui/core'
 import toMaterialStyle from 'material-color-hash'
 import * as R from 'ramda'
 import { pipe } from '../ramda-helpers'
@@ -36,13 +36,15 @@ const NoteItem = withStyles({
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
       onClick={() => setNoteSelected({ note, selected: true })}
+      // dense={true}
     >
       {isSingleSelectMode ? (
-        <ListItemAvatar onClick={() => setSelectionModeMultiple()}>
-          <Avatar style={toMaterialStyle(note._id)}>
-            {avatarContent}
-          </Avatar>
-        </ListItemAvatar>
+        <Avatar
+          style={{ ...toMaterialStyle(note._id), width: 48, height: 48 }}
+          onClick={() => setSelectionModeMultiple()}
+        >
+          {avatarContent}
+        </Avatar>
       ) : (
         <Checkbox
           checked={isSelected}
@@ -57,13 +59,11 @@ const NoteItem = withStyles({
       >
         {note.content}
       </ListItemText>
-      {isSingleSelectMode && (
-        <ListItemSecondaryAction>
-          <IconButton onClick={() => openEditNoteDialog(note)}>
-            <EditIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      )}
+      <ListItemSecondaryAction>
+        <IconButton onClick={() => openEditNoteDialog(note)}>
+          <EditIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
     </ListItem>
   )
 })
