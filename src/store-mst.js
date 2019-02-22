@@ -130,7 +130,7 @@ const NotesStore = t
         : {}
       s.syncState = { ...syncState, info }
     },
-    _handleSyncError(err) {
+    _updateSyncError(err) {
       console.error('syncError', err)
       s.syncError = err
     },
@@ -152,10 +152,10 @@ const NotesStore = t
             .on('active', s._updateSyncState)
             .on('complete', s._updateSyncState)
             .on('denied', s._updateSyncState)
-            .on('error', s._handleSyncError)
+            .on('error', s._updateSyncError)
         } catch (e) {
           debugger
-          s._handleSyncError(e)
+          s._updateSyncError(e)
         }
       }
     },
