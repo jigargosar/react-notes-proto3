@@ -19,25 +19,25 @@ function NoteAvatar({ note, isSelected }) {
   const { setSelectionModeMultiple } = useNotesActions()
   const avatarContent = pipe([R.trim, R.take(2)])(note.content)
 
-  const baseAvatarStyle = toMaterialStyle(note._id)
+  const baseStyle = toMaterialStyle(note._id)
+
+  const selectedInMultiSelectModeStyle = {
+    backgroundColor: 'rgba(0,0,0,0.75)',
+    color: 'white',
+  }
 
   return (
     <ListItemAvatar>
       {isSingleSelectMode ? (
         <Avatar
-          style={baseAvatarStyle}
+          style={baseStyle}
           onClick={() => setSelectionModeMultiple()}
         >
           {avatarContent}
         </Avatar>
       ) : (
         <Avatar
-          style={{
-            ...baseAvatarStyle,
-            ...(isSelected
-              ? { backgroundColor: 'rgba(0,0,0,0.75)', color: 'white' }
-              : {}),
-          }}
+          style={isSelected ? selectedInMultiSelectModeStyle : baseStyle}
           onClick={() => setSelectionModeMultiple()}
         >
           {isSelected ? <CheckIcon /> : avatarContent}
