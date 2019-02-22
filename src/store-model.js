@@ -45,21 +45,15 @@ function setLookupFromDocs(docs) {
   return R.assoc('byId')(pouchDocsToIdLookup(docs))
 }
 
-function toggleNoteSelection(note) {
-  return overProp('selectedIdDict')(toggleProp(note._id))
-}
-
-const clearSelectIdDict = R.assoc('selectedIdDict')({})
-
 export const notesModel = {
   byId: {},
   visibleNotes: select(getVisibleNotes),
   visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
   selectedIdDict: {},
-  clearSelection: clearSelectIdDict,
+  clearSelection: R.assoc('selectedIdDict')({}),
   toggleNoteMultiSelection: (state, note) => {
-    return toggleNoteSelection(note)(state)
+    return overProp('selectedIdDict')(toggleProp(note._id))(state)
   },
   selectAll: state => {
     const visibleNoteIds = state.visibleNotes.map(_idProp)
