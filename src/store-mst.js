@@ -67,10 +67,10 @@ const RootStore = t
     },
   }))
   .actions(s => ({
-    ar(a, b) {
+    autorun(a, b) {
       return addDisposer(s, autorun(a, b))
     },
-    ap(snap) {
+    applySnap(snap) {
       return applySnapshot(s, snap)
     },
   }))
@@ -79,7 +79,7 @@ const RootStore = t
       s.msg = faker.name.lastName()
     },
     setupLS() {
-      s.ar(() => setCache('rs', s.snap))
+      s.autorun(() => setCache('rs', s.snap))
     },
   }))
 
@@ -92,7 +92,7 @@ export { rs }
 
 if (module.hot) {
   try {
-    rs.ap(idx(module, _ => _.hot.data.snap) || dSnap)
+    rs.applySnap(idx(module, _ => _.hot.data.snap) || dSnap)
   } catch (e) {
     debugger
   }
