@@ -14,6 +14,7 @@ import toMaterialStyle from 'material-color-hash'
 import * as R from 'ramda'
 import { pipe } from '../ramda-helpers'
 import validate from 'aproba'
+import { rs } from '../store-mst'
 
 function noteAvatarText(note) {
   validate('O', arguments)
@@ -92,6 +93,7 @@ export function NoteList() {
   const { visibleNotes, selectedIdDict } = useNotes()
   return (
     <>
+      <div className="pa3">{rs.msg}</div>
       <List>
         {visibleNotes.map(note => {
           const id = note._id

@@ -3,6 +3,7 @@ import {
   getSnapshot as snap,
   types as t,
 } from 'mobx-state-tree'
+import faker from 'faker'
 
 const Note = t.model('Note', {
   _id: t.identifier,
@@ -12,9 +13,16 @@ const NotesStore = t.model('NotesStore', {
   byId: t.map(Note),
 })
 
-const RootStore = t.model('RootStore', {
-  notes: NotesStore,
-})
+const RootStore = t
+  .model('RootStore', {
+    notes: NotesStore,
+    msg: 'HW RS',
+  })
+  .actions(s => ({
+    setMsg() {
+      s.msg = faker.name.lastName()
+    },
+  }))
 
 const iSnap = { notes: {} }
 const rs = RootStore.create(iSnap)
