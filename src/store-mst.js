@@ -65,6 +65,7 @@ const NotesStore = t
   .model('NotesStore', {
     byId: t.map(Note),
   })
+
   .views(s => ({
     get all() {
       return values(s.byId)
@@ -84,6 +85,81 @@ const NotesStore = t
       s.byId.delete(Note.create(doc).id)
     },
   }))
+  .props({
+    remoteUrl: t.maybeNull(t.string),
+  })
+  .volatile(s => {
+    let sync = null
+    let syncState = null
+    let syncError = null
+    return {
+      get sync() {
+        return sync
+      },
+      set sync(val) {
+        sync = val
+      },
+      get syncState() {
+        return syncState
+      },
+      set syncState(val) {
+        syncState = val
+      },
+      get syncError() {
+        return syncError
+      },
+      set syncError(val) {
+        syncError = val
+      },
+    }
+  })
+  .actions(s => ({
+    clearSync() {
+      if (s.sync) {
+        s.cancel()
+      }
+    },
+    handleSyncUpdate(info) {
+      const sync = s.sync
+      console.debug('handleSyncUpdate', info, sync)
+      const syncState = sync
+        ? {
+            push: R.path(['push', 'state'])(sync),
+            pull: R.path(['pull', 'state'])(sync),
+          }
+        : {}
+      s.syncState = { ...syncState, info }
+    },
+    handleSyncError(err) {
+      console.error('syncError', err)
+      return R.assoc('syncError')(err.message)(state)
+    },
+  }))
+  .actions(s => ({
+    startSync() {
+      s.clearSync()
+      const remoteUrl = s.remoteUrl
+      if (remoteUrl) {
+        try {
+          s.sync = db
+            .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
+              live: true,
+              retry: true,
+            })
+            .on('change', s.handleSyncUpdate)
+            .on('paused', s.handleSyncUpdate)
+            .on('active', s.handleSyncUpdate)
+            .on('complete', s.handleSyncUpdate)
+            .on('denied', s.handleSyncUpdate)
+            .on('error', s.handleSyncError)
+        } catch (e) {
+          debugger
+          s.handleSyncError(e)
+        }
+      }
+    },
+  }))
+
   .actions(s => ({
     _handleChange(change) {
       validate('OZZ', arguments)
@@ -93,7 +169,6 @@ const NotesStore = t
       change.deleted ? s.remove(note) : s.put(note)
     },
     initPouch: f(initPouchNotes(s)),
-    startSync() {},
   }))
 
 const RootStore = t
