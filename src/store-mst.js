@@ -85,7 +85,7 @@ const RootStore = t
     },
     _handleChange(change) {
       validate('OZZ', arguments)
-      console.debug(`change`, change)
+      console.debug(`change`, ...arguments)
       const note = change.doc
 
       change.deleted ? s.notes.remove(note) : s.notes.put(note)
