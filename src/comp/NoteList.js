@@ -68,7 +68,6 @@ const NoteItem = withStyles({
 
   const handleClick = isMultiSelectMode
     ? e => {
-        debugger
         if (e.defaultPrevented) return
         setNoteSelected({
           note,
