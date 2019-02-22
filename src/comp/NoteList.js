@@ -8,7 +8,6 @@ import React from 'react'
 import List from '@material-ui/core/List'
 import CheckIcon from '@material-ui/icons/Check'
 import { EditNoteDialog } from './EditNoteDialog'
-import { withStyles } from '@material-ui/core/styles'
 import { Avatar, ListItemAvatar } from '@material-ui/core'
 import toMaterialStyle from 'material-color-hash'
 import * as R from 'ramda'
@@ -45,14 +44,7 @@ function NoteAvatar({ note, isSelected, ...otherProps }) {
   )
 }
 
-const NoteItem = withStyles({
-  root: {
-    '&$selected, &$selected:hover, &$selected:focus': {
-      backgroundColor: 'lightyellow',
-    },
-  },
-  selected: {},
-})(({ note, isSelected, classes }) => {
+const NoteItem = ({ note, isSelected }) => {
   const { isMultiSelectMode } = useNotes()
 
   const {
@@ -74,12 +66,7 @@ const NoteItem = withStyles({
     toggleNoteMultiSelection(note)
   }
   return (
-    <ListItem
-      selected={isSelected}
-      classes={{ root: classes.root, selected: classes.selected }}
-      onClick={handleClick}
-      // dense={true}
-    >
+    <ListItem selected={isSelected} onClick={handleClick}>
       <NoteAvatar
         note={note}
         isSelected={isSelected}
@@ -93,7 +80,7 @@ const NoteItem = withStyles({
       </ListItemSecondaryAction>
     </ListItem>
   )
-})
+}
 
 export function NoteList() {
   const { visibleNotes, selectedIdDict } = useNotes()
