@@ -72,9 +72,9 @@ const RootStore = t
         })
       },
       async onAddNewNoteClicked() {
-        s.updateMsgTmp()
         const note = createNewNote()
         await db.put(note)
+        s.updateMsgTmp()
       },
     }
   })
