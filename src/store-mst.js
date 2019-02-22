@@ -67,6 +67,7 @@ const RootStore = t
         trace(r)
         return setCache('rs', s.snap)
       })
+      return s
     },
   }))
   .actions(s => {
