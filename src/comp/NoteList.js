@@ -10,7 +10,7 @@ import List from '@material-ui/core/List'
 import CheckIcon from '@material-ui/icons/Check'
 import { EditNoteDialog } from './EditNoteDialog'
 import { withStyles } from '@material-ui/core/styles'
-import { Avatar } from '@material-ui/core'
+import { Avatar, ListItemAvatar } from '@material-ui/core'
 import toMaterialStyle from 'material-color-hash'
 import * as R from 'ramda'
 import { pipe } from '../ramda-helpers'
@@ -49,28 +49,35 @@ const NoteItem = withStyles({
       }
       // dense={true}
     >
-      {isSingleSelectMode ? (
-        <Avatar
-          style={avatarStyle}
-          onClick={() => setSelectionModeMultiple()}
-        >
-          {avatarContent}
-        </Avatar>
-      ) : (
-        <Avatar
-          style={avatarStyle}
-          onClick={() => setSelectionModeMultiple()}
-        >
-          {isSelected ? <CheckIcon /> : avatarContent}
-        </Avatar>
-        // <Checkbox
-        //   checked={isSelected}
-        //   tabIndex={-1}
-        //   onChange={e =>
-        //     setNoteSelected({ note, selected: e.target.checked })
-        //   }
-        // />
-      )}
+      <ListItemAvatar>
+        {isSingleSelectMode ? (
+          <Avatar
+            style={avatarStyle}
+            onClick={() => setSelectionModeMultiple()}
+          >
+            {avatarContent}
+          </Avatar>
+        ) : (
+          <Avatar
+            style={{
+              ...avatarStyle,
+              ...(isSelected
+                ? { backgroundColor: 'rgba(0,0,0,0.75)', color: 'white' }
+                : {}),
+            }}
+            onClick={() => setSelectionModeMultiple()}
+          >
+            {isSelected ? <CheckIcon /> : avatarContent}
+          </Avatar>
+          // <Checkbox
+          //   checked={isSelected}
+          //   tabIndex={-1}
+          //   onChange={e =>
+          //     setNoteSelected({ note, selected: e.target.checked })
+          //   }
+          // />
+        )}
+      </ListItemAvatar>
       <ListItemText
       // style={{ padding: 0 }}
       >
@@ -84,6 +91,7 @@ const NoteItem = withStyles({
     </ListItem>
   )
 })
+
 export function NoteList() {
   const { visibleNotes, selectedIdDict } = useNotes()
   return (
