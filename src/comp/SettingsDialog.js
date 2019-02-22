@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
-import { useNotes, useNotesActions } from '../store-model'
+import { useNotes, useNotesActions } from './store-hooks'
 import { pipe } from '../ramda-helpers'
 
 const enhance = pipe([withMobileDialog({ breakpoint: 'xs' })])

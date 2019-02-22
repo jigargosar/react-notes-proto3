@@ -10,7 +10,7 @@ import {
 import validate from 'aproba'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { select, thunk, useActions, useStore } from 'easy-peasy'
+import { select, thunk } from 'easy-peasy'
 import PouchDB from 'pouchdb-browser'
 
 const db = new PouchDB('notes-pdb')
@@ -239,10 +239,3 @@ const storeModel = {
 }
 
 export { storeModel }
-
-export function useNotesActions() {
-  return useActions(R.prop('notes'))
-}
-export function useNotes() {
-  return useStore(R.prop('notes'))
-}

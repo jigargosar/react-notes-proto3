@@ -1,4 +1,4 @@
-import { useNotes, useNotesActions } from '../store-model'
+import { useNotes, useNotesActions } from './store-hooks'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
@@ -15,6 +15,7 @@ import * as R from 'ramda'
 import { pipe } from '../ramda-helpers'
 import validate from 'aproba'
 import { rs } from '../store-mst'
+import { mc } from '../mob-act'
 
 function noteAvatarText(note) {
   validate('O', arguments)
@@ -89,11 +90,13 @@ const NoteItem = ({ note, isSelected }) => {
   )
 }
 
-export function NoteList() {
+export const NoteList = mc(function NoteList() {
   const { visibleNotes, selectedIdDict } = useNotes()
   return (
     <>
-      <div className="pa3">{rs.msg}</div>
+      <div className="pa3" onClick={rs.setMsg}>
+        {rs.msg}
+      </div>
       <List>
         {visibleNotes.map(note => {
           const id = note._id
@@ -109,4 +112,4 @@ export function NoteList() {
       <EditNoteDialog />
     </>
   )
-}
+})

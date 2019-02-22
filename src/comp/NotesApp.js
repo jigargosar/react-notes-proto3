@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNotesActions } from '../store-model'
+import { useNotesActions } from './store-hooks'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 // import MenuIcon from '@material-ui/icons/Menu'
