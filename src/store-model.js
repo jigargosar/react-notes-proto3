@@ -70,12 +70,13 @@ export const notesModel = {
   },
   toggleNoteSelection: (state, note) => {
     const wasNoteSelected = !!state.selectedIdDict[note._id]
+    const newSelectedBool = !wasNoteSelected
     if (state.selectionMode === 'single') {
       return R.assoc('selectedIdDict')({
-        [note._id]: !wasNoteSelected,
+        [note._id]: newSelectedBool,
       })(state)
     } else if (state.selectionMode === 'multiple') {
-      return R.assocPath(['selectedIdDict', note._id])(!wasNoteSelected)(
+      return R.assocPath(['selectedIdDict', note._id])(newSelectedBool)(
         state,
       )
     }
