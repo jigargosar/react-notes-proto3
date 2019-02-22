@@ -1,4 +1,5 @@
 import {
+  addDisposer,
   applySnapshot as ap,
   getSnapshot as snap,
   types as t,
@@ -9,6 +10,8 @@ import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
 import idx from 'idx.macro'
+import { autorun as ar } from 'mobx'
+import { setCache } from './dom-helpers'
 
 const db = new PouchDB('notes-pdb')
 
@@ -53,14 +56,34 @@ const RootStore = t
       ])(s)
     },
   }))
+  .views(s => ({
+    get snap() {
+      return snap(s)
+    },
+  }))
+  .actions(s => ({
+    autoD(d) {
+      return addDisposer(s, d)
+    },
+  }))
+  .actions(s => ({
+    ar(...a) {
+      return s.autoD(ar(...a))
+    },
+  }))
   .actions(s => ({
     setMsg() {
       s.msg = faker.name.lastName()
+    },
+    setupLS() {
+      s.ar(() => setCache('rs', s.snap))
     },
   }))
 
 const dSnap = { notes: {} }
 const rs = RootStore.create(dSnap)
+
+rs.setupLS()
 
 export { rs }
 
