@@ -67,7 +67,7 @@ export const notesModel = {
       return R.assocPath(['selectedIdDict', note._id])(selected)(state)
     }
   },
-  toggleNoteSelection: thunk((actions, note, { getState }) => {
+  toggleNoteMultiSelection: thunk((actions, note, { getState }) => {
     const selected = !getState().notes.selectedIdDict[note._id]
     actions.setNoteSelected({ note, selected })
   }),
