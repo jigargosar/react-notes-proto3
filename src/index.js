@@ -9,14 +9,18 @@ import { store } from './store'
 import { StoreProvider } from 'easy-peasy'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import theme from './ui/theme'
+import JssProvider from 'react-jss/lib/JssProvider'
+import { generateClassName, jss } from './ui/jss'
 
 function render() {
   ReactDOM.render(
-    <MuiThemeProvider theme={theme}>
-      <StoreProvider store={store}>
-        <App store={store} />
-      </StoreProvider>
-    </MuiThemeProvider>,
+    <JssProvider jss={jss} generateClassName={generateClassName}>
+      <MuiThemeProvider theme={theme}>
+        <StoreProvider store={store}>
+          <App store={store} />
+        </StoreProvider>
+      </MuiThemeProvider>
+    </JssProvider>,
     document.getElementById('root'),
   )
 }
