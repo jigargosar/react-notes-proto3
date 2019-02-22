@@ -32,7 +32,7 @@ const NoteItem = withStyles({
 
   return (
     <ListItem
-      // disableGutters={true}
+      // disableGutters={!isSingleSelectMode}
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
       onClick={() => setNoteSelected({ note, selected: true })}
