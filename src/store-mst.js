@@ -106,6 +106,7 @@ rs.setupLS()
 
 export { rs }
 
+// noinspection JSUnresolvedVariable
 if (module.hot) {
   try {
     const snap = idx(module, _ => _.hot.data.snap)
@@ -113,11 +114,19 @@ if (module.hot) {
   } catch (e) {
     debugger
   }
-  module.hot.dispose(data => {
-    try {
-      data.snap = rs.snap
-    } catch (e) {
-      debugger
-    }
-  })
+  hotDispose(data => void (data.snap = rs.snap))
+}
+
+function hotDispose(cb) {
+  validate('F', arguments)
+  // noinspection JSUnresolvedVariable
+  if (module.hot) {
+    module.hot.dispose(data => {
+      try {
+        cb(data)
+      } catch (e) {
+        debugger
+      }
+    })
+  }
 }
