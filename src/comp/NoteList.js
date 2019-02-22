@@ -9,6 +9,7 @@ import List from '@material-ui/core/List'
 import Checkbox from '@material-ui/core/Checkbox'
 import { EditNoteDialog } from './EditNoteDialog'
 import { withStyles } from '@material-ui/core/styles'
+import { Avatar, ListItemAvatar } from '@material-ui/core'
 
 const NoteItem = withStyles({
   root: {
@@ -23,18 +24,28 @@ const NoteItem = withStyles({
 
   return (
     <ListItem
-      disableGutters={true}
+      // disableGutters={true}
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
     >
-      <Checkbox
-        checked={isSelected}
-        tabIndex={-1}
-        onChange={e =>
-          setNoteSelected({ note, selected: e.target.checked })
-        }
-      />
-      <ListItemText style={{ padding: 0 }}>{note.content}</ListItemText>
+      {isSingleSelectMode ? (
+        <ListItemAvatar>
+          <Avatar>LL</Avatar>
+        </ListItemAvatar>
+      ) : (
+        <Checkbox
+          checked={isSelected}
+          tabIndex={-1}
+          onChange={e =>
+            setNoteSelected({ note, selected: e.target.checked })
+          }
+        />
+      )}
+      <ListItemText
+      // style={{ padding: 0 }}
+      >
+        {note.content}
+      </ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => openEditNoteDialog(note)}>
           <EditIcon />
