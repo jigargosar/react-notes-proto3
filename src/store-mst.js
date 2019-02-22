@@ -106,6 +106,8 @@ const RootStore = t
 // noinspection JSCheckFunctionSignatures
 const rs = RootStore.create()
 
+rs.initPouch().catch(console.error)
+
 export { rs }
 
 // BOILER PLATE
