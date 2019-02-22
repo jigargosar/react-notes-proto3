@@ -1,6 +1,5 @@
 import {
   applySnapshot as ap,
-  destroy,
   getSnapshot as snap,
   types as t,
 } from 'mobx-state-tree'
@@ -8,10 +7,8 @@ import faker from 'faker'
 import { pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
-import validate from 'aproba'
-import PouchDB from 'pouchdb-browser'
 
-const db = new PouchDB('notes-pdb')
+// const db = new PouchDB('notes-pdb')
 // hotDispose(() => db.close())
 
 const Note = t.model('Note', {
@@ -42,7 +39,7 @@ const RootStore = t
   .views(s => ({
     async onAN() {
       const note = createNewNote()
-      await db.put(note)
+      // await db.put(note)
     },
     get vn() {
       return pipe([
@@ -69,21 +66,16 @@ snap(rs) //?
 export { rs }
 
 if (module.hot) {
-  ap(rs, module.hot.data || iSnap)
-  hotDispose(data => {
-    data.snap = snap(rs)
-  })
-}
-
-function hotDispose(cb) {
-  validate('F', arguments)
-  if (module.hot) {
-    module.hot.dispose(data => {
-      try {
-        cb(data)
-      } catch (e) {
-        console.error(e)
-      }
-    })
+  try {
+    ap(rs, module.hot.data || iSnap)
+  } catch (e) {
+    debugger
   }
+  module.hot.dispose(data => {
+    try {
+      data.snap = snap(rs)
+    } catch (e) {
+      debugger
+    }
+  })
 }
