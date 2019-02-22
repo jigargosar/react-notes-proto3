@@ -65,8 +65,7 @@ const RootStore = t
     get visNotes() {
       return pipe([
         R.prop('notes'),
-        R.prop('byId'),
-        R.values,
+        R.prop('all'),
         R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
       ])(s)
     },
