@@ -89,6 +89,8 @@ const rs = RootStore.create()
 
 export { rs }
 
+// BOILER PLATE
+
 // noinspection JSUnresolvedVariable
 if (module.hot) {
   try {
