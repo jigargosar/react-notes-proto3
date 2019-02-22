@@ -7,9 +7,18 @@ import faker from 'faker'
 import { pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
+import PouchDB from 'pouchdb-browser'
+import idx from 'idx.macro'
 
-// const db = new PouchDB('notes-pdb')
-// hotDispose(() => db.close())
+const db = new PouchDB('notes-pdb')
+module.hot.dispose(() => {
+  try {
+    debugger
+    db.close()
+  } catch (e) {
+    debugger
+  }
+})
 
 const Note = t.model('Note', {
   _id: t.identifier,
@@ -39,6 +48,7 @@ const RootStore = t
   .views(s => ({
     async onAN() {
       const note = createNewNote()
+      await db.put(note)
       // await db.put(note)
     },
     get vn() {
@@ -67,7 +77,7 @@ export { rs }
 
 if (module.hot) {
   try {
-    ap(rs, module.hot.data || iSnap)
+    ap(rs, idx(module, _ => _.hot.data.snap) || iSnap)
   } catch (e) {
     debugger
   }
