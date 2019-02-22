@@ -56,7 +56,7 @@ function initPouchNotes(s) {
       })
       .on('change', s._handleChange)
       .on('error', console.error)
-    // actions.startSync()
+    s.startSync()
     return { changes }
   }
 }
@@ -93,6 +93,7 @@ const NotesStore = t
       change.deleted ? s.remove(note) : s.put(note)
     },
     initPouch: f(initPouchNotes(s)),
+    startSync() {},
   }))
 
 const RootStore = t
