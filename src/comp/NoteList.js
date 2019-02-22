@@ -75,7 +75,10 @@ const NoteItem = ({ note, isSelected }) => {
       />
       <ListItemText>{note.content}</ListItemText>
       <ListItemSecondaryAction>
-        <IconButton onClick={() => openEditNoteDialog(note)}>
+        <IconButton
+          disabled={isMultiSelectMode}
+          onClick={() => openEditNoteDialog(note)}
+        >
           <EditIcon />
         </IconButton>
       </ListItemSecondaryAction>
