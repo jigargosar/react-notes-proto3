@@ -30,7 +30,7 @@ const NoteItem = withStyles({
     >
       {isSingleSelectMode ? (
         <ListItemAvatar>
-          <Avatar>LL</Avatar>
+          <Avatar>N</Avatar>
         </ListItemAvatar>
       ) : (
         <Checkbox
