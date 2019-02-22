@@ -35,7 +35,12 @@ const NoteItem = withStyles({
       // disableGutters={!isSingleSelectMode}
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
-      onClick={() => setNoteSelected({ note, selected: !isSelected })}
+      onClick={() =>
+        setNoteSelected({
+          note,
+          selected: isSingleSelectMode ? true : !isSelected,
+        })
+      }
       // dense={true}
     >
       {isSingleSelectMode ? (
