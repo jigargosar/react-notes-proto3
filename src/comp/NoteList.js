@@ -14,6 +14,42 @@ import toMaterialStyle from 'material-color-hash'
 import * as R from 'ramda'
 import { pipe } from '../ramda-helpers'
 
+function NoteAvatar({ note, isSelected }) {
+  const { isSingleSelectMode } = useNotes()
+  const { setSelectionModeMultiple } = useNotesActions()
+  const avatarContent = pipe([R.trim, R.take(2)])(note.content)
+
+  const avatarStyle = {
+    ...toMaterialStyle(note._id),
+    width: 48,
+    height: 48,
+  }
+  return (
+    <ListItemAvatar>
+      {isSingleSelectMode ? (
+        <Avatar
+          style={avatarStyle}
+          onClick={() => setSelectionModeMultiple()}
+        >
+          {avatarContent}
+        </Avatar>
+      ) : (
+        <Avatar
+          style={{
+            ...avatarStyle,
+            ...(isSelected
+              ? { backgroundColor: 'rgba(0,0,0,0.75)', color: 'white' }
+              : {}),
+          }}
+          onClick={() => setSelectionModeMultiple()}
+        >
+          {isSelected ? <CheckIcon /> : avatarContent}
+        </Avatar>
+      )}
+    </ListItemAvatar>
+  )
+}
+
 const NoteItem = withStyles({
   root: {
     '&$selected, &$selected:hover, &$selected:focus': {
@@ -23,18 +59,8 @@ const NoteItem = withStyles({
   selected: {},
 })(({ note, isSelected, classes }) => {
   const { isSingleSelectMode } = useNotes()
-  const {
-    openEditNoteDialog,
-    setNoteSelected,
-    setSelectionModeMultiple,
-  } = useNotesActions()
-  const avatarContent = pipe([R.trim, R.take(2)])(note.content)
+  const { openEditNoteDialog, setNoteSelected } = useNotesActions()
 
-  const avatarStyle = {
-    ...toMaterialStyle(note._id),
-    width: 48,
-    height: 48,
-  }
   return (
     <ListItem
       selected={isSelected}
@@ -47,28 +73,7 @@ const NoteItem = withStyles({
       }
       // dense={true}
     >
-      <ListItemAvatar>
-        {isSingleSelectMode ? (
-          <Avatar
-            style={avatarStyle}
-            onClick={() => setSelectionModeMultiple()}
-          >
-            {avatarContent}
-          </Avatar>
-        ) : (
-          <Avatar
-            style={{
-              ...avatarStyle,
-              ...(isSelected
-                ? { backgroundColor: 'rgba(0,0,0,0.75)', color: 'white' }
-                : {}),
-            }}
-            onClick={() => setSelectionModeMultiple()}
-          >
-            {isSelected ? <CheckIcon /> : avatarContent}
-          </Avatar>
-        )}
-      </ListItemAvatar>
+      <NoteAvatar note={note} isSelected={isSelected} />
       <ListItemText>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => openEditNoteDialog(note)}>
