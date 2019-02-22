@@ -53,7 +53,7 @@ const RootStore = t
   }))
   .extend(coreExt)
   .actions(s => ({
-    updateMsgTmp() {
+    _updateMsgTmp() {
       s.msg = faker.name.lastName()
     },
   }))
@@ -74,7 +74,7 @@ const RootStore = t
       async onAddNewNoteClicked() {
         const note = createNewNote()
         await db.put(note)
-        s.updateMsgTmp()
+        s._updateMsgTmp()
       },
     }
   })
