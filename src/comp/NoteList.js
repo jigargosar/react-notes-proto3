@@ -16,6 +16,7 @@ import { pipe } from '../ramda-helpers'
 import validate from 'aproba'
 import { rs } from '../store-mst'
 import { mc } from '../mob-act'
+import { Fab } from '@material-ui/core'
 
 function noteAvatarText(note) {
   validate('O', arguments)
@@ -94,8 +95,9 @@ export const NoteList = mc(function NoteList() {
   const { visibleNotes, selectedIdDict } = useNotes()
   return (
     <>
-      <div className="pa3" onClick={rs.setMsg}>
-        {rs.msg}
+      <div className="pa3 flex">
+        <div className="flex-grow-1">{rs.msg}</div>
+        <Fab onClick={rs.onAN}>AN</Fab>
       </div>
       <List>
         {visibleNotes.map(note => {
