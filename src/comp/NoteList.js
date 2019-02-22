@@ -31,11 +31,10 @@ const NoteItem = withStyles({
       // disableGutters={true}
       selected={isSelected}
       classes={{ root: classes.root, selected: classes.selected }}
+      onClick={() => setNoteSelected({ note, selected: true })}
     >
       {isSingleSelectMode ? (
-        <ListItemAvatar
-          onClick={() => setNoteSelected({ note, selected: true })}
-        >
+        <ListItemAvatar>
           <Avatar style={toMaterialStyle(note._id)}>
             {avatarContent}
           </Avatar>
