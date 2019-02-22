@@ -56,7 +56,7 @@ const NoteItem = withStyles({
   const {
     openEditNoteDialog,
     toggleNoteSelection,
-    setSelectionModeMultiple,
+    turnOnMultiSelectMode,
   } = useNotesActions()
 
   function handleClick(e) {
@@ -69,7 +69,7 @@ const NoteItem = withStyles({
     validate('O', arguments)
     e.preventDefault()
     await toggleNoteSelection(note)
-    setSelectionModeMultiple()
+    turnOnMultiSelectMode()
   }
   return (
     <ListItem
