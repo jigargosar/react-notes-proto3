@@ -68,19 +68,10 @@ export const notesModel = {
       return R.assocPath(['selectedIdDict', note._id])(selected)(state)
     }
   },
-  toggleNoteSelection: (state, note) => {
-    const wasNoteSelected = !!state.selectedIdDict[note._id]
-    const newSelectedBool = !wasNoteSelected
-    if (state.selectionMode === 'single') {
-      return R.assoc('selectedIdDict')({
-        [note._id]: newSelectedBool,
-      })(state)
-    } else if (state.selectionMode === 'multiple') {
-      return R.assocPath(['selectedIdDict', note._id])(newSelectedBool)(
-        state,
-      )
-    }
-  },
+  toggleNoteSelection: thunk((actions, note, { getState }) => {
+    const selected = !getState().notes.selectedIdDict[note._id]
+    actions.setNoteSelected({ note, selected })
+  }),
   listenOnSelectionChange: listen(on => {
     on(notesModel.setNoteSelected, (actions, payload, { getState }) => {
       const selectedNotesCount = getState().notes.selectedNotesCount
