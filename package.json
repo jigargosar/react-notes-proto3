@@ -15,6 +15,9 @@
     "jss": "latest",
     "material-color-hash": "^0.1.6",
     "mdi-material-ui": "^5.9.0",
+    "mobx": "^5.9.0",
+    "mobx-react-lite": "^1.0.1",
+    "mobx-state-tree": "^3.10.2",
     "nanoid": "^2.0.1",
     "node-sass": "^4.11.0",
     "pouchdb-browser": "^7.0.0",
@@ -52,6 +55,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@babel/register": "^7.0.0",
     "@types/faker": "^4.1.5",
     "@types/react": "^16.8.3",
     "@types/react-dom": "^16.8.2",
