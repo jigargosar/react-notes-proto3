@@ -138,7 +138,8 @@ const NotesStore = t
   .actions(s => ({
     startSync() {
       s.clearSync()
-      const remoteUrl = s.remoteUrl
+      // const remoteUrl = s.remoteUrl
+      const remoteUrl = 'http://127.0.0.1:5984/np3'
       if (remoteUrl) {
         try {
           s.sync = db
