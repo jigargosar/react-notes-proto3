@@ -41,6 +41,7 @@ function NoteAvatar({ note, isSelected }) {
     : toMaterialStyle(note._id)
 
   const handleClick = () => setSelectionModeMultiple()
+
   return (
     <ListItemAvatar onClick={handleClick} style={style}>
       <Avatar>{avatarContent}</Avatar>
