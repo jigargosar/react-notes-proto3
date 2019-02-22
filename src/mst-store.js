@@ -15,3 +15,5 @@ const RootStore = t.model('RootStore', {
 const store = RootStore.create({ notes: {} })
 
 snap(store) //?
+
+export { store }
