@@ -7,12 +7,16 @@ import * as ReactDOM from 'react-dom'
 import { App } from './App'
 import { store } from './store'
 import { StoreProvider } from 'easy-peasy'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import theme from './ui/theme'
 
 function render() {
   ReactDOM.render(
-    <StoreProvider store={store}>
-      <App store={store} />
-    </StoreProvider>,
+    <MuiThemeProvider theme={theme}>
+      <StoreProvider store={store}>
+        <App store={store} />
+      </StoreProvider>
+    </MuiThemeProvider>,
     document.getElementById('root'),
   )
 }
