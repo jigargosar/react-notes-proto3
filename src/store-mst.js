@@ -6,7 +6,7 @@ import {
   types as t,
 } from 'mobx-state-tree'
 import faker from 'faker'
-import { dotPath, objFromList, pipe } from './ramda-helpers'
+import { _idProp, dotPath, objFromList, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
@@ -82,7 +82,7 @@ const NotesStore = t
     },
     remove(doc) {
       validate('O', arguments)
-      s.byId.delete(Note.create(doc).id)
+      s.byId.delete(_idProp(doc))
     },
   }))
   .props({
