@@ -9,7 +9,7 @@ import { dotPath, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
-import { autorun, trace } from 'mobx'
+import { autorun } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
 
@@ -63,10 +63,7 @@ const RootStore = t
       } catch (e) {
         debugger
       }
-      s.autorun(r => {
-        trace(r)
-        return setCache('rs', s.snap)
-      })
+      s.autorun(() => setCache('rs', s.snap))
       return s
     },
   }))
