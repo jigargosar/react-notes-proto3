@@ -24,8 +24,8 @@ const NoteItem = withStyles({
 })(({ note, isSelected, classes }) => {
   const { openEditNoteDialog, setNoteSelected } = useNotesActions()
   const { isSingleSelectMode } = useNotes()
-
   const avatarContent = pipe([R.trim, R.take(2)])(note.content)
+
   return (
     <ListItem
       // disableGutters={true}
@@ -33,7 +33,9 @@ const NoteItem = withStyles({
       classes={{ root: classes.root, selected: classes.selected }}
     >
       {isSingleSelectMode ? (
-        <ListItemAvatar>
+        <ListItemAvatar
+          onClick={() => setNoteSelected({ note, selected: true })}
+        >
           <Avatar style={toMaterialStyle(note._id)}>
             {avatarContent}
           </Avatar>
