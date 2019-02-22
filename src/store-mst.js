@@ -11,14 +11,6 @@ import PouchDB from 'pouchdb-browser'
 import idx from 'idx.macro'
 
 const db = new PouchDB('notes-pdb')
-module.hot.dispose(() => {
-  try {
-    debugger
-    db.close()
-  } catch (e) {
-    debugger
-  }
-})
 
 const Note = t.model('Note', {
   _id: t.identifier,
