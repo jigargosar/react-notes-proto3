@@ -26,23 +26,20 @@ function NoteAvatar({ note, isSelected }) {
     color: 'white',
   }
 
+  const isMultiSelectMode = !isSingleSelectMode
+  const isSelectedInMultiSelectMode = isSelected && isMultiSelectMode
   return (
     <ListItemAvatar>
-      {isSingleSelectMode ? (
-        <Avatar
-          style={baseStyle}
-          onClick={() => setSelectionModeMultiple()}
-        >
-          {avatarContent}
-        </Avatar>
-      ) : (
-        <Avatar
-          style={isSelected ? selectedInMultiSelectModeStyle : baseStyle}
-          onClick={() => setSelectionModeMultiple()}
-        >
-          {isSelected ? <CheckIcon /> : avatarContent}
-        </Avatar>
-      )}
+      <Avatar
+        style={
+          isSelectedInMultiSelectMode
+            ? selectedInMultiSelectModeStyle
+            : baseStyle
+        }
+        onClick={() => setSelectionModeMultiple()}
+      >
+        {isSelectedInMultiSelectMode ? <CheckIcon /> : avatarContent}
+      </Avatar>
     </ListItemAvatar>
   )
 }
