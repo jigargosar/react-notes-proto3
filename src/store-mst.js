@@ -56,21 +56,25 @@ const RootStore = t
     _updateMsgTmp() {
       s.msg = faker.name.lastName()
     },
+    initFromLS() {
+      try {
+        const cached = getCached('rs')
+        s.applySnap(cached)
+      } catch (e) {
+        debugger
+      }
+      s.autorun(r => {
+        trace(r)
+        return setCache('rs', s.snap)
+      })
+    },
   }))
   .actions(s => {
     return {
-      setupLS() {
-        try {
-          const cached = getCached('rs')
-          s.applySnap(cached)
-        } catch (e) {
-          debugger
-        }
-        s.autorun(r => {
-          trace(r)
-          return setCache('rs', s.snap)
-        })
+      afterCreate() {
+        s.initFromLS()
       },
+
       async onAddNewNoteClicked() {
         const note = createNewNote()
         await db.put(note)
@@ -81,8 +85,6 @@ const RootStore = t
 
 // noinspection JSCheckFunctionSignatures
 const rs = RootStore.create()
-
-rs.setupLS()
 
 export { rs }
 
