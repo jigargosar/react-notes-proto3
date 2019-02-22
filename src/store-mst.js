@@ -40,6 +40,27 @@ const Note = t
     },
   }))
 
+function initPouchNotes(s) {
+  return function*() {
+    const { rows } = yield db.allDocs({
+      include_docs: true,
+    })
+    const docs = rows.map(R.prop('doc'))
+    console.log(`docs`, docs)
+    s.replaceAll(docs)
+    const changes = db
+      .changes({
+        include_docs: true,
+        live: true,
+        since: 'now',
+      })
+      .on('change', s._handleChange)
+      .on('error', console.error)
+    // actions.startSync()
+    return { changes }
+  }
+}
+
 const NotesStore = t
   .model('NotesStore', {
     byId: t.map(Note),
@@ -73,24 +94,7 @@ const NotesStore = t
     },
   }))
   .actions(s => ({
-    initPouch: f(function*() {
-      const { rows } = yield db.allDocs({
-        include_docs: true,
-      })
-      const docs = rows.map(R.prop('doc'))
-      console.log(`docs`, docs)
-      s.replaceAll(docs)
-      const changes = db
-        .changes({
-          include_docs: true,
-          live: true,
-          since: 'now',
-        })
-        .on('change', s._handleChange)
-        .on('error', console.error)
-      // actions.startSync()
-      return { changes }
-    }),
+    initPouch: f(initPouchNotes(s)),
   }))
 
 const RootStore = t
