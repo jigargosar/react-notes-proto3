@@ -12,8 +12,28 @@ import PouchDB from 'pouchdb-browser'
 import idx from 'idx.macro'
 import { autorun, trace } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
+import validate from 'aproba'
 
 const db = new PouchDB('notes-pdb')
+
+function coreExt(s) {
+  validate('O', arguments)
+  return {
+    views: {
+      get snap() {
+        return getSnapshot(s)
+      },
+    },
+    actions: {
+      autorun(a, b) {
+        return addDisposer(s, autorun(a, b))
+      },
+      applySnap(snap) {
+        return applySnapshot(s, snap)
+      },
+    },
+  }
+}
 
 const Note = t.model('Note', {
   _id: t.identifier,
@@ -39,8 +59,8 @@ const NotesStore = t.model('NotesStore', {
 
 const RootStore = t
   .model('RootStore', {
-    notes: NotesStore,
-    msg: 'HW RS',
+    notes: t.optional(NotesStore, () => ({ byId: {} })),
+    msg: t.optional(t.string, () => 'HW RS'),
   })
   .views(s => ({
     get vn() {
@@ -51,44 +71,36 @@ const RootStore = t
       ])(s)
     },
   }))
-  .views(s => ({
-    get snap() {
-      return getSnapshot(s)
-    },
-  }))
+  .extend(coreExt)
   .actions(s => ({
-    autorun(a, b) {
-      return addDisposer(s, autorun(a, b))
-    },
-    applySnap(snap) {
-      return applySnapshot(s, snap)
-    },
-  }))
-  .actions(s => ({
-    async onAN() {
-      s.setMsg()
-      const note = createNewNote()
-      await db.put(note)
-    },
-    setMsg() {
+    updateMsgTmp() {
       s.msg = faker.name.lastName()
     },
-    setupLS() {
-      try {
-        const cached = getCached('rs')
-        s.applySnap(cached)
-      } catch (e) {
-        debugger
-      }
-      s.autorun(r => {
-        trace(r)
-        return setCache('rs', s.snap)
-      })
-    },
   }))
+  .actions(s => {
+    return {
+      async onAN() {
+        s.updateMsgTmp()
+        const note = createNewNote()
+        await db.put(note)
+      },
+      setupLS() {
+        try {
+          const cached = getCached('rs')
+          s.applySnap(cached)
+        } catch (e) {
+          debugger
+        }
+        s.autorun(r => {
+          trace(r)
+          return setCache('rs', s.snap)
+        })
+      },
+    }
+  })
 
-const dSnap = { notes: {} }
-const rs = RootStore.create(dSnap)
+// noinspection JSCheckFunctionSignatures
+const rs = RootStore.create()
 
 rs.setupLS()
 
