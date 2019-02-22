@@ -25,11 +25,6 @@ function NoteAvatar({ note, isSelected, ...otherProps }) {
   const { isMultiSelectMode } = useNotes()
   const isSelectedInMultiSelectMode = isSelected && isMultiSelectMode
 
-  const {
-    setSelectionModeMultiple,
-    toggleNoteSelection,
-  } = useNotesActions()
-
   const avatarContent = isSelectedInMultiSelectMode ? (
     <CheckIcon />
   ) : (
