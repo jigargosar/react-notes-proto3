@@ -73,7 +73,7 @@ const RootStore = t
   .actions(s => {
     return {
       afterCreate() {
-        s.initFromLS()
+        return s.initFromLS()
       },
 
       async onAddNewNoteClicked() {
