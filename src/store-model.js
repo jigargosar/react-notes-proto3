@@ -85,7 +85,6 @@ export const notesModel = {
   isMultiSelectMode: select(
     R.propSatisfies(R.gt(R.__, 0))('selectedNotesCount'),
   ),
-
   deleteSelectedNotes: thunk(async (actions, payload, { getState }) => {
     await actions.deleteNotes(getState().notes.selectedNotes)
     actions.clearSelection()
