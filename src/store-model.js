@@ -10,7 +10,7 @@ import {
 import validate from 'aproba'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { listen, select, thunk, useActions, useStore } from 'easy-peasy'
+import { select, thunk, useActions, useStore } from 'easy-peasy'
 import PouchDB from 'pouchdb-browser'
 
 const db = new PouchDB('notes-pdb')
@@ -65,24 +65,8 @@ export const notesModel = {
   selectedIdDict: {},
   clearSelection: clearSelectIdDict,
   toggleNoteMultiSelection: (state, note) => {
-    const isMultiSelectMode = state.isMultiSelectMode
-
-    if (isMultiSelectMode) {
-      return toggleNoteSelection(note)(state)
-    } else {
-      return pipe([clearSelectIdDict, toggleNoteSelection(note)])(state)
-    }
+    return toggleNoteSelection(note)(state)
   },
-  listenOnToggleMultiSelection: listen(on => {
-    on(
-      notesModel.toggleNoteMultiSelection,
-      (actions, payload, { getState }) => {
-        if (getState().notes.selectedNotesCount === 0) {
-          actions.clearSelection()
-        }
-      },
-    )
-  }),
   selectAll: state => {
     const visibleNoteIds = state.visibleNotes.map(_idProp)
     return R.assoc('selectedIdDict')(
