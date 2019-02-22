@@ -38,7 +38,7 @@ const NoteItem = withStyles({
       onClick={() => setNoteSelected({ note, selected: true })}
     >
       {isSingleSelectMode ? (
-        <ListItemAvatar onClick={e => setSelectionModeMultiple()}>
+        <ListItemAvatar onClick={() => setSelectionModeMultiple()}>
           <Avatar style={toMaterialStyle(note._id)}>
             {avatarContent}
           </Avatar>
@@ -57,11 +57,13 @@ const NoteItem = withStyles({
       >
         {note.content}
       </ListItemText>
-      <ListItemSecondaryAction>
-        <IconButton onClick={() => openEditNoteDialog(note)}>
-          <EditIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
+      {isSingleSelectMode && (
+        <ListItemSecondaryAction>
+          <IconButton onClick={() => openEditNoteDialog(note)}>
+            <EditIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      )}
     </ListItem>
   )
 })
