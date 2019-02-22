@@ -13,34 +13,37 @@ import { Avatar, ListItemAvatar } from '@material-ui/core'
 import toMaterialStyle from 'material-color-hash'
 import * as R from 'ramda'
 import { pipe } from '../ramda-helpers'
+import validate from 'aproba'
+
+function noteAvatarText(note) {
+  validate('O', arguments)
+
+  return pipe([R.trim, R.take(2)])(note.content)
+}
 
 function NoteAvatar({ note, isSelected }) {
-  const { isSingleSelectMode } = useNotes()
-  const { setSelectionModeMultiple } = useNotesActions()
-  const avatarContent = pipe([R.trim, R.take(2)])(note.content)
-
-  const baseStyle = toMaterialStyle(note._id)
-
-  const selectedInMultiSelectModeStyle = {
-    backgroundColor: 'rgba(0,0,0,0.75)',
-    color: 'white',
-  }
-
-  const isMultiSelectMode = !isSingleSelectMode
+  const { isMultiSelectMode } = useNotes()
   const isSelectedInMultiSelectMode = isSelected && isMultiSelectMode
+
+  const { setSelectionModeMultiple } = useNotesActions()
+
+  const avatarContent = isSelectedInMultiSelectMode ? (
+    <CheckIcon />
+  ) : (
+    noteAvatarText(note)
+  )
+
+  const style = isSelectedInMultiSelectMode
+    ? {
+        backgroundColor: 'rgba(0,0,0,0.75)',
+        color: 'white',
+      }
+    : toMaterialStyle(note._id)
+
   const handleClick = () => setSelectionModeMultiple()
   return (
-    <ListItemAvatar
-      onClick={handleClick}
-      style={
-        isSelectedInMultiSelectMode
-          ? selectedInMultiSelectModeStyle
-          : baseStyle
-      }
-    >
-      <Avatar>
-        {isSelectedInMultiSelectMode ? <CheckIcon /> : avatarContent}
-      </Avatar>
+    <ListItemAvatar onClick={handleClick} style={style}>
+      <Avatar>{avatarContent}</Avatar>
     </ListItemAvatar>
   )
 }
