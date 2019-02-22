@@ -49,8 +49,6 @@ function toggleNoteSelection(note) {
   return overProp('selectedIdDict')(toggleProp(note._id))
 }
 
-// const turnOffMultiSelectMode = R.assoc('isMultiSelectMode')(false)
-// const turnOnMultiSelectMode = R.assoc('isMultiSelectMode')(true)
 const clearSelectIdDict = R.assoc('selectedIdDict')({})
 
 export const notesModel = {
