@@ -132,7 +132,7 @@ const NotesStore = t
     },
     handleSyncError(err) {
       console.error('syncError', err)
-      return R.assoc('syncError')(err.message)(state)
+      s.syncError = err
     },
   }))
   .actions(s => ({
