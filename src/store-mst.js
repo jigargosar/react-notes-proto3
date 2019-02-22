@@ -59,11 +59,6 @@ const RootStore = t
   }))
   .actions(s => {
     return {
-      async onAN() {
-        s.updateMsgTmp()
-        const note = createNewNote()
-        await db.put(note)
-      },
       setupLS() {
         try {
           const cached = getCached('rs')
@@ -75,6 +70,11 @@ const RootStore = t
           trace(r)
           return setCache('rs', s.snap)
         })
+      },
+      async onAN() {
+        s.updateMsgTmp()
+        const note = createNewNote()
+        await db.put(note)
       },
     }
   })
