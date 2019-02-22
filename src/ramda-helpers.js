@@ -10,6 +10,11 @@ export function overProp(propName) {
   return R.over(R.lensProp(propName))
 }
 
+export function overPath(path) {
+  validate('P', arguments)
+  return R.over(R.lensPath(path))
+}
+
 export function compose(fns) {
   validate('A', arguments)
   fns.forEach((fn, i) => {
@@ -68,8 +73,12 @@ export const mapKeys = R.curry(function mapKeys(fn, obj) {
 
 export const toggleProp = R.curry(function toggleProp(propName, obj) {
   validate('SO', arguments)
-
   return overProp(propName)(R.not)(obj)
+})
+
+export const togglePath = R.curry(function toggleProp(path, obj) {
+  validate('AO', arguments)
+  return overPath(path)(R.not)(obj)
 })
 
 // export function log(...args) {
