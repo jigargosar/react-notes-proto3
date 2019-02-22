@@ -15,25 +15,6 @@ import validate from 'aproba'
 
 const db = new PouchDB('notes-pdb')
 
-function coreExt(s) {
-  validate('O', arguments)
-  return {
-    views: {
-      get snap() {
-        return getSnapshot(s)
-      },
-    },
-    actions: {
-      autorun(a, b) {
-        return addDisposer(s, autorun(a, b))
-      },
-      applySnap(snap) {
-        return applySnapshot(s, snap)
-      },
-    },
-  }
-}
-
 const Note = t.model('Note', {
   _id: t.identifier,
   _rev: t.maybeNull(t.string),
@@ -129,5 +110,24 @@ function hotDispose(cb) {
         debugger
       }
     })
+  }
+}
+
+function coreExt(s) {
+  validate('O', arguments)
+  return {
+    views: {
+      get snap() {
+        return getSnapshot(s)
+      },
+    },
+    actions: {
+      autorun(a, b) {
+        return addDisposer(s, autorun(a, b))
+      },
+      applySnap(snap) {
+        return applySnapshot(s, snap)
+      },
+    },
   }
 }
