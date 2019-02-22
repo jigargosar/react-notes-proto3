@@ -60,7 +60,7 @@ const RootStore = t
       try {
         s.applySnap(getCached('rs'))
       } catch (e) {
-        console.warn('ignoring cache', e)
+        console.warn('unable to apply cache snapshot', e)
       }
       s.autorun(() => setCache('rs', s.snap))
       return s
