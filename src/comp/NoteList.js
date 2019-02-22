@@ -22,10 +22,10 @@ function noteAvatarText(note) {
 }
 
 function NoteAvatar({ note, isSelected }) {
-  const { isMultiSelectMode } = useNotes()
+  const { isMultiSelectMode, isSingleSelectMode } = useNotes()
   const isSelectedInMultiSelectMode = isSelected && isMultiSelectMode
 
-  const { setSelectionModeMultiple } = useNotesActions()
+  const { setSelectionModeMultiple, setNoteSelected } = useNotesActions()
 
   const avatarContent = isSelectedInMultiSelectMode ? (
     <CheckIcon />
@@ -40,7 +40,13 @@ function NoteAvatar({ note, isSelected }) {
       }
     : toMaterialStyle(note._id)
 
-  const handleClick = () => setSelectionModeMultiple()
+  const handleClick = e => {
+    e.preventDefault()
+    setNoteSelected({ note, selected: !isSelected })
+    if (isSingleSelectMode) {
+      setSelectionModeMultiple()
+    }
+  }
 
   return (
     <ListItemAvatar onClick={handleClick} style={style}>
@@ -61,11 +67,14 @@ const NoteItem = withStyles({
   const { openEditNoteDialog, setNoteSelected } = useNotesActions()
 
   const handleClick = isMultiSelectMode
-    ? () =>
+    ? e => {
+        debugger
+        if (e.defaultPrevented) return
         setNoteSelected({
           note,
           selected: !isSelected,
         })
+      }
     : null
   return (
     <ListItem
