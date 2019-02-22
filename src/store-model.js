@@ -67,7 +67,9 @@ export const notesModel = {
   ]),
   setNoteSelected: (state, { selected, note }) => {
     if (state.selectionMode === 'single') {
-      return R.assoc('selectedIdDict')({ [note._id]: selected })(state)
+      return R.assoc('selectedIdDict')({
+        [note._id]: selected,
+      })(state)
     } else if (state.selectionMode === 'multiple') {
       return R.assocPath(['selectedIdDict', note._id])(selected)(state)
     }
@@ -136,7 +138,10 @@ export const notesModel = {
   }),
   deleteNotes: thunk(async (actions, notes) => {
     const bulkNotes = notes.map(
-      R.mergeLeft({ _deleted: true, modifiedAt: Date.now() }),
+      R.mergeLeft({
+        _deleted: true,
+        modifiedAt: Date.now(),
+      }),
     )
     const bulkRes = await db.bulkDocs(bulkNotes)
     console.log(bulkRes)
