@@ -71,7 +71,7 @@ export const notesModel = {
   listenOnSelectionChange: listen(on => {
     on(notesModel.setNoteSelected, (actions, payload, { getState }) => {
       const selectedNotesCount = getState().notes.selectedNotesCount
-      console.log(`selectedNotesCount`, selectedNotesCount)
+      console.debug(`selectedNotesCount`, selectedNotesCount)
       if (selectedNotesCount === 0) {
         actions.setSelectionModeSingle()
       }
