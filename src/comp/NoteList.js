@@ -19,6 +19,7 @@ const NoteItem = withStyles({
   selected: {},
 })(({ note, isSelected, classes }) => {
   const { openEditNoteDialog, setNoteSelected } = useNotesActions()
+  const { isSingleSelectMode } = useNotes()
 
   return (
     <ListItem
