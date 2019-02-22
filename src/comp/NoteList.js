@@ -6,7 +6,8 @@ import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
 import List from '@material-ui/core/List'
-import Checkbox from '@material-ui/core/Checkbox'
+// import Checkbox from '@material-ui/core/Checkbox'
+import CheckIcon from '@material-ui/icons/Check'
 import { EditNoteDialog } from './EditNoteDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Avatar } from '@material-ui/core'
@@ -30,6 +31,11 @@ const NoteItem = withStyles({
   } = useNotesActions()
   const avatarContent = pipe([R.trim, R.take(2)])(note.content)
 
+  const avatarStyle = {
+    ...toMaterialStyle(note._id),
+    width: 48,
+    height: 48,
+  }
   return (
     <ListItem
       // disableGutters={!isSingleSelectMode}
@@ -45,19 +51,25 @@ const NoteItem = withStyles({
     >
       {isSingleSelectMode ? (
         <Avatar
-          style={{ ...toMaterialStyle(note._id), width: 48, height: 48 }}
+          style={avatarStyle}
           onClick={() => setSelectionModeMultiple()}
         >
           {avatarContent}
         </Avatar>
       ) : (
-        <Checkbox
-          checked={isSelected}
-          tabIndex={-1}
-          onChange={e =>
-            setNoteSelected({ note, selected: e.target.checked })
-          }
-        />
+        <Avatar
+          style={avatarStyle}
+          onClick={() => setSelectionModeMultiple()}
+        >
+          {isSelected ? <CheckIcon /> : avatarContent}
+        </Avatar>
+        // <Checkbox
+        //   checked={isSelected}
+        //   tabIndex={-1}
+        //   onChange={e =>
+        //     setNoteSelected({ note, selected: e.target.checked })
+        //   }
+        // />
       )}
       <ListItemText
       // style={{ padding: 0 }}
