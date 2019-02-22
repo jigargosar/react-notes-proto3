@@ -12,8 +12,6 @@ import SelectAllIcon from '@material-ui/icons/SelectAll'
 import SelectOffIcon from 'mdi-material-ui/SelectOff'
 import DeleteAllIcon from '@material-ui/icons/DeleteSweep'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined'
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 
 import React, { useRef, useState } from 'react'
 import clsx from 'clsx'
@@ -56,8 +54,7 @@ function HeaderIconBtn(props) {
 }
 
 function MoreMenu() {
-  const { openSettingsDialog, toggleSelectionMode } = useNotesActions()
-  const { isMultiSelectMode } = useNotes()
+  const { openSettingsDialog } = useNotesActions()
 
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -67,10 +64,6 @@ function MoreMenu() {
   const handleOpen = () => setMenuOpen(true)
   const handleSyncSettings = () => {
     openSettingsDialog()
-    closeMenu()
-  }
-  const handleBatchMode = () => {
-    toggleSelectionMode()
     closeMenu()
   }
   const anchorRef = useRef(null)
@@ -97,16 +90,6 @@ function MoreMenu() {
         open={menuOpen}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleBatchMode}>
-          <ListItemIcon>
-            {isMultiSelectMode ? (
-              <CheckBoxOutlinedIcon />
-            ) : (
-              <CheckBoxOutlineBlankIcon />
-            )}
-          </ListItemIcon>
-          <ListItemText>Select Multiple</ListItemText>
-        </MenuItem>
         <MenuItem onClick={handleSyncSettings}>
           <ListItemIcon>
             <SyncIcon />
