@@ -5,6 +5,7 @@ import {
   objFromList,
   overProp,
   pipe,
+  toggleProp,
 } from './ramda-helpers'
 import validate from 'aproba'
 import nanoid from 'nanoid'
@@ -44,41 +45,44 @@ function setLookupFromDocs(docs) {
   return R.assoc('byId')(pouchDocsToIdLookup(docs))
 }
 
+function toggleNoteSelection(note) {
+  return overProp('selectedIdDict')(toggleProp(note._id))
+}
+
+const turnOffMultiSelectMode = R.assoc('isMultiSelectMode')(false)
+const turnOnMultiSelectMode = R.assoc('isMultiSelectMode')(true)
+const clearSelectIdDict = R.assoc('selectedIdDict')({})
+
 export const notesModel = {
   byId: {},
   visibleNotes: select(getVisibleNotes),
   visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
-  selectionMode: 'single',
-  turnOffMultiSelectMode: R.assoc('selectionMode', 'single'),
-  turnOnMultiSelectMode: R.assoc('selectionMode', 'multiple'),
   isMultiSelectMode: false,
   selectedIdDict: {},
-  clearSelection: pipe([
-    R.assoc('selectedIdDict')({}),
-    R.assoc('selectionMode', 'single'),
-  ]),
-  setNoteSelected: (state, { selected, note }) => {
-    if (state.selectionMode === 'single') {
-      return R.assoc('selectedIdDict')({
-        [note._id]: selected,
-      })(state)
-    } else if (state.selectionMode === 'multiple') {
-      return R.assocPath(['selectedIdDict', note._id])(selected)(state)
+  clearSelection: pipe([clearSelectIdDict, turnOffMultiSelectMode]),
+  toggleNoteMultiSelection: (state, note) => {
+    const isMultiSelectMode = state.isMultiSelectMode
+
+    if (isMultiSelectMode) {
+      return toggleNoteSelection(note)(state)
+    } else {
+      return pipe([
+        turnOnMultiSelectMode,
+        clearSelectIdDict,
+        toggleNoteSelection(note),
+      ])(state)
     }
   },
-  toggleNoteMultiSelection: thunk((actions, note, { getState }) => {
-    const selected = !getState().notes.selectedIdDict[note._id]
-    actions.setNoteSelected({ note, selected })
-  }),
-  listenOnSelectionChange: listen(on => {
-    on(notesModel.setNoteSelected, (actions, payload, { getState }) => {
-      const selectedNotesCount = getState().notes.selectedNotesCount
-      console.debug(`selectedNotesCount`, selectedNotesCount)
-      if (selectedNotesCount === 0) {
-        actions.turnOffMultiSelectMode()
-      }
-    })
+  listenOnToggleMultiSelection: listen(on => {
+    on(
+      notesModel.toggleNoteMultiSelection,
+      (actions, payload, { getState }) => {
+        if (getState().notes.selectedNotesCount === 0) {
+          actions.clearSelection()
+        }
+      },
+    )
   }),
   selectAll: state => {
     const visibleNoteIds = state.visibleNotes.map(_idProp)
@@ -87,7 +91,11 @@ export const notesModel = {
     )(state)
   },
   selectedNotes: select(state => {
+    if (R.is(Function)(state)) {
+      debugger
+    }
     return pipe([
+      R.tap(console.log),
       R.prop('selectedIdDict'),
       R.filter(R.identity),
       R.keys,

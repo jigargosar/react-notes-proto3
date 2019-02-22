@@ -53,23 +53,25 @@ const NoteItem = withStyles({
   },
   selected: {},
 })(({ note, isSelected, classes }) => {
+  const { isMultiSelectMode } = useNotes()
+
   const {
     openEditNoteDialog,
     toggleNoteMultiSelection,
-    turnOnMultiSelectMode,
   } = useNotesActions()
 
   function handleClick(e) {
     validate('O', arguments)
     if (e.defaultPrevented) return
-    toggleNoteMultiSelection(note)
+    if (isMultiSelectMode) {
+      toggleNoteMultiSelection(note)
+    }
   }
 
   async function handleAvatarClick(e) {
     validate('O', arguments)
     e.preventDefault()
-    await toggleNoteMultiSelection(note)
-    turnOnMultiSelectMode()
+    toggleNoteMultiSelection(note)
   }
   return (
     <ListItem
