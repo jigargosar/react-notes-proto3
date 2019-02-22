@@ -10,8 +10,8 @@ import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
 import idx from 'idx.macro'
-import { autorun } from 'mobx'
-import { setCache } from './dom-helpers'
+import { autorun, trace } from 'mobx'
+import { getCached, setCache } from './dom-helpers'
 
 const db = new PouchDB('notes-pdb')
 
@@ -43,11 +43,6 @@ const RootStore = t
     msg: 'HW RS',
   })
   .views(s => ({
-    async onAN() {
-      const note = createNewNote()
-      await db.put(note)
-      // await db.put(note)
-    },
     get vn() {
       return pipe([
         R.prop('byId'),
@@ -62,11 +57,6 @@ const RootStore = t
     },
   }))
   .actions(s => ({
-    addDisposer(d) {
-      return addDisposer(s, d)
-    },
-  }))
-  .actions(s => ({
     autorun(a, b) {
       return addDisposer(s, autorun(a, b))
     },
@@ -75,11 +65,25 @@ const RootStore = t
     },
   }))
   .actions(s => ({
+    async onAN() {
+      s.setMsg()
+      const note = createNewNote()
+      await db.put(note)
+    },
     setMsg() {
       s.msg = faker.name.lastName()
     },
     setupLS() {
-      s.autorun(() => setCache('rs', s.snap))
+      try {
+        const cached = getCached('rs')
+        s.applySnap(cached)
+      } catch (e) {
+        debugger
+      }
+      s.autorun(r => {
+        trace(r)
+        return setCache('rs', s.snap)
+      })
     },
   }))
 
@@ -92,7 +96,8 @@ export { rs }
 
 if (module.hot) {
   try {
-    rs.applySnap(idx(module, _ => _.hot.data.snap) || dSnap)
+    const snap = idx(module, _ => _.hot.data.snap)
+    if (snap) rs.applySnap(snap)
   } catch (e) {
     debugger
   }
