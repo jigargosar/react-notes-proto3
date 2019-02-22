@@ -53,7 +53,6 @@ export const notesModel = {
   setSelectionModeSingle: R.assoc('selectionMode', 'single'),
   setSelectionModeMultiple: R.assoc('selectionMode', 'multiple'),
   isMultiSelectMode: select(R.propEq('selectionMode')('multiple')),
-  isSingleSelectMode: select(R.propEq('selectionMode')('single')),
   selectedIdDict: {},
   clearSelection: pipe([
     R.assoc('selectedIdDict')({}),

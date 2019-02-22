@@ -53,7 +53,6 @@ const NoteItem = withStyles({
   },
   selected: {},
 })(({ note, isSelected, classes }) => {
-  const { isSingleSelectMode } = useNotes()
   const {
     openEditNoteDialog,
     toggleNoteSelection,
@@ -70,9 +69,7 @@ const NoteItem = withStyles({
     validate('O', arguments)
     e.preventDefault()
     await toggleNoteSelection(note)
-    if (isSingleSelectMode) {
-      setSelectionModeMultiple()
-    }
+    setSelectionModeMultiple()
   }
   return (
     <ListItem
