@@ -5,11 +5,10 @@ import {
   types as t,
 } from 'mobx-state-tree'
 import faker from 'faker'
-import { pipe } from './ramda-helpers'
+import { dotPath, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
-import idx from 'idx.macro'
 import { autorun, trace } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
@@ -109,8 +108,10 @@ export { rs }
 // noinspection JSUnresolvedVariable
 if (module.hot) {
   try {
-    const snap = idx(module, _ => _.hot.data.snap)
-    if (snap) rs.applySnap(snap)
+    R.compose(
+      R.unless(R.isNil)(rs.applySnap),
+      dotPath('hot.data.snap'),
+    )(module)
   } catch (e) {
     debugger
   }
