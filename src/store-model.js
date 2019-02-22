@@ -60,8 +60,12 @@ export const notesModel = {
   isMultiSelectMode: select(R.propEq('selectionMode')('multiple')),
   isSingleSelectMode: select(R.propEq('selectionMode')('single')),
   selectedIdDict: {},
-  clearSelection: R.assoc('selectedIdDict')({}),
+  clearSelection: pipe([
+    R.assoc('selectedIdDict')({}),
+    R.assoc('selectionMode', 'single'),
+  ]),
   setNoteSelected: (state, { selected, note }) => {
+    console.log(state.selectedNotesCount)
     if (state.selectionMode === 'single') {
       return R.assoc('selectedIdDict')({ [note._id]: selected })(state)
     } else if (state.selectionMode === 'multiple') {
