@@ -54,6 +54,14 @@ const NotesStore = t
       validate('A', arguments)
       s.byId.replace(pouchDocsToIdLookup(docs))
     },
+    put(note) {
+      validate('O', arguments)
+      s.byId.put(note)
+    },
+    remove(note) {
+      validate('O', arguments)
+      s.byId.delete(note.id)
+    },
   }))
 
 const RootStore = t
@@ -74,6 +82,13 @@ const RootStore = t
   .actions(s => ({
     _updateMsgTmp() {
       s.msg = faker.name.lastName()
+    },
+    _handleChange(change) {
+      validate('OZZ', arguments)
+      console.debug(`change`, change)
+      const note = change.doc
+
+      change.deleted ? s.notes.remove(note) : s.notes.put(note)
     },
     initCache() {
       try {
@@ -103,15 +118,16 @@ const RootStore = t
         const docs = rows.map(R.prop('doc'))
         console.log(`docs`, docs)
         s.notes.replaceAll(docs)
-        // const changes = db
-        //   .changes({
-        //     include_docs: true,
-        //     live: true,
-        //     since: 'now',
-        //   })
-        //   .on('change', actions.handleChange)
-        //   .on('error', console.error)
+        const changes = db
+          .changes({
+            include_docs: true,
+            live: true,
+            since: 'now',
+          })
+          .on('change', s._handleChange)
+          .on('error', console.error)
         // actions.startSync()
+        return { changes }
       }),
     }
   })
