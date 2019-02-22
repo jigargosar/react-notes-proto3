@@ -92,8 +92,6 @@ const NotesStore = t
 
       change.deleted ? s.remove(note) : s.put(note)
     },
-  }))
-  .actions(s => ({
     initPouch: f(initPouchNotes(s)),
   }))
 
