@@ -71,7 +71,7 @@ const RootStore = t
           return setCache('rs', s.snap)
         })
       },
-      async onAN() {
+      async onAddNewNoteClicked() {
         s.updateMsgTmp()
         const note = createNewNote()
         await db.put(note)

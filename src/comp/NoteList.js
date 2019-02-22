@@ -100,7 +100,7 @@ export const NoteList = mc(function NoteList() {
     <>
       <div className="pa3 flex">
         <div className="flex-grow-1">{rs.msg}</div>
-        <Fab onClick={rs.onAN}>AN</Fab>
+        <Fab onClick={rs.onAddNewNoteClicked}>AN</Fab>
       </div>
       <List>
         {visibleNotes.map(note => {
