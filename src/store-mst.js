@@ -63,6 +63,35 @@ const NotesStore = t
       s.byId.delete(Note.create(doc).id)
     },
   }))
+  .actions(s => ({
+    _handleChange(change) {
+      validate('OZZ', arguments)
+      console.debug(`change`, ...arguments)
+      const note = change.doc
+
+      change.deleted ? s.remove(note) : s.put(note)
+    },
+  }))
+  .actions(s => ({
+    initPouch: f(function*() {
+      const { rows } = yield db.allDocs({
+        include_docs: true,
+      })
+      const docs = rows.map(R.prop('doc'))
+      console.log(`docs`, docs)
+      s.replaceAll(docs)
+      const changes = db
+        .changes({
+          include_docs: true,
+          live: true,
+          since: 'now',
+        })
+        .on('change', s._handleChange)
+        .on('error', console.error)
+      // actions.startSync()
+      return { changes }
+    }),
+  }))
 
 const RootStore = t
   .model('RootStore', {
@@ -111,24 +140,9 @@ const RootStore = t
         await db.put(note)
         s._updateMsgTmp()
       },
-      initPouch: f(function*() {
-        const { rows } = yield db.allDocs({
-          include_docs: true,
-        })
-        const docs = rows.map(R.prop('doc'))
-        console.log(`docs`, docs)
-        s.notes.replaceAll(docs)
-        const changes = db
-          .changes({
-            include_docs: true,
-            live: true,
-            since: 'now',
-          })
-          .on('change', s._handleChange)
-          .on('error', console.error)
-        // actions.startSync()
-        return { changes }
-      }),
+      initPouch() {
+        return s.notes.initPouch()
+      },
     }
   })
 
