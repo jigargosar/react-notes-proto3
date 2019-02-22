@@ -1,6 +1,7 @@
 import {
   addDisposer,
   applySnapshot,
+  flow as f,
   getSnapshot,
   types as t,
 } from 'mobx-state-tree'
@@ -83,8 +84,8 @@ const RootStore = t
         await db.put(note)
         s._updateMsgTmp()
       },
-      async initPouch() {
-        const { rows } = await db.allDocs({
+      initPouch: f(function*() {
+        const { rows } = yield db.allDocs({
           include_docs: true,
         })
         const docs = rows.map(R.prop('doc'))
@@ -99,7 +100,7 @@ const RootStore = t
         //   .on('change', actions.handleChange)
         //   .on('error', console.error)
         // actions.startSync()
-      },
+      }),
     }
   })
 
