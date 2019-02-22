@@ -54,24 +54,19 @@ const RootStore = t
     },
   }))
   .actions(s => ({
-    onBeforeDestroy() {
-      alert('destroy')
-    },
     setMsg() {
       s.msg = faker.name.lastName()
     },
   }))
 
-const iSnap = { notes: {} }
-const rs = RootStore.create(iSnap)
-
-snap(rs) //?
+const dSnap = { notes: {} }
+const rs = RootStore.create(dSnap)
 
 export { rs }
 
 if (module.hot) {
   try {
-    ap(rs, idx(module, _ => _.hot.data.snap) || iSnap)
+    ap(rs, idx(module, _ => _.hot.data.snap) || dSnap)
   } catch (e) {
     debugger
   }
