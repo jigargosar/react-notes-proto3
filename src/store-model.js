@@ -58,10 +58,6 @@ export const notesModel = {
   visibleNotes: select(getVisibleNotes),
   visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
-  isMultiSelectMode: select(
-    R.propSatisfies(R.gt(R.__, 0))('selectedNotesCount'),
-  ),
-
   selectedIdDict: {},
   clearSelection: clearSelectIdDict,
   toggleNoteMultiSelection: (state, note) => {
@@ -86,6 +82,10 @@ export const notesModel = {
     ])(state)
   }),
   selectedNotesCount: select(pipe([R.prop('selectedNotes'), R.length])),
+  isMultiSelectMode: select(
+    R.propSatisfies(R.gt(R.__, 0))('selectedNotesCount'),
+  ),
+
   deleteSelectedNotes: thunk(async (actions, payload, { getState }) => {
     await actions.deleteNotes(getState().notes.selectedNotes)
     actions.clearSelection()
