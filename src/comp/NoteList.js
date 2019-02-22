@@ -21,7 +21,7 @@ function noteAvatarText(note) {
   return pipe([R.trim, R.take(2)])(note.content)
 }
 
-function NoteAvatar({ note, isSelected }) {
+function NoteAvatar({ note, isSelected, ...otherProps }) {
   const { isMultiSelectMode, isSingleSelectMode } = useNotes()
   const isSelectedInMultiSelectMode = isSelected && isMultiSelectMode
 
@@ -52,7 +52,7 @@ function NoteAvatar({ note, isSelected }) {
   }
 
   return (
-    <ListItemAvatar onClick={handleClick} style={style}>
+    <ListItemAvatar onClick={handleClick} style={style} {...otherProps}>
       <Avatar>{avatarContent}</Avatar>
     </ListItemAvatar>
   )
@@ -66,15 +66,28 @@ const NoteItem = withStyles({
   },
   selected: {},
 })(({ note, isSelected, classes }) => {
-  const { isMultiSelectMode } = useNotes()
-  const { openEditNoteDialog, toggleNoteSelection } = useNotesActions()
+  const { isMultiSelectMode, isSingleSelectMode } = useNotes()
+  const {
+    openEditNoteDialog,
+    toggleNoteSelection,
+    setSelectionModeMultiple,
+  } = useNotesActions()
 
-  const handleClick = isMultiSelectMode
-    ? e => {
-        if (e.defaultPrevented) return
-        toggleNoteSelection(note)
-      }
-    : null
+  function handleClick(e) {
+    validate('O', arguments)
+    if (e.defaultPrevented) return
+
+    toggleNoteSelection(note)
+  }
+
+  function handleAvatarClick(e) {
+    validate('O', arguments)
+    e.preventDefault()
+    toggleNoteSelection(note)
+    if (isSingleSelectMode) {
+      setSelectionModeMultiple()
+    }
+  }
   return (
     <ListItem
       selected={isSelected}
@@ -82,7 +95,11 @@ const NoteItem = withStyles({
       onClick={handleClick}
       // dense={true}
     >
-      <NoteAvatar note={note} isSelected={isSelected} />
+      <NoteAvatar
+        note={note}
+        isSelected={isSelected}
+        onClick={handleAvatarClick}
+      />
       <ListItemText>{note.content}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton onClick={() => openEditNoteDialog(note)}>
