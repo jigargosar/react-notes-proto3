@@ -119,9 +119,9 @@ const NotesStore = t
         s.cancel()
       }
     },
-    handleSyncUpdate(info) {
+    _handleSyncUpdate(info) {
       const sync = s.sync
-      console.debug('handleSyncUpdate', info, sync)
+      console.debug('_handleSyncUpdate', info, sync)
       const syncState = sync
         ? {
             push: R.path(['push', 'state'])(sync),
@@ -147,11 +147,11 @@ const NotesStore = t
               live: true,
               retry: true,
             })
-            .on('change', s.handleSyncUpdate)
-            .on('paused', s.handleSyncUpdate)
-            .on('active', s.handleSyncUpdate)
-            .on('complete', s.handleSyncUpdate)
-            .on('denied', s.handleSyncUpdate)
+            .on('change', s._handleSyncUpdate)
+            .on('paused', s._handleSyncUpdate)
+            .on('active', s._handleSyncUpdate)
+            .on('complete', s._handleSyncUpdate)
+            .on('denied', s._handleSyncUpdate)
             .on('error', s.handleSyncError)
         } catch (e) {
           debugger
