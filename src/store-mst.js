@@ -17,13 +17,13 @@ const RootStore = t.model('RootStore', {
 })
 
 const iSnap = { notes: {} }
-const store = RootStore.create(iSnap)
+const rs = RootStore.create(iSnap)
 
-snap(store) //?
+snap(rs) //?
 
-export { store }
+export { rs }
 
 if (module.hot) {
-  ap(store, module.hot.data || iSnap)
-  module.hot.dispose(data => (data.snap = snap(store)))
+  ap(rs, module.hot.data || iSnap)
+  module.hot.dispose(data => (data.snap = snap(rs)))
 }
