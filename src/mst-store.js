@@ -1,4 +1,8 @@
-import { getSnapshot as snap, types as t } from 'mobx-state-tree'
+import {
+  applySnapshot as ap,
+  getSnapshot as snap,
+  types as t,
+} from 'mobx-state-tree'
 
 const Note = t.model('Note', {
   _id: t.identifier,
@@ -12,8 +16,14 @@ const RootStore = t.model('RootStore', {
   notes: NotesStore,
 })
 
-const store = RootStore.create({ notes: {} })
+const iSnap = { notes: {} }
+const store = RootStore.create(iSnap)
 
 snap(store) //?
 
 export { store }
+
+if (module.hot) {
+  ap(store, module.hot.data || iSnap)
+  module.hot.dispose(data => (data.snap = snap(store)))
+}
