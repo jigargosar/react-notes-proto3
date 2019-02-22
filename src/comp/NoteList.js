@@ -11,6 +11,8 @@ import { EditNoteDialog } from './EditNoteDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Avatar, ListItemAvatar } from '@material-ui/core'
 import toMaterialStyle from 'material-color-hash'
+import * as R from 'ramda'
+import { pipe } from '../ramda-helpers'
 
 const NoteItem = withStyles({
   root: {
@@ -23,6 +25,7 @@ const NoteItem = withStyles({
   const { openEditNoteDialog, setNoteSelected } = useNotesActions()
   const { isSingleSelectMode } = useNotes()
 
+  const avatarContent = pipe([R.trim, R.take(2)])(note.content)
   return (
     <ListItem
       // disableGutters={true}
@@ -31,7 +34,9 @@ const NoteItem = withStyles({
     >
       {isSingleSelectMode ? (
         <ListItemAvatar>
-          <Avatar style={toMaterialStyle(note._id)}>N</Avatar>
+          <Avatar style={toMaterialStyle(note._id)}>
+            {avatarContent}
+          </Avatar>
         </ListItemAvatar>
       ) : (
         <Checkbox
