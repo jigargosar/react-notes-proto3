@@ -10,6 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { EditNoteDialog } from './EditNoteDialog'
 import { withStyles } from '@material-ui/core/styles'
 import { Avatar, ListItemAvatar } from '@material-ui/core'
+import toMaterialStyle from 'material-color-hash'
 
 const NoteItem = withStyles({
   root: {
@@ -30,7 +31,7 @@ const NoteItem = withStyles({
     >
       {isSingleSelectMode ? (
         <ListItemAvatar>
-          <Avatar>N</Avatar>
+          <Avatar style={toMaterialStyle(note._id)}>N</Avatar>
         </ListItemAvatar>
       ) : (
         <Checkbox
