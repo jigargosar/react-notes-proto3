@@ -70,7 +70,7 @@ export const notesModel = {
     if (isMultiSelectMode) {
       return toggleNoteSelection(note)(state)
     } else {
-      return pipe([toggleNoteSelection(note)])(state)
+      return pipe([clearSelectIdDict, toggleNoteSelection(note)])(state)
     }
   },
   listenOnToggleMultiSelection: listen(on => {
