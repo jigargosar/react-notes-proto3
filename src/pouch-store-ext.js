@@ -26,11 +26,11 @@ export function pouchStoreExt(s) {
       },
     },
     actions: {
-      _putDoc(doc) {
+      _putPouchDoc(doc) {
         validate('O', arguments)
         s.byId.put(doc)
       },
-      _removeDoc(doc) {
+      _removePouchDoc(doc) {
         validate('O', arguments)
         s.byId.delete(doc._id)
       },
@@ -39,7 +39,7 @@ export function pouchStoreExt(s) {
         console.debug(`change`, ...arguments)
         const doc = change.doc
 
-        change.deleted ? s._removeDoc(doc) : s._putDoc(doc)
+        change.deleted ? s._removePouchDoc(doc) : s._putPouchDoc(doc)
       },
       initPouch: f(function*(db) {
         const { rows } = yield db.allDocs({
