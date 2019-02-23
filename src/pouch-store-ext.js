@@ -32,7 +32,7 @@ export function pouchStoreExt(modelType) {
         validate('O', arguments)
         s.byId.put(s.docToModel(doc))
       },
-      remove(doc) {
+      removeDoc(doc) {
         validate('O', arguments)
         s.byId.delete(doc._id)
       },
@@ -41,7 +41,7 @@ export function pouchStoreExt(modelType) {
         console.debug(`change`, ...arguments)
         const doc = change.doc
 
-        change.deleted ? s.remove(doc) : s.putDoc(doc)
+        change.deleted ? s.removeDoc(doc) : s.putDoc(doc)
       },
       initPouch: f(function*(db) {
         const { rows } = yield db.allDocs({
