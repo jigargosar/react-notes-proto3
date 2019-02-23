@@ -5,7 +5,7 @@ import { it } from 'param.macro'
 import { objFromList } from './ramda-helpers'
 import { getNodeName } from './mst-helpers'
 
-function createPouchDocsStore(modelType) {
+export function createPouchStore(modelType) {
   const modelName =
     modelType.name === 'AnonymousModel' ? 'AnonDoc' : modelType.name
   validate('O', arguments)

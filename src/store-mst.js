@@ -1,20 +1,18 @@
 import {
   addDisposer,
   applySnapshot,
-  flow as f,
   getSnapshot,
   types as t,
 } from 'mobx-state-tree'
 import faker from 'faker'
-import { dotPath, objFromList } from './ramda-helpers'
+import { dotPath } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
-import { autorun, values } from 'mobx'
+import { autorun } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
-import { it } from 'param.macro'
-import { getNodeName } from './mst-helpers'
+import { createPouchStore } from './PouchDocStore'
 
 const db = new PouchDB('notes-pdb')
 
@@ -42,60 +40,7 @@ const Note = t
     },
   }))
 
-function initPouchNotes(s) {
-  return function*() {
-    const { rows } = yield db.allDocs({
-      include_docs: true,
-    })
-    const docs = rows.map(it.doc)
-    console.log(`[${getNodeName(s)}] initial docs`, docs)
-    s.replaceAll(docs)
-    const changes = db
-      .changes({
-        include_docs: true,
-        live: true,
-        since: 'now',
-      })
-      .on('change', s._handleChange)
-      .on('error', console.error)
-    s._startSync()
-    return { changes }
-  }
-}
-
-const NotesStore = t
-  .model('NotesStore', {
-    byId: t.map(Note),
-  })
-  .views(s => ({
-    get all() {
-      return values(s.byId)
-    },
-  }))
-  .actions(s => ({
-    replaceAll(docs) {
-      validate('A', arguments)
-      s.byId.replace(pouchDocsToIdLookup(docs))
-    },
-    put(doc) {
-      validate('O', arguments)
-      s.byId.put(Note.create(doc))
-    },
-    remove(doc) {
-      validate('O', arguments)
-      s.byId.delete(doc._id)
-    },
-  }))
-  .actions(s => ({
-    _handleChange(change) {
-      validate('OZZ', arguments)
-      console.debug(`change`, ...arguments)
-      const doc = change.doc
-
-      change.deleted ? s.remove(doc) : s.put(doc)
-    },
-    initPouch: f(initPouchNotes(s)),
-  }))
+const NotesStore = createPouchStore(Note)
   .props({
     remoteUrl: '',
   })
@@ -260,13 +205,6 @@ if (process.env.NODE_ENV !== 'production') {
 rs.initPouch()
 
 export { rs }
-
-// Helpers
-
-function pouchDocsToIdLookup(docs) {
-  validate('A', arguments)
-  return objFromList(it._id)(docs)
-}
 
 // BOILER PLATE
 
