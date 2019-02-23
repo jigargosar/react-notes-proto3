@@ -87,7 +87,7 @@ const NotesStore = t
     },
   }))
   .props({
-    remoteUrl: t.maybeNull(t.string),
+    remoteUrl: '',
   })
   .volatile(() => {
     let sync = null
