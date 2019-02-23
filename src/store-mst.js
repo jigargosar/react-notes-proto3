@@ -155,10 +155,8 @@ const RootStore = t
   }))
   .actions(s => {
     return {
-      afterCreate() {
-        return s.initCache()
-      },
-      initPouch() {
+      init() {
+        s.initCache()
         s.notes.initPouch(db)
         s.notes._startSync()
       },
@@ -203,7 +201,7 @@ if (process.env.NODE_ENV !== 'production') {
   window.rs = rs
 }
 
-rs.initPouch()
+rs.init()
 
 export { rs }
 
