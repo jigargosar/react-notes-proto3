@@ -2,18 +2,13 @@ import * as R from 'ramda'
 import {
   _idProp,
   isNotNil,
-  objFromList,
   overProp,
   pipe,
   toggleProp,
 } from './ramda-helpers'
-import validate from 'aproba'
-import nanoid from 'nanoid'
-import faker from 'faker'
 import { select, thunk } from 'easy-peasy'
-import PouchDB from 'pouchdb-browser'
 
-const db = new PouchDB('notes-pdb')
+// const db = new PouchDB('notes-pdb')
 
 // let sync = null
 //
@@ -24,15 +19,15 @@ const db = new PouchDB('notes-pdb')
 //   }
 // }
 
-function createNewNote() {
-  return {
-    _id: `m_${nanoid()}`,
-    _rev: null,
-    content: faker.lorem.lines(),
-    createdAt: Date.now(),
-    modifiedAt: Date.now(),
-  }
-}
+// function createNewNote() {
+//   return {
+//     _id: `m_${nanoid()}`,
+//     _rev: null,
+//     content: faker.lorem.lines(),
+//     createdAt: Date.now(),
+//     modifiedAt: Date.now(),
+//   }
+// }
 
 const getVisibleNotes = pipe([
   R.prop('byId'),
@@ -40,10 +35,10 @@ const getVisibleNotes = pipe([
   R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
 ])
 
-function setLookupFromDocs(docs) {
-  validate('A', arguments)
-  return R.assoc('byId')(pouchDocsToIdLookup(docs))
-}
+// function setLookupFromDocs(docs) {
+//   validate('A', arguments)
+//   return R.assoc('byId')(pouchDocsToIdLookup(docs))
+// }
 
 export const notesModel = {
   byId: {},
@@ -108,48 +103,48 @@ export const notesModel = {
   //   actions.closeEditNoteDialog()
   // }),
 
-  addNewNote: thunk(async () => {
-    const note = createNewNote()
-    await db.put(note)
-  }),
-  deleteNotes: thunk(async (actions, notes) => {
-    const bulkNotes = notes.map(
-      R.mergeLeft({
-        _deleted: true,
-        modifiedAt: Date.now(),
-      }),
-    )
-    const bulkRes = await db.bulkDocs(bulkNotes)
-    console.log(bulkRes)
-  }),
-
-  replaceAll: (state, docs) => setLookupFromDocs(docs)(state),
-  handleChange: (state, change) => {
-    console.debug(`change`, change)
-    const note = change.doc
-    const mergeNote = R.assocPath(['byId', note._id])(note)
-    const omitNote = R.dissocPath(['byId', note._id])
-
-    const update = change.deleted ? omitNote : mergeNote
-    return update(state)
-  },
-  initPouch: thunk(async actions => {
-    const { rows } = await db.allDocs({
-      include_docs: true,
-    })
-    const docs = rows.map(R.prop('doc'))
-    actions.replaceAll(docs)
-    const changes = db
-      .changes({
-        include_docs: true,
-        live: true,
-        since: 'now',
-      })
-      .on('change', actions.handleChange)
-      .on('error', console.error)
-    // actions.startSync()
-    return { changes }
-  }),
+  // addNewNote: thunk(async () => {
+  //   const note = createNewNote()
+  //   await db.put(note)
+  // }),
+  // deleteNotes: thunk(async (actions, notes) => {
+  //   const bulkNotes = notes.map(
+  //     R.mergeLeft({
+  //       _deleted: true,
+  //       modifiedAt: Date.now(),
+  //     }),
+  //   )
+  //   const bulkRes = await db.bulkDocs(bulkNotes)
+  //   console.log(bulkRes)
+  // }),
+  //
+  // replaceAll: (state, docs) => setLookupFromDocs(docs)(state),
+  // handleChange: (state, change) => {
+  //   console.debug(`change`, change)
+  //   const note = change.doc
+  //   const mergeNote = R.assocPath(['byId', note._id])(note)
+  //   const omitNote = R.dissocPath(['byId', note._id])
+  //
+  //   const update = change.deleted ? omitNote : mergeNote
+  //   return update(state)
+  // },
+  // initPouch: thunk(async actions => {
+  //   const { rows } = await db.allDocs({
+  //     include_docs: true,
+  //   })
+  //   const docs = rows.map(R.prop('doc'))
+  //   actions.replaceAll(docs)
+  //   const changes = db
+  //     .changes({
+  //       include_docs: true,
+  //       live: true,
+  //       since: 'now',
+  //     })
+  //     .on('change', actions.handleChange)
+  //     .on('error', console.error)
+  //   // actions.startSync()
+  //   return { changes }
+  // }),
 
   // isSettingsDialogOpen: false,
   // openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
@@ -223,10 +218,10 @@ export const notesModel = {
   // }),
 }
 
-function pouchDocsToIdLookup(docs) {
-  validate('A', arguments)
-  return objFromList(R.prop('_id'))(docs)
-}
+// function pouchDocsToIdLookup(docs) {
+//   validate('A', arguments)
+//   return objFromList(R.prop('_id'))(docs)
+// }
 
 const storeModel = {
   debug: {

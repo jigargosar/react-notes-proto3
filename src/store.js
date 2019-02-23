@@ -10,4 +10,4 @@ export const store = createStore(storeModel, {
 
 store.subscribe(() => setCache('app-state', store.getState()))
 
-store.dispatch.notes.initPouch().catch(console.error)
+// store.dispatch.notes.initPouch().catch(console.error)
