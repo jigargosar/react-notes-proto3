@@ -66,7 +66,6 @@ const NotesStore = t
   .model('NotesStore', {
     byId: t.map(Note),
   })
-
   .views(s => ({
     get all() {
       return values(s.byId)
