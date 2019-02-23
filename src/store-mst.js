@@ -90,9 +90,9 @@ const NotesStore = t
     _handleChange(change) {
       validate('OZZ', arguments)
       console.debug(`change`, ...arguments)
-      const note = change.doc
+      const doc = change.doc
 
-      change.deleted ? s.remove(note) : s.put(note)
+      change.deleted ? s.remove(doc) : s.put(doc)
     },
     initPouch: f(initPouchNotes(s)),
   }))
