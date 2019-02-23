@@ -5,11 +5,12 @@ import { it } from 'param.macro'
 import { objFromList } from './ramda-helpers'
 import { getNodeName } from './mst-helpers'
 
-export function createPouchStore(modelType) {
+export function createPouchStore(modelType, cb) {
+  validate('OF', arguments)
   const modelName =
     modelType.name === 'AnonymousModel' ? 'AnonDoc' : modelType.name
-  validate('O', arguments)
-  return t
+
+  const pouchModel = t
     .model(`Pouch${modelName}Store`, {
       byId: t.map(modelType),
     })
@@ -64,6 +65,8 @@ export function createPouchStore(modelType) {
         addDisposer(s, () => changes.cancel())
       }),
     }))
+
+  return cb(pouchModel)
 }
 
 function pouchDocsToIdLookup(docs) {
