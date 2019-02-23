@@ -91,7 +91,7 @@ const NotesStore = t
   })
   .volatile(() => {
     let sync = null
-    let syncState = null
+    let lastSyncUpdate = null
     let syncError = null
     return {
       get sync() {
@@ -100,11 +100,11 @@ const NotesStore = t
       set sync(val) {
         sync = val
       },
-      get syncState() {
-        return syncState
+      get lastSyncUpdate() {
+        return lastSyncUpdate
       },
-      set syncState(val) {
-        syncState = val
+      set lastSyncUpdate(val) {
+        lastSyncUpdate = val
       },
       get syncError() {
         return syncError
@@ -121,7 +121,7 @@ const NotesStore = t
         stopped: 'problem',
         active: 'syncing',
       }
-      return R.propOr('disabled', (s.syncLastUpdate || {}).push)(mapping)
+      return R.propOr('disabled', (s.lastSyncUpdate || {}).push)(mapping)
     },
   }))
   .actions(s => ({
@@ -133,13 +133,13 @@ const NotesStore = t
     _updateSyncState(info) {
       const sync = s.sync
       console.debug('_updateSyncState', info, sync)
-      const syncState = sync
+      const lastSyncUpdate = sync
         ? {
             push: R.path(['push', 'state'])(sync),
             pull: R.path(['pull', 'state'])(sync),
           }
         : {}
-      s.syncState = { ...syncState, info }
+      s.lastSyncUpdate = { ...lastSyncUpdate, info }
     },
     _updateSyncError(err) {
       console.error('syncError', err)
@@ -255,6 +255,9 @@ const RootStore = t
 
 // noinspection JSCheckFunctionSignatures
 const rs = RootStore.create()
+if (process.env.NODE_ENV !== 'production') {
+  window.rs = rs
+}
 
 rs.initPouch().catch(console.error)
 
