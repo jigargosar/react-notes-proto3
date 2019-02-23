@@ -80,6 +80,7 @@ const NotesStore = t
   .actions(s => ({
     cleanup() {
       if (s.syncRef) {
+        debugger
         s.syncRef.cancel()
       }
     },

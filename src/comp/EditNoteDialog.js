@@ -15,6 +15,7 @@ const enhance = pipe([mc, withMobileDialog({ breakpoint: 'xs' })])
 export const EditNoteDialog = enhance(function EditNoteDialog({
   fullScreen,
 }) {
+  console.log(`fullScreen`, fullScreen)
   return (
     <Dialog
       onClose={rs.editNoteDialogOnClose}
