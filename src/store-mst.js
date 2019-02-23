@@ -46,7 +46,7 @@ function initPouchNotes(s) {
     const { rows } = yield db.allDocs({
       include_docs: true,
     })
-    const docs = rows.map(R.prop('doc'))
+    const docs = rows.map(it.doc)
     console.log(`docs`, docs)
     s.replaceAll(docs)
     const changes = db
