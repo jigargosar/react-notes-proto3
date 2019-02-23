@@ -28,10 +28,6 @@ export function pouchStoreExt(modelType) {
       },
     },
     actions: {
-      replaceAllDocs(docs) {
-        validate('A', arguments)
-        s.byId.replace(pouchDocsToIdLookup(docs))
-      },
       putDoc(doc) {
         validate('O', arguments)
         s.byId.put(s.docToModel(doc))
@@ -53,7 +49,7 @@ export function pouchStoreExt(modelType) {
         })
         const docs = rows.map(it.doc)
         console.log(`[${getNodeName(s)}] initial docs`, docs)
-        s.replaceAllDocs(docs)
+        s.byId.replace(pouchDocsToIdLookup(docs))
         const changes = db
           .changes({
             include_docs: true,
