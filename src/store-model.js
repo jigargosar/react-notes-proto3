@@ -48,7 +48,6 @@ function setLookupFromDocs(docs) {
 export const notesModel = {
   byId: {},
   visibleNotes: select(getVisibleNotes),
-  visibleNotesCount: select(pipe([R.prop('visibleNotes'), R.length])),
 
   selectedIdDict: {},
   clearSelection: R.assoc('selectedIdDict')({}),
