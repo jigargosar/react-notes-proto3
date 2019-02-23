@@ -49,12 +49,11 @@ function createPouchDocsStore(modelType) {
         const docs = rows.map(it.doc)
         console.log(`docs`, docs)
         s.replaceAll(docs)
-        const changes = db
-          .changes({
-            include_docs: true,
-            live: true,
-            since: 'now',
-          })
+        db.changes({
+          include_docs: true,
+          live: true,
+          since: 'now',
+        })
           .on('change', s._handleChange)
           .on('error', console.error)
       }),
