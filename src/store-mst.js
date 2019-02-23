@@ -14,7 +14,7 @@ import PouchDB from 'pouchdb-browser'
 import { autorun } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
-import { pouchStoreExt } from './PouchDocStore'
+import { pouchStoreExt } from './pouch-store-ext'
 
 const db = new PouchDB('notes-pdb')
 
