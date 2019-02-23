@@ -14,6 +14,7 @@ import { autorun, values } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
 import { it } from 'param.macro'
+import { getNodeName } from './mst-helpers'
 
 const db = new PouchDB('notes-pdb')
 
@@ -47,7 +48,7 @@ function initPouchNotes(s) {
       include_docs: true,
     })
     const docs = rows.map(it.doc)
-    console.log(`docs`, docs)
+    console.log(`[${getNodeName(s)}] initial docs`, docs)
     s.replaceAll(docs)
     const changes = db
       .changes({

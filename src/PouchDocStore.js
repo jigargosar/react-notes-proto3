@@ -1,17 +1,9 @@
-import {
-  addDisposer,
-  flow as f,
-  getType as getNodeType,
-  types as t,
-} from 'mobx-state-tree'
+import { addDisposer, flow as f, types as t } from 'mobx-state-tree'
 import { values } from 'mobx'
 import validate from 'aproba'
 import { it } from 'param.macro'
 import { objFromList } from './ramda-helpers'
-
-function getNodeName(s) {
-  return getNodeType(s).name
-}
+import { getNodeName } from './mst-helpers'
 
 function createPouchDocsStore(modelType) {
   const modelName =
