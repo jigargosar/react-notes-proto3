@@ -57,7 +57,7 @@ function initPouchNotes(s) {
       })
       .on('change', s._handleChange)
       .on('error', console.error)
-    s.startSync()
+    s._startSync()
     return { changes }
   }
 }
@@ -145,7 +145,7 @@ const NotesStore = t
       console.error('syncError', err)
       s.syncError = err
     },
-    startSync() {
+    _startSync() {
       s._clearSync()
       // const remoteUrl = s.remoteUrl
       const remoteUrl = 'http://127.0.0.1:5984/np3'
