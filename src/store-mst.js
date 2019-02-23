@@ -114,6 +114,7 @@ const NotesStore = t
   }))
   .actions(s => ({
     _startSync() {
+      debugger
       if (s.syncRef) {
         s.syncRef.cancel()
       }
