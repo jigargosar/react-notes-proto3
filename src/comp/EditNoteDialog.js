@@ -8,8 +8,9 @@ import Button from '@material-ui/core/Button'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
 import { pipe } from '../ramda-helpers'
 import { rs } from '../store-mst'
+import { mc } from '../mob-act'
 
-const enhance = pipe([withMobileDialog({ breakpoint: 'xs' })])
+const enhance = pipe([mc, withMobileDialog({ breakpoint: 'xs' })])
 
 export const EditNoteDialog = enhance(function EditNoteDialog({
   fullScreen,
