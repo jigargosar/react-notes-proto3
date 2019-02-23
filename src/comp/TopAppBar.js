@@ -19,6 +19,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import { rs } from '../store-mst'
 
 function SyncStatusIcon() {
   const { syncStatus } = useNotes()
@@ -40,10 +41,9 @@ function SyncStatusIcon() {
   )
 }
 
-function SyncStatusIconButton() {
-  const { openSettingsDialog } = useNotesActions()
+function SyncStatusIconButton(props) {
   return (
-    <IconButton color="inherit" onClick={() => openSettingsDialog()}>
+    <IconButton color="inherit" {...props}>
       <SyncStatusIcon />
     </IconButton>
   )
@@ -53,19 +53,13 @@ function HeaderIconBtn(props) {
   return <IconButton color="inherit" {...props} />
 }
 
-function MoreMenu() {
-  const { openSettingsDialog } = useNotesActions()
-
+function MoreMenu({ children }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
 
   const handleClose = () => closeMenu()
   const handleOpen = () => setMenuOpen(true)
-  const handleSyncSettings = () => {
-    openSettingsDialog()
-    closeMenu()
-  }
   const anchorRef = useRef(null)
   return (
     <>
@@ -89,13 +83,9 @@ function MoreMenu() {
         }}
         open={menuOpen}
         onClose={handleClose}
+        onClick={handleClose}
       >
-        <MenuItem onClick={handleSyncSettings}>
-          <ListItemIcon>
-            <SyncIcon />
-          </ListItemIcon>
-          <ListItemText>Sync Settings</ListItemText>
-        </MenuItem>
+        {children}
       </Menu>
     </>
   )
@@ -118,7 +108,7 @@ export const TopAppBar = withStyles(theme => ({
           <Typography variant="h6" color="inherit">
             Notes
           </Typography>
-          <SyncStatusIconButton />
+          <SyncStatusIconButton onClick={rs.openSettingsDialogClicked} />
           <Typography variant="body2" color="inherit">
             {syncStatus}
           </Typography>
@@ -137,7 +127,14 @@ export const TopAppBar = withStyles(theme => ({
               </HeaderIconBtn>
             </>
           )}
-          <MoreMenu />
+          <MoreMenu>
+            <MenuItem onClick={rs.openSettingsDialogClicked}>
+              <ListItemIcon>
+                <SyncIcon />
+              </ListItemIcon>
+              <ListItemText>Sync Settings</ListItemText>
+            </MenuItem>
+          </MoreMenu>
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />

@@ -204,15 +204,15 @@ const RootStore = t
       afterCreate() {
         return s.initCache()
       },
-
-      async onAddNewNoteClicked() {
+      initPouch() {
+        return s.notes.initPouch()
+      },
+      async addNewNoteClicked() {
         const note = createNewNote()
         await db.put(note)
         s._updateMsgTmp()
       },
-      initPouch() {
-        return s.notes.initPouch()
-      },
+      openSettingsDialogClicked() {},
     }
   })
 
