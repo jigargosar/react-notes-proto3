@@ -20,6 +20,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { rs } from '../store-mst'
+import * as R from 'ramda'
+import { mc } from '../mob-act'
 
 function SyncStatusIcon() {
   const { syncStatus } = useNotes()
@@ -91,9 +93,13 @@ function MoreMenu({ children }) {
   )
 }
 
-export const TopAppBar = withStyles(theme => ({
-  toolbar: theme.mixins.toolbar,
-}))(function TopBar({ classes }) {
+const enhanceTopAppBar = R.compose(
+  withStyles(theme => ({
+    toolbar: theme.mixins.toolbar,
+  })),
+  mc,
+)
+export const TopAppBar = enhanceTopAppBar(function TopBar({ classes }) {
   const { syncStatus, selectedNotesCount, isMultiSelectMode } = useNotes()
   const {
     selectAll,

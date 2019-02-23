@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
 import { pipe } from '../ramda-helpers'
 import { mc } from '../mob-act'
-import * as R from 'ramda'
+import { rs } from '../store-mst'
 
 const enhance = pipe([mc, withMobileDialog({ breakpoint: 'xs' })])
 
@@ -33,13 +33,17 @@ export const SettingsDialog = enhance(function SettingsDialog({
   // }
 
   return (
-    <Dialog onClose={R.identity} open={false} fullScreen={fullScreen}>
+    <Dialog
+      onClose={rs.settingsDialogOnClose}
+      open={rs.isSettingsDialogOpen}
+      fullScreen={fullScreen}
+    >
       <DialogTitle>Sync with CouchDB</DialogTitle>
       <DialogContent style={{ minWidth: '400px' }}>
         <TextField
           label="CouchDB URL"
-          value={'ipt'}
-          onChange={R.identity}
+          value={rs.settingsDialogRemoteUrl}
+          onChange={rs.onSettingsDialogRemoteUrlChange}
           name="remote-couch-url"
           margin="normal"
           fullWidth
@@ -47,10 +51,13 @@ export const SettingsDialog = enhance(function SettingsDialog({
         />
       </DialogContent>
       <DialogActions className="flex flex-row-reverse justify-start">
-        <Button onClick={R.identity} color="primary">
+        <Button onClick={rs.onSettingsDialogSaveClicked} color="primary">
           Save
         </Button>
-        <Button onClick={R.identity} color="primary">
+        <Button
+          onClick={rs.onSettingsDialogDiscardClicked}
+          color="primary"
+        >
           Discard
         </Button>
       </DialogActions>

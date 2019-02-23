@@ -212,9 +212,36 @@ const RootStore = t
         await db.put(note)
         s._updateMsgTmp()
       },
-      openSettingsDialogClicked() {},
     }
   })
+  .props({
+    isSettingsDialogOpen: false,
+    settingsDialogRemoteUrl: '',
+  })
+  .actions(s => ({
+    _closeSettingsDialog() {
+      s.isSettingsDialogOpen = false
+    },
+  }))
+  .actions(s => ({
+    openSettingsDialogClicked() {
+      s.isSettingsDialogOpen = true
+      s.settingsDialogRemoteUrl = s.notes.remoteUrl
+    },
+    settingsDialogOnClose() {
+      s._closeSettingsDialog()
+    },
+    onSettingsDialogRemoteUrlChange(e) {
+      s.settingsDialogRemoteUrl = e.target.value
+    },
+    onSettingsDialogSaveClicked() {
+      s.notes.remoteUrl = s.settingsDialogRemoteUrl
+      s._closeSettingsDialog()
+    },
+    onSettingsDialogDiscardClicked() {
+      s._closeSettingsDialog()
+    },
+  }))
 
 // noinspection JSCheckFunctionSignatures
 const rs = RootStore.create()
