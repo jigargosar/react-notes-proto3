@@ -194,6 +194,11 @@ const RootStore = t
       s._closeSettingsDialog()
     },
   }))
+  .props({
+    isEditNoteDialogOpen: false,
+    editingNoteContent: '',
+    editingNote: t.maybeNull(Note),
+  })
 
 // noinspection JSCheckFunctionSignatures
 const rs = RootStore.create()

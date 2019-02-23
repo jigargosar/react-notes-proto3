@@ -13,7 +13,6 @@ const enhance = pipe([withMobileDialog({ breakpoint: 'xs' })])
 
 export const EditNoteDialog = enhance(function EditNoteDialog({
   fullScreen,
-  classes,
 }) {
   const { editingNoteContent, isEditNoteDialogOpen } = useNotes()
 
