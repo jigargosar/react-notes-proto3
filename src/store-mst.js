@@ -13,6 +13,7 @@ import PouchDB from 'pouchdb-browser'
 import { autorun, values } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
+import { it } from 'param.macro'
 
 const db = new PouchDB('notes-pdb')
 
@@ -236,7 +237,7 @@ export { rs }
 
 function pouchDocsToIdLookup(docs) {
   validate('A', arguments)
-  return objFromList(R.prop('_id'))(docs)
+  return objFromList(it._id)(docs)
 }
 
 // BOILER PLATE
