@@ -176,6 +176,16 @@ const RootStore = t
       const note = createNewNote()
       await db.put(note)
     },
+    __deleteNotes: f(function*(actions, notes) {
+      const bulkNotes = notes.map(
+        R.mergeLeft({
+          _deleted: true,
+          modifiedAt: Date.now(),
+        }),
+      )
+      const bulkRes = yield db.bulkDocs(bulkNotes)
+      console.log(bulkRes)
+    }),
   }))
   .props({
     isSettingsDialogOpen: false,
@@ -239,16 +249,6 @@ const RootStore = t
         })
       }
       s._closeEditingNoteDialog()
-    }),
-    __deleteNotes: f(function*(actions, notes) {
-      const bulkNotes = notes.map(
-        R.mergeLeft({
-          _deleted: true,
-          modifiedAt: Date.now(),
-        }),
-      )
-      const bulkRes = yield db.bulkDocs(bulkNotes)
-      console.log(bulkRes)
     }),
     onEditNoteDialogDiscardClicked() {
       s._closeEditingNoteDialog()
