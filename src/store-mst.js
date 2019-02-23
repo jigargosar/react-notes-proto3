@@ -114,8 +114,18 @@ const NotesStore = t
       },
     }
   })
+  .views(s => ({
+    get syncStatus() {
+      const mapping = {
+        pending: 'synced',
+        stopped: 'problem',
+        active: 'syncing',
+      }
+      return R.propOr('disabled', (s.syncLastUpdate || {}).push)(mapping)
+    },
+  }))
   .actions(s => ({
-    clearSync() {
+    _clearSync() {
       if (s.sync) {
         s.sync.cancel()
       }
@@ -138,7 +148,7 @@ const NotesStore = t
   }))
   .actions(s => ({
     startSync() {
-      s.clearSync()
+      s._clearSync()
       // const remoteUrl = s.remoteUrl
       const remoteUrl = 'http://127.0.0.1:5984/np3'
       if (remoteUrl) {

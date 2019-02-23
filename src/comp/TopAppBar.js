@@ -23,8 +23,7 @@ import { rs } from '../store-mst'
 import * as R from 'ramda'
 import { mc } from '../mob-act'
 
-function SyncStatusIcon() {
-  const { syncStatus } = useNotes()
+function SyncStatusIcon({ syncStatus }) {
   const iconMap = {
     synced: SyncIcon,
     disabled: SyncDisabledIcon,
@@ -40,14 +39,6 @@ function SyncStatusIcon() {
     <SyncStatusIcon
       className={clsx('spin', { 'spin-paused': syncStatus !== 'syncing' })}
     />
-  )
-}
-
-function SyncStatusIconButton(props) {
-  return (
-    <IconButton color="inherit" {...props}>
-      <SyncStatusIcon />
-    </IconButton>
   )
 }
 
@@ -100,13 +91,14 @@ const enhanceTopAppBar = R.compose(
   mc,
 )
 export const TopAppBar = enhanceTopAppBar(function TopBar({ classes }) {
-  const { syncStatus, selectedNotesCount, isMultiSelectMode } = useNotes()
+  const { selectedNotesCount, isMultiSelectMode } = useNotes()
   const {
     selectAll,
     clearSelection,
     deleteSelectedNotes,
   } = useNotesActions()
 
+  const syncStatus = rs.notes.syncStatus
   return (
     <>
       <AppBar position="fixed">
@@ -114,7 +106,9 @@ export const TopAppBar = enhanceTopAppBar(function TopBar({ classes }) {
           <Typography variant="h6" color="inherit">
             Notes
           </Typography>
-          <SyncStatusIconButton onClick={rs.openSettingsDialogClicked} />
+          <HeaderIconBtn onClick={rs.openSettingsDialogClicked}>
+            <SyncStatusIcon syncStatus={syncStatus} />
+          </HeaderIconBtn>
           <Typography variant="body2" color="inherit">
             {syncStatus}
           </Typography>

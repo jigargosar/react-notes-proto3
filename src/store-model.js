@@ -15,14 +15,14 @@ import PouchDB from 'pouchdb-browser'
 
 const db = new PouchDB('notes-pdb')
 
-let sync = null
-
-function cancelSync() {
-  if (sync) {
-    sync.cancel()
-    sync = null
-  }
-}
+// let sync = null
+//
+// function cancelSync() {
+//   if (sync) {
+//     sync.cancel()
+//     sync = null
+//   }
+// }
 
 function createNewNote() {
   return {
@@ -148,7 +148,7 @@ export const notesModel = {
       })
       .on('change', actions.handleChange)
       .on('error', console.error)
-    actions.startSync()
+    // actions.startSync()
     return { changes }
   }),
 
@@ -168,60 +168,60 @@ export const notesModel = {
   // }),
 
   // remoteUrl: null,
-  syncErr: null,
-  syncLastUpdate: null,
-  syncStatus: select(state => {
-    const mapping = {
-      pending: 'synced',
-      stopped: 'problem',
-      active: 'syncing',
-    }
-    return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
-  }),
-  handleSyncUpdate: (state, info) => {
-    console.debug('handleSyncUpdate', info, sync)
-    const syncState = sync
-      ? {
-          push: R.path(['push', 'state'])(sync),
-          pull: R.path(['pull', 'state'])(sync),
-        }
-      : {}
-    return R.assoc('syncLastUpdate')({ ...syncState, info })(state)
-  },
-  handleSyncError: (state, err) => {
-    console.error('syncError', err)
-    return R.assoc('syncError')(err.message)(state)
-  },
-  clearSync: state => {
-    cancelSync()
-    const update = pipe([
-      R.assoc('syncError')(null),
-      R.assoc('syncLastUpdate')(null),
-    ])
-    return update(state)
-  },
-  startSync: thunk(async (actions, payload, { getState }) => {
-    actions.clearSync()
-    // const remoteUrl = getState().notes.remoteUrl
-    // if (remoteUrl) {
-    //   try {
-    //     sync = db
-    //       .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
-    //         live: true,
-    //         retry: true,
-    //       })
-    //       .on('change', actions.handleSyncUpdate)
-    //       .on('paused', actions.handleSyncUpdate)
-    //       .on('active', actions.handleSyncUpdate)
-    //       .on('complete', actions.handleSyncUpdate)
-    //       .on('denied', actions.handleSyncUpdate)
-    //       .on('error', actions.handleSyncError)
-    //   } catch (e) {
-    //     debugger
-    //     actions.syncError(e)
-    //   }
-    // }
-  }),
+  // syncErr: null,
+  // syncLastUpdate: null,
+  // syncStatus: select(state => {
+  //   const mapping = {
+  //     pending: 'synced',
+  //     stopped: 'problem',
+  //     active: 'syncing',
+  //   }
+  //   return R.propOr('disabled', (state.syncLastUpdate || {}).push)(mapping)
+  // }),
+  // handleSyncUpdate: (state, info) => {
+  //   console.debug('handleSyncUpdate', info, sync)
+  //   const syncState = sync
+  //     ? {
+  //         push: R.path(['push', 'state'])(sync),
+  //         pull: R.path(['pull', 'state'])(sync),
+  //       }
+  //     : {}
+  //   return R.assoc('syncLastUpdate')({ ...syncState, info })(state)
+  // },
+  // handleSyncError: (state, err) => {
+  //   console.error('syncError', err)
+  //   return R.assoc('syncError')(err.message)(state)
+  // },
+  // clearSync: state => {
+  //   cancelSync()
+  //   const update = pipe([
+  //     R.assoc('syncError')(null),
+  //     R.assoc('syncLastUpdate')(null),
+  //   ])
+  //   return update(state)
+  // },
+  // startSync: thunk(async (actions, payload, { getState }) => {
+  //   actions.clearSync()
+  //   const remoteUrl = getState().notes.remoteUrl
+  //   if (remoteUrl) {
+  //     try {
+  //       sync = db
+  //         .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
+  //           live: true,
+  //           retry: true,
+  //         })
+  //         .on('change', actions.handleSyncUpdate)
+  //         .on('paused', actions.handleSyncUpdate)
+  //         .on('active', actions.handleSyncUpdate)
+  //         .on('complete', actions.handleSyncUpdate)
+  //         .on('denied', actions.handleSyncUpdate)
+  //         .on('error', actions.handleSyncError)
+  //     } catch (e) {
+  //       debugger
+  //       actions.syncError(e)
+  //     }
+  //   }
+  // }),
 }
 
 function pouchDocsToIdLookup(docs) {
