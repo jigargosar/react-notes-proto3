@@ -152,22 +152,22 @@ export const notesModel = {
     return { changes }
   }),
 
-  isSettingsDialogOpen: false,
-  openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
-  closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
-  setRemoteUrl: (state, remoteUrl) => {
-    return R.assoc('remoteUrl')(remoteUrl)(state)
-  },
-  discardSettingsDialog: thunk(actions => {
-    actions.closeSettingsDialog()
-  }),
-  saveSettingsDialog: thunk(async (actions, newRemoteUrl) => {
-    actions.closeSettingsDialog()
-    actions.setRemoteUrl(newRemoteUrl)
-    await actions.startSync()
-  }),
+  // isSettingsDialogOpen: false,
+  // openSettingsDialog: R.assoc('isSettingsDialogOpen', true),
+  // closeSettingsDialog: R.assoc('isSettingsDialogOpen', false),
+  // setRemoteUrl: (state, remoteUrl) => {
+  //   return R.assoc('remoteUrl')(remoteUrl)(state)
+  // },
+  // discardSettingsDialog: thunk(actions => {
+  //   actions.closeSettingsDialog()
+  // }),
+  // saveSettingsDialog: thunk(async (actions, newRemoteUrl) => {
+  //   actions.closeSettingsDialog()
+  //   actions.setRemoteUrl(newRemoteUrl)
+  //   await actions.startSync()
+  // }),
 
-  remoteUrl: null,
+  // remoteUrl: null,
   syncErr: null,
   syncLastUpdate: null,
   syncStatus: select(state => {
@@ -202,25 +202,25 @@ export const notesModel = {
   },
   startSync: thunk(async (actions, payload, { getState }) => {
     actions.clearSync()
-    const remoteUrl = getState().notes.remoteUrl
-    if (remoteUrl) {
-      try {
-        sync = db
-          .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
-            live: true,
-            retry: true,
-          })
-          .on('change', actions.handleSyncUpdate)
-          .on('paused', actions.handleSyncUpdate)
-          .on('active', actions.handleSyncUpdate)
-          .on('complete', actions.handleSyncUpdate)
-          .on('denied', actions.handleSyncUpdate)
-          .on('error', actions.handleSyncError)
-      } catch (e) {
-        debugger
-        actions.syncError(e)
-      }
-    }
+    // const remoteUrl = getState().notes.remoteUrl
+    // if (remoteUrl) {
+    //   try {
+    //     sync = db
+    //       .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
+    //         live: true,
+    //         retry: true,
+    //       })
+    //       .on('change', actions.handleSyncUpdate)
+    //       .on('paused', actions.handleSyncUpdate)
+    //       .on('active', actions.handleSyncUpdate)
+    //       .on('complete', actions.handleSyncUpdate)
+    //       .on('denied', actions.handleSyncUpdate)
+    //       .on('error', actions.handleSyncError)
+    //   } catch (e) {
+    //     debugger
+    //     actions.syncError(e)
+    //   }
+    // }
   }),
 }
 
