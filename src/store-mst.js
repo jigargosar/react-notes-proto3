@@ -100,18 +100,18 @@ const NotesStore = t
     remoteUrl: '',
   })
   .volatile(() => {
-    let sync = null
+    let syncRef = null
     let lastSyncUpdate = null
     let syncError = null
     return {
-      get sync() {
-        return sync
+      get syncRef() {
+        return syncRef
       },
-      set sync(val) {
-        if (sync) {
-          sync.cancel()
+      set syncRef(val) {
+        if (syncRef) {
+          syncRef.cancel()
         }
-        sync = val
+        syncRef = val
       },
       get lastSyncUpdate() {
         return lastSyncUpdate
@@ -139,7 +139,7 @@ const NotesStore = t
   }))
   .actions(s => ({
     _updateSyncState(info) {
-      const sync = s.sync
+      const sync = s.syncRef
       console.debug('_updateSyncState', info, sync)
       const lastSyncUpdate = sync
         ? {
@@ -156,14 +156,14 @@ const NotesStore = t
   }))
   .actions(s => ({
     _startSync() {
-      if (s.sync) {
-        s.sync.cancel()
+      if (s.syncRef) {
+        s.syncRef.cancel()
       }
       const remoteUrl = s.remoteUrl
       // const remoteUrl = 'http://127.0.0.1:5984/np3'
       if (remoteUrl) {
         try {
-          s.sync = db
+          s.syncRef = db
             .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
               live: true,
               retry: true,
