@@ -176,7 +176,7 @@ const RootStore = t
       const note = createNewNote()
       await db.put(note)
     },
-    __deleteNotes: f(function*(actions, notes) {
+    __deleteNotes: f(function*(notes) {
       const bulkNotes = notes.map(
         R.mergeLeft({
           _deleted: true,
