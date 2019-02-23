@@ -240,12 +240,23 @@ const RootStore = t
       }
       s._closeEditingNoteDialog()
     }),
+    __deleteNotes: f(function*(actions, notes) {
+      const bulkNotes = notes.map(
+        R.mergeLeft({
+          _deleted: true,
+          modifiedAt: Date.now(),
+        }),
+      )
+      const bulkRes = yield db.bulkDocs(bulkNotes)
+      console.log(bulkRes)
+    }),
     onEditNoteDialogDiscardClicked() {
       s._closeEditingNoteDialog()
     },
-    onEditNoteDialogDeleteClicked() {
+    onEditNoteDialogDeleteClicked: f(function*() {
+      s.__deleteNotes([s.editingNote])
       s._closeEditingNoteDialog()
-    },
+    }),
   }))
 
 // noinspection JSCheckFunctionSignatures
