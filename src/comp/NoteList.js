@@ -15,7 +15,6 @@ import { pipe } from '../ramda-helpers'
 import validate from 'aproba'
 import { rs } from '../store-mst'
 import { mc } from '../mob-act'
-import { Fab } from '@material-ui/core'
 
 function noteAvatarText(note) {
   validate('O', arguments)
@@ -91,15 +90,6 @@ const NoteItem = mc(function NoteItem({ note, isSelected }) {
 export const NoteList = mc(function NoteList() {
   return (
     <>
-      <div className="pa3 flex">
-        <div className="flex-grow-1">{rs.visNotes.length}</div>
-        <Fab onClick={rs.addNewNoteClicked}>AN</Fab>
-      </div>
-      {rs.visNotes.map(n => (
-        <div key={n.id} className="">
-          {n.content}
-        </div>
-      ))}
       <List>
         {rs.visNotes.map(note => {
           const id = note._id
