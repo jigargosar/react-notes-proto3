@@ -89,7 +89,7 @@ const NotesStore = t
   .props({
     remoteUrl: t.maybeNull(t.string),
   })
-  .volatile(s => {
+  .volatile(() => {
     let sync = null
     let syncState = null
     let syncError = null
@@ -117,7 +117,7 @@ const NotesStore = t
   .actions(s => ({
     clearSync() {
       if (s.sync) {
-        s.cancel()
+        s.sync.cancel()
       }
     },
     _updateSyncState(info) {
@@ -189,9 +189,6 @@ const RootStore = t
   }))
   .extend(coreExt)
   .actions(s => ({
-    _updateMsgTmp() {
-      s.msg = faker.name.lastName()
-    },
     initCache() {
       try {
         s.applySnap(getCached('rs'))
@@ -245,7 +242,10 @@ if (module.hot) {
   } catch (e) {
     debugger
   }
-  hotDispose(data => void (data.snap = rs.snap))
+  hotDispose(data => {
+    data.snap = rs.snap
+    db.close()
+  })
 }
 
 function hotDispose(cb) {
