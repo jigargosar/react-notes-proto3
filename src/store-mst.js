@@ -145,8 +145,6 @@ const NotesStore = t
       console.error('syncError', err)
       s.syncError = err
     },
-  }))
-  .actions(s => ({
     startSync() {
       s._clearSync()
       // const remoteUrl = s.remoteUrl
