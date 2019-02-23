@@ -1,6 +1,7 @@
 import {
   addDisposer,
   applySnapshot,
+  clone as cloneNode,
   getSnapshot,
   types as t,
 } from 'mobx-state-tree'
@@ -199,6 +200,30 @@ const RootStore = t
     editingNoteContent: '',
     editingNote: t.maybeNull(Note),
   })
+  .actions(s => ({
+    _closeEditingNoteDialog() {
+      s.isEditNoteDialogOpen = false
+    },
+  }))
+  .actions(s => ({
+    startEditingNote(note) {
+      s.isEditNoteDialogOpen = true
+      s.editingNoteContent = note.content
+      s.editingNote = cloneNode(note)
+    },
+    editNoteDialogOnClose() {
+      s._closeEditingNoteDialog()
+    },
+    onEditingNoteContentChanged(e) {
+      s.editingNoteContent = e.target.value
+    },
+    onEditNoteDialogSaveClicked() {
+      s._closeEditingNoteDialog()
+    },
+    onEditNoteDialogDiscardClicked() {
+      s._closeEditingNoteDialog()
+    },
+  }))
 
 // noinspection JSCheckFunctionSignatures
 const rs = RootStore.create()
