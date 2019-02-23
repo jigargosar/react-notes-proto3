@@ -192,13 +192,6 @@ const RootStore = t
     _updateMsgTmp() {
       s.msg = faker.name.lastName()
     },
-    _handleChange(change) {
-      validate('OZZ', arguments)
-      console.debug(`change`, ...arguments)
-      const note = change.doc
-
-      change.deleted ? s.notes.remove(note) : s.notes.put(note)
-    },
     initCache() {
       try {
         s.applySnap(getCached('rs'))
