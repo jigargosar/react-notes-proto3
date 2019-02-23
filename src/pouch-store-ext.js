@@ -1,4 +1,4 @@
-import { addDisposer, flow as f } from 'mobx-state-tree'
+import { addDisposer, flow as f, types as t } from 'mobx-state-tree'
 import { values } from 'mobx'
 import validate from 'aproba'
 import { it } from 'param.macro'
@@ -10,6 +10,11 @@ function pouchDocsToIdLookup(docs) {
   return objFromList(it._id)(docs)
 }
 
+export function pouchStoreProps(modelType) {
+  return {
+    byId: t.map(modelType),
+  }
+}
 export function pouchStoreExt(modelType) {
   validate('O', arguments)
   return s => ({

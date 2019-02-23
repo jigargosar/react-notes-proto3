@@ -14,7 +14,7 @@ import PouchDB from 'pouchdb-browser'
 import { autorun } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
-import { pouchStoreExt } from './pouch-store-ext'
+import { pouchStoreExt, pouchStoreProps } from './pouch-store-ext'
 
 const db = new PouchDB('notes-pdb')
 
@@ -43,9 +43,7 @@ const Note = t
   }))
 
 const NotesStore = t
-  .model('NotesStore', {
-    byId: t.map(Note),
-  })
+  .model('NotesStore', pouchStoreProps(Note))
   .extend(pouchStoreExt(Note))
   .props({
     remoteUrl: '',
