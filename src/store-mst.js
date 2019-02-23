@@ -2,6 +2,7 @@ import {
   addDisposer,
   applySnapshot,
   clone as cloneNode,
+  getRoot,
   getSnapshot,
   types as t,
 } from 'mobx-state-tree'
@@ -280,6 +281,9 @@ function coreExt(s) {
     views: {
       get snap() {
         return getSnapshot(s)
+      },
+      get root() {
+        getRoot(s)
       },
     },
     actions: {
