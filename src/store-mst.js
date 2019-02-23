@@ -165,7 +165,6 @@ const RootStore = t
       async addNewNoteClicked() {
         const note = createNewNote()
         await db.put(note)
-        s._updateMsgTmp()
       },
     }
   })
