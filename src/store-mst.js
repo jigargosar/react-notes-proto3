@@ -77,6 +77,13 @@ const NotesStore = t
       },
     }
   })
+  .actions(s => ({
+    cleanup() {
+      if (s.syncRef) {
+        s.syncRef.cancel()
+      }
+    },
+  }))
   .views(s => ({
     get syncStatus() {
       const mapping = {
@@ -146,7 +153,7 @@ const RootStore = t
   }))
   .extend(coreExt)
   .actions(s => ({
-    initCache() {
+    _initCache() {
       try {
         s.applySnap(getCached('rs'))
       } catch (e) {
@@ -156,19 +163,20 @@ const RootStore = t
       return s
     },
   }))
-  .actions(s => {
-    return {
-      init() {
-        s.initCache()
-        s.notes.initPouch(db)
-        s.notes._startSync()
-      },
-      async addNewNoteClicked() {
-        const note = createNewNote()
-        await db.put(note)
-      },
-    }
-  })
+  .actions(s => ({
+    init() {
+      s._initCache()
+      s.notes.initPouch(db)
+      s.notes._startSync()
+    },
+    cleanup() {
+      s.notes.cleanup()
+    },
+    async addNewNoteClicked() {
+      const note = createNewNote()
+      await db.put(note)
+    },
+  }))
   .props({
     isSettingsDialogOpen: false,
     settingsDialogRemoteUrl: '',
@@ -264,10 +272,7 @@ if (module.hot) {
   }
   hotDispose(data => {
     data.snap = rs.snap
-    const sync = rs.notes.sync
-    if (sync) {
-      sync.cancel()
-    }
+    rs.cleanup()
   })
 }
 
