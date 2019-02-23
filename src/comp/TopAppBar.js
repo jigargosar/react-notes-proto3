@@ -1,5 +1,4 @@
 import { withStyles } from '@material-ui/core'
-import { useNotes, useNotesActions } from './store-hooks'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -20,8 +19,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { rs } from '../store-mst'
-import * as R from 'ramda'
 import { mc } from '../mob-act'
+import { pipe } from '../ramda-helpers'
 
 function SyncStatusIcon({ syncStatus }) {
   const iconMap = {
@@ -84,19 +83,21 @@ function MoreMenu({ children }) {
   )
 }
 
-const enhanceTopAppBar = R.compose(
+const enhanceTopAppBar = pipe([
+  mc,
   withStyles(theme => ({
     toolbar: theme.mixins.toolbar,
   })),
-  mc,
-)
+])
+
 export const TopAppBar = enhanceTopAppBar(function TopBar({ classes }) {
-  const { selectedNotesCount, isMultiSelectMode } = useNotes()
   const {
     selectAll,
     clearSelection,
     deleteSelectedNotes,
-  } = useNotesActions()
+    isMultiSelectMode,
+    selectedNotesCount,
+  } = rs
 
   const syncStatus = rs.notes.syncStatus
   return (
