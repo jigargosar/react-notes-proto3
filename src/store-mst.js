@@ -14,7 +14,7 @@ import PouchDB from 'pouchdb-browser'
 import { autorun } from 'mobx'
 import { getCached, setCache } from './dom-helpers'
 import validate from 'aproba'
-import { createPouchStore } from './PouchDocStore'
+import { pouchStoreExt } from './PouchDocStore'
 
 const db = new PouchDB('notes-pdb')
 
@@ -42,94 +42,96 @@ const Note = t
     },
   }))
 
-const NotesStore = createPouchStore(Note, s =>
-  s
-    .props({
-      remoteUrl: '',
-    })
-    .volatile(() => {
-      let syncRef = null
-      let lastSyncUpdate = null
-      let syncError = null
-      return {
-        get syncRef() {
-          return syncRef
-        },
-        set syncRef(val) {
-          if (syncRef) {
-            syncRef.cancel()
-          }
-          syncRef = val
-        },
-        get lastSyncUpdate() {
-          return lastSyncUpdate
-        },
-        set lastSyncUpdate(val) {
-          lastSyncUpdate = val
-        },
-        get syncError() {
-          return syncError
-        },
-        set syncError(val) {
-          syncError = val
-        },
+const NotesStore = t
+  .model('NotesStore', {
+    byId: t.map(Note),
+  })
+  .extend(pouchStoreExt(Note))
+  .props({
+    remoteUrl: '',
+  })
+  .volatile(() => {
+    let syncRef = null
+    let lastSyncUpdate = null
+    let syncError = null
+    return {
+      get syncRef() {
+        return syncRef
+      },
+      set syncRef(val) {
+        if (syncRef) {
+          syncRef.cancel()
+        }
+        syncRef = val
+      },
+      get lastSyncUpdate() {
+        return lastSyncUpdate
+      },
+      set lastSyncUpdate(val) {
+        lastSyncUpdate = val
+      },
+      get syncError() {
+        return syncError
+      },
+      set syncError(val) {
+        syncError = val
+      },
+    }
+  })
+  .views(s => ({
+    get syncStatus() {
+      const mapping = {
+        pending: 'synced',
+        stopped: 'problem',
+        active: 'syncing',
       }
-    })
-    .views(s => ({
-      get syncStatus() {
-        const mapping = {
-          pending: 'synced',
-          stopped: 'problem',
-          active: 'syncing',
-        }
-        return R.propOr('disabled', (s.lastSyncUpdate || {}).push)(mapping)
-      },
-    }))
-    .actions(s => ({
-      _updateSyncState(info) {
-        const sync = s.syncRef
-        console.debug('_updateSyncState', info, sync)
-        const lastSyncUpdate = sync
-          ? {
-              push: R.path(['push', 'state'])(sync),
-              pull: R.path(['pull', 'state'])(sync),
-            }
-          : {}
-        s.lastSyncUpdate = { ...lastSyncUpdate, info }
-      },
-      _updateSyncError(err) {
-        console.error('syncError', err)
-        s.syncError = err
-      },
-    }))
-    .actions(s => ({
-      _startSync() {
-        if (s.syncRef) {
-          s.syncRef.cancel()
-        }
-        const remoteUrl = s.remoteUrl
-        // const remoteUrl = 'http://127.0.0.1:5984/np3'
-        if (remoteUrl) {
-          try {
-            s.syncRef = db
-              .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
-                live: true,
-                retry: true,
-              })
-              .on('change', s._updateSyncState)
-              .on('paused', s._updateSyncState)
-              .on('active', s._updateSyncState)
-              .on('complete', s._updateSyncState)
-              .on('denied', s._updateSyncState)
-              .on('error', s._updateSyncError)
-          } catch (e) {
-            debugger
-            s._updateSyncError(e)
+      return R.propOr('disabled', (s.lastSyncUpdate || {}).push)(mapping)
+    },
+  }))
+  .actions(s => ({
+    _updateSyncState(info) {
+      const sync = s.syncRef
+      console.debug('_updateSyncState', info, sync)
+      const lastSyncUpdate = sync
+        ? {
+            push: R.path(['push', 'state'])(sync),
+            pull: R.path(['pull', 'state'])(sync),
           }
+        : {}
+      s.lastSyncUpdate = { ...lastSyncUpdate, info }
+    },
+    _updateSyncError(err) {
+      console.error('syncError', err)
+      s.syncError = err
+    },
+  }))
+  .actions(s => ({
+    _startSync() {
+      if (s.syncRef) {
+        s.syncRef.cancel()
+      }
+      const remoteUrl = s.remoteUrl
+      // const remoteUrl = 'http://127.0.0.1:5984/np3'
+      if (remoteUrl) {
+        try {
+          s.syncRef = db
+            .sync(new PouchDB(remoteUrl, { adapter: 'http' }), {
+              live: true,
+              retry: true,
+            })
+            .on('change', s._updateSyncState)
+            .on('paused', s._updateSyncState)
+            .on('active', s._updateSyncState)
+            .on('complete', s._updateSyncState)
+            .on('denied', s._updateSyncState)
+            .on('error', s._updateSyncError)
+        } catch (e) {
+          debugger
+          s._updateSyncError(e)
         }
-      },
-    })),
-)
+      }
+    },
+  }))
 
 const RootStore = t
   .model('RootStore', {
@@ -283,7 +285,7 @@ function coreExt(s) {
         return getSnapshot(s)
       },
       get root() {
-        getRoot(s)
+        return getRoot(s)
       },
     },
     actions: {
