@@ -125,11 +125,6 @@ const NotesStore = t
     },
   }))
   .actions(s => ({
-    _clearSync() {
-      if (s.sync) {
-        s.sync.cancel()
-      }
-    },
     _updateSyncState(info) {
       const sync = s.sync
       console.debug('_updateSyncState', info, sync)
@@ -146,9 +141,11 @@ const NotesStore = t
       s.syncError = err
     },
     _startSync() {
-      s._clearSync()
-      // const remoteUrl = s.remoteUrl
-      const remoteUrl = 'http://127.0.0.1:5984/np3'
+      if (s.sync) {
+        s.sync.cancel()
+      }
+      const remoteUrl = s.remoteUrl
+      // const remoteUrl = 'http://127.0.0.1:5984/np3'
       if (remoteUrl) {
         try {
           s.sync = db
