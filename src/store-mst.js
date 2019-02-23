@@ -206,7 +206,8 @@ const RootStore = t
     },
   }))
   .actions(s => ({
-    startEditingNote(note) {
+    startEditingNote(_note) {
+      const note = s.notes.byId.get(_note._id)
       s.isEditNoteDialogOpen = true
       s.editingNoteContent = note.content
       s.editingNote = cloneNode(note)
