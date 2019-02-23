@@ -1,8 +1,7 @@
 import { flow as f, types as t } from 'mobx-state-tree'
 import { values } from 'mobx'
 import validate from 'aproba'
-
-// const Note = t.model()
+import { it } from 'param.macro'
 
 function createPouchDocsStore(modelType) {
   const modelName =
@@ -34,8 +33,6 @@ function createPouchDocsStore(modelType) {
         validate('O', arguments)
         s.byId.delete(doc._id)
       },
-    }))
-    .actions(s => ({
       _handleChange(change) {
         validate('OZZ', arguments)
         console.debug(`change`, ...arguments)
@@ -43,6 +40,23 @@ function createPouchDocsStore(modelType) {
 
         change.deleted ? s.remove(doc) : s.put(doc)
       },
-      initPouch: f(initPouchNotes(s)),
+    }))
+    .actions(s => ({
+      initPouch: f(function*(db) {
+        const { rows } = yield db.allDocs({
+          include_docs: true,
+        })
+        const docs = rows.map(it.doc)
+        console.log(`docs`, docs)
+        s.replaceAll(docs)
+        const changes = db
+          .changes({
+            include_docs: true,
+            live: true,
+            since: 'now',
+          })
+          .on('change', s._handleChange)
+          .on('error', console.error)
+      }),
     }))
 }
