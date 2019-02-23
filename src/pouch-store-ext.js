@@ -15,9 +15,8 @@ export function pouchStoreProps(modelType) {
     byId: t.map(modelType),
   }
 }
-export function pouchStoreExt() {
-  validate('O', arguments)
-  return s => ({
+export function pouchStoreExt(s) {
+  return {
     views: {
       get all() {
         return values(s.byId)
@@ -57,5 +56,5 @@ export function pouchStoreExt() {
         addDisposer(s, () => changes.cancel())
       }),
     },
-  })
+  }
 }
