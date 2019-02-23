@@ -21,6 +21,9 @@ export function pouchStoreExt(s) {
       get all() {
         return values(s.byId)
       },
+      getById(_id) {
+        return s.byId.get(_id)
+      },
     },
     actions: {
       _putDoc(doc) {
