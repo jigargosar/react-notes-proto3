@@ -108,6 +108,9 @@ const NotesStore = t
         return sync
       },
       set sync(val) {
+        if (sync) {
+          sync.cancel()
+        }
         sync = val
       },
       get lastSyncUpdate() {
@@ -150,6 +153,8 @@ const NotesStore = t
       console.error('syncError', err)
       s.syncError = err
     },
+  }))
+  .actions(s => ({
     _startSync() {
       if (s.sync) {
         s.sync.cancel()
