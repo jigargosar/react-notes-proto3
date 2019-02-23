@@ -284,7 +284,6 @@ if (module.hot) {
   }
   hotDispose(data => {
     data.snap = rs.snap
-    db.close()
   })
 }
 
