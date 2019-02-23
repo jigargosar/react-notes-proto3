@@ -8,7 +8,7 @@ import {
   types as t,
 } from 'mobx-state-tree'
 import faker from 'faker'
-import { dotPath } from './ramda-helpers'
+import { _idProp, dotPath, isNotNil, pipe } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
@@ -254,13 +254,41 @@ const RootStore = t
       s._closeEditingNoteDialog()
     },
     onEditNoteDialogDeleteClicked: f(function*() {
-      s.__deleteNotes([s.editingNote])
+      yield s.__deleteNotes([s.editingNote])
       s._closeEditingNoteDialog()
     }),
   }))
   .props({
     selectedIds: t.map(t.boolean),
   })
+  .views(s => ({
+    get selectedNotes() {
+      return pipe([
+        R.invoker(0, 'toJSON'),
+        R.filter(R.identity),
+        R.keys,
+        R.map(s.notes.getById),
+        R.filter(isNotNil),
+      ])(s.selectedIds)
+    },
+  }))
+  .actions(s => ({
+    afterCreate() {
+      s.autorun(() => {
+        // console.log(s.selectedNotes.length)
+        // console.log(getSnapshot(s.selectedIds))
+      })
+    },
+    clearSelection() {
+      s.selectedIds.clear()
+    },
+    selectAll() {
+      const visibleNoteIds = s.visNotes.map(_idProp)
+      s.selectedIds.replace(
+        R.zipObj(visibleNoteIds, R.repeat(true)(visibleNoteIds.length)),
+      )
+    },
+  }))
 
 // noinspection JSCheckFunctionSignatures
 const rs = RootStore.create()
