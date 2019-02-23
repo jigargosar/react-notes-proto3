@@ -40,7 +40,9 @@ const Note = t
     },
   }))
 
-const NotesStore = createPouchStore(Note)
+const pouchStore = createPouchStore(Note)
+
+const NotesStore = pouchStore
   .props({
     remoteUrl: '',
   })
