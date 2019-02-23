@@ -258,6 +258,9 @@ const RootStore = t
       s._closeEditingNoteDialog()
     }),
   }))
+  .props({
+    selectedIds: t.map(t.boolean),
+  })
 
 // noinspection JSCheckFunctionSignatures
 const rs = RootStore.create()
