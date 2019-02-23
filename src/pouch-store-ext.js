@@ -15,22 +15,18 @@ export function pouchStoreProps(modelType) {
     byId: t.map(modelType),
   }
 }
-export function pouchStoreExt(modelType) {
+export function pouchStoreExt() {
   validate('O', arguments)
   return s => ({
     views: {
       get all() {
         return values(s.byId)
       },
-      docToModel(doc) {
-        validate('O', arguments)
-        return modelType.create(doc)
-      },
     },
     actions: {
       _putDoc(doc) {
         validate('O', arguments)
-        s.byId.put(s.docToModel(doc))
+        s.byId.put(doc)
       },
       _removeDoc(doc) {
         validate('O', arguments)

@@ -44,7 +44,7 @@ const Note = t
 
 const NotesStore = t
   .model('NotesStore', pouchStoreProps(Note))
-  .extend(pouchStoreExt(Note))
+  .extend(pouchStoreExt())
   .props({
     remoteUrl: '',
   })
