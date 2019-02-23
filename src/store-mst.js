@@ -86,6 +86,16 @@ const NotesStore = t
       s.byId.delete(doc._id)
     },
   }))
+  .actions(s => ({
+    _handleChange(change) {
+      validate('OZZ', arguments)
+      console.debug(`change`, ...arguments)
+      const note = change.doc
+
+      change.deleted ? s.remove(note) : s.put(note)
+    },
+    initPouch: f(initPouchNotes(s)),
+  }))
   .props({
     remoteUrl: '',
   })
@@ -165,17 +175,6 @@ const NotesStore = t
         }
       }
     },
-  }))
-
-  .actions(s => ({
-    _handleChange(change) {
-      validate('OZZ', arguments)
-      console.debug(`change`, ...arguments)
-      const note = change.doc
-
-      change.deleted ? s.remove(note) : s.put(note)
-    },
-    initPouch: f(initPouchNotes(s)),
   }))
 
 const RootStore = t
