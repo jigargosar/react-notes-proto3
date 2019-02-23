@@ -1,4 +1,3 @@
-import { useNotes } from './store-hooks'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
@@ -28,7 +27,7 @@ const NoteAvatar = mc(function NoteAvatar({
   isSelected,
   ...otherProps
 }) {
-  const { isMultiSelectMode } = useNotes()
+  const { isMultiSelectMode } = rs
   const isSelectedInMultiSelectMode = isSelected && isMultiSelectMode
 
   const avatarContent = isSelectedInMultiSelectMode ? (
@@ -90,7 +89,6 @@ const NoteItem = mc(function NoteItem({ note, isSelected }) {
   )
 })
 export const NoteList = mc(function NoteList() {
-  const { visibleNotes, selectedIdDict } = useNotes()
   return (
     <>
       <div className="pa3 flex">
@@ -103,13 +101,13 @@ export const NoteList = mc(function NoteList() {
         </div>
       ))}
       <List>
-        {visibleNotes.map(note => {
+        {rs.visNotes.map(note => {
           const id = note._id
           return (
             <NoteItem
               key={id}
               note={note}
-              isSelected={!!selectedIdDict[id]}
+              isSelected={rs.isSelected(note)}
             />
           )
         })}

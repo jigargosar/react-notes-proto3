@@ -277,6 +277,9 @@ const RootStore = t
     get isMultiSelectMode() {
       return s.selectedNotesCount > 0
     },
+    isSelected(note) {
+      return !!s.selectedIds.get(note._id)
+    },
   }))
   .actions(s => ({
     afterCreate() {
