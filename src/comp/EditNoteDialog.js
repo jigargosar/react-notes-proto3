@@ -6,32 +6,18 @@ import TextField from '@material-ui/core/TextField'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
-import { useNotes, useNotesActions } from './store-hooks'
 import { pipe } from '../ramda-helpers'
+import { rs } from '../store-mst'
 
 const enhance = pipe([withMobileDialog({ breakpoint: 'xs' })])
 
 export const EditNoteDialog = enhance(function EditNoteDialog({
   fullScreen,
 }) {
-  const { editingNoteContent, isEditNoteDialogOpen } = useNotes()
-
-  const {
-    deleteEditingNote,
-    closeEditNoteDialog,
-    saveEditingNoteDialog,
-    updateEditingNoteContent,
-  } = useNotesActions()
-
-  const onClose = () => closeEditNoteDialog()
-  const onSave = () => saveEditingNoteDialog()
-
-  const onDelete = () => deleteEditingNote()
-
   return (
     <Dialog
-      onClose={onClose}
-      open={isEditNoteDialogOpen}
+      onClose={rs.editNoteDialogOnClose}
+      open={rs.isEditNoteDialogOpen}
       fullScreen={fullScreen}
     >
       <DialogTitle>Edit Note</DialogTitle>
@@ -39,22 +25,28 @@ export const EditNoteDialog = enhance(function EditNoteDialog({
         <TextField
           autoFocus
           multiline
-          value={editingNoteContent}
-          onChange={e => updateEditingNoteContent(e.target.value)}
+          value={rs.editingNoteContent}
+          onChange={rs.onEditingNoteContentChanged}
           margin="normal"
           fullWidth
           variant="outlined"
         />
       </DialogContent>
       <DialogActions className="flex flex-row-reverse justify-start">
-        <Button onClick={onSave} color="primary">
+        <Button onClick={rs.onEditNoteDialogSaveClicked} color="primary">
           Save
         </Button>
-        <Button onClick={onClose} color="default">
+        <Button
+          onClick={rs.onEditNoteDialogDiscardClicked}
+          color="default"
+        >
           Discard
         </Button>
         <div className="flex-grow-1" />
-        <Button onClick={onDelete} color="secondary">
+        <Button
+          onClick={rs.onEditNoteDialogDeleteClicked}
+          color="secondary"
+        >
           Delete
         </Button>
       </DialogActions>

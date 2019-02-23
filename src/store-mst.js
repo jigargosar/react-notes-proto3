@@ -224,6 +224,9 @@ const RootStore = t
     onEditNoteDialogDiscardClicked() {
       s._closeEditingNoteDialog()
     },
+    onEditNoteDialogDeleteClicked() {
+      s._closeEditingNoteDialog()
+    },
   }))
 
 // noinspection JSCheckFunctionSignatures
