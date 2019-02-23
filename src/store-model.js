@@ -78,35 +78,35 @@ export const notesModel = {
     actions.clearSelection()
   }),
 
-  editingNote: null,
-  editingNoteContent: '',
-  isEditNoteDialogOpen: false,
-  closeEditNoteDialog: pipe([R.assoc('isEditNoteDialogOpen')(false)]),
-  openEditNoteDialog: (state, note) =>
-    pipe([
-      R.assoc('editingNote')(note),
-      R.assoc('editingNoteContent')(note.content),
-      R.assoc('isEditNoteDialogOpen')(true),
-    ])(state),
-  updateEditingNoteContent: (state, content) =>
-    pipe([R.assoc('editingNoteContent', content)])(state),
-  saveEditingNoteDialog: thunk(async (actions, payload, { getState }) => {
-    const notes = getState().notes
-    const note = notes.editingNote
-    const content = notes.editingNoteContent
-    if (note.content !== content) {
-      await db.put({
-        ...note,
-        content,
-        modifiedAt: Date.now(),
-      })
-    }
-    actions.closeEditNoteDialog()
-  }),
-  deleteEditingNote: thunk(async (actions, content, { getState }) => {
-    actions.deleteNotes([getState().notes.editingNote])
-    actions.closeEditNoteDialog()
-  }),
+  // editingNote: null,
+  // editingNoteContent: '',
+  // isEditNoteDialogOpen: false,
+  // closeEditNoteDialog: pipe([R.assoc('isEditNoteDialogOpen')(false)]),
+  // openEditNoteDialog: (state, note) =>
+  //   pipe([
+  //     R.assoc('editingNote')(note),
+  //     R.assoc('editingNoteContent')(note.content),
+  //     R.assoc('isEditNoteDialogOpen')(true),
+  //   ])(state),
+  // updateEditingNoteContent: (state, content) =>
+  //   pipe([R.assoc('editingNoteContent', content)])(state),
+  // saveEditingNoteDialog: thunk(async (actions, payload, { getState }) => {
+  //   const notes = getState().notes
+  //   const note = notes.editingNote
+  //   const content = notes.editingNoteContent
+  //   if (note.content !== content) {
+  //     await db.put({
+  //       ...note,
+  //       content,
+  //       modifiedAt: Date.now(),
+  //     })
+  //   }
+  //   actions.closeEditNoteDialog()
+  // }),
+  // deleteEditingNote: thunk(async (actions, content, { getState }) => {
+  //   actions.deleteNotes([getState().notes.editingNote])
+  //   actions.closeEditNoteDialog()
+  // }),
 
   addNewNote: thunk(async () => {
     const note = createNewNote()
