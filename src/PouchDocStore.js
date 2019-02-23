@@ -1,0 +1,48 @@
+import { flow as f, types as t } from 'mobx-state-tree'
+import { values } from 'mobx'
+import validate from 'aproba'
+
+// const Note = t.model()
+
+function createPouchDocsStore(modelType) {
+  const modelName =
+    modelType.name === 'AnonymousModel' ? 'Doc' : modelType.name
+  validate('O', arguments)
+  return t
+    .model(`Pouch${modelName}Store`, {
+      byId: t.map(modelType),
+    })
+    .views(s => ({
+      get all() {
+        return values(s.byId)
+      },
+      docToModel(doc) {
+        validate('O', arguments)
+        return modelType.create(doc)
+      },
+    }))
+    .actions(s => ({
+      replaceAll(docs) {
+        validate('A', arguments)
+        s.byId.replace(pouchDocsToIdLookup(docs))
+      },
+      put(doc) {
+        validate('O', arguments)
+        s.byId.put(s.docToModel(doc))
+      },
+      remove(doc) {
+        validate('O', arguments)
+        s.byId.delete(doc._id)
+      },
+    }))
+    .actions(s => ({
+      _handleChange(change) {
+        validate('OZZ', arguments)
+        console.debug(`change`, ...arguments)
+        const doc = change.doc
+
+        change.deleted ? s.remove(doc) : s.put(doc)
+      },
+      initPouch: f(initPouchNotes(s)),
+    }))
+}
