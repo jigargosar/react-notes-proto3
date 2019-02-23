@@ -54,10 +54,7 @@ const NoteAvatar = mc(function NoteAvatar({
 const NoteItem = mc(function NoteItem({ note, isSelected }) {
   const { isMultiSelectMode } = useNotes()
 
-  const {
-    openEditNoteDialog,
-    toggleNoteMultiSelection,
-  } = useNotesActions()
+  const { toggleNoteMultiSelection } = useNotesActions()
 
   function handleClick(e) {
     validate('O', arguments)
@@ -86,7 +83,7 @@ const NoteItem = mc(function NoteItem({ note, isSelected }) {
       <ListItemSecondaryAction>
         <IconButton
           disabled={isMultiSelectMode}
-          onClick={() => openEditNoteDialog(note)}
+          onClick={() => rs.startEditingNote(note)}
         >
           <EditIcon />
         </IconButton>
