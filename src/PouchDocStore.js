@@ -1,4 +1,4 @@
-import { flow as f, types as t } from 'mobx-state-tree'
+import { addDisposer, flow as f, types as t } from 'mobx-state-tree'
 import { values } from 'mobx'
 import validate from 'aproba'
 import { it } from 'param.macro'
@@ -49,13 +49,15 @@ function createPouchDocsStore(modelType) {
         const docs = rows.map(it.doc)
         console.log(`docs`, docs)
         s.replaceAll(docs)
-        db.changes({
-          include_docs: true,
-          live: true,
-          since: 'now',
-        })
+        const changes = db
+          .changes({
+            include_docs: true,
+            live: true,
+            since: 'now',
+          })
           .on('change', s._handleChange)
           .on('error', console.error)
+        addDisposer(s, () => changes.cancel())
       }),
     }))
 }
