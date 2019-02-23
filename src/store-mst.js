@@ -271,6 +271,12 @@ const RootStore = t
         R.filter(isNotNil),
       ])(s.selectedIds)
     },
+    get selectedNotesCount() {
+      return s.selectedNotes.length
+    },
+    get isMultiSelectMode() {
+      return s.selectedNotesCount > 0
+    },
   }))
   .actions(s => ({
     afterCreate() {
@@ -288,6 +294,9 @@ const RootStore = t
         R.zipObj(visibleNoteIds, R.repeat(true)(visibleNoteIds.length)),
       )
     },
+    deleteSelectedNotes: f(function*() {
+      yield s.__deleteNotes(s.selectedNotes)
+    }),
   }))
 
 // noinspection JSCheckFunctionSignatures
