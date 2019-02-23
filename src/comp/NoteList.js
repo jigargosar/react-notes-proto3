@@ -1,4 +1,4 @@
-import { useNotes, useNotesActions } from './store-hooks'
+import { useNotes } from './store-hooks'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
@@ -52,9 +52,7 @@ const NoteAvatar = mc(function NoteAvatar({
 })
 
 const NoteItem = mc(function NoteItem({ note, isSelected }) {
-  const { isMultiSelectMode } = useNotes()
-
-  const { toggleNoteMultiSelection } = useNotesActions()
+  const { isMultiSelectMode, toggleNoteMultiSelection } = rs
 
   function handleClick(e) {
     validate('O', arguments)

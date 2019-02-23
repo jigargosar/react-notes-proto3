@@ -294,6 +294,10 @@ const RootStore = t
         R.zipObj(visibleNoteIds, R.repeat(true)(visibleNoteIds.length)),
       )
     },
+    toggleNoteMultiSelection(note) {
+      const sel = s.selectedIds
+      sel.set(note._id, !sel.get(note._id))
+    },
     deleteSelectedNotes: f(function*() {
       yield s.__deleteNotes(s.selectedNotes)
     }),
