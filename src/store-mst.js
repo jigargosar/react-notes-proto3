@@ -207,7 +207,8 @@ const RootStore = t
         return s.initCache()
       },
       initPouch() {
-        return s.notes.initPouch()
+        s.notes.initPouch(db)
+        s.notes._startSync()
       },
       async addNewNoteClicked() {
         const note = createNewNote()
@@ -251,7 +252,7 @@ if (process.env.NODE_ENV !== 'production') {
   window.rs = rs
 }
 
-rs.initPouch().catch(console.error)
+rs.initPouch()
 
 export { rs }
 
