@@ -2,6 +2,7 @@ import {
   addDisposer,
   applySnapshot,
   clone as cloneNode,
+  flow as f,
   getRoot,
   getSnapshot,
   types as t,
@@ -219,9 +220,18 @@ const RootStore = t
     onEditingNoteContentChanged(e) {
       s.editingNoteContent = e.target.value
     },
-    onEditNoteDialogSaveClicked() {
+    onEditNoteDialogSaveClicked: f(function*() {
+      const note = s.editingNote
+      const content = s.editingNoteContent
+      if (note.content !== content) {
+        yield db.put({
+          ...note,
+          content,
+          modifiedAt: Date.now(),
+        })
+      }
       s._closeEditingNoteDialog()
-    },
+    }),
     onEditNoteDialogDiscardClicked() {
       s._closeEditingNoteDialog()
     },
