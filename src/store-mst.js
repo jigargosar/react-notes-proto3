@@ -6,7 +6,7 @@ import {
   types as t,
 } from 'mobx-state-tree'
 import faker from 'faker'
-import { dotPath, objFromList, pipe } from './ramda-helpers'
+import { dotPath, objFromList } from './ramda-helpers'
 import * as R from 'ramda'
 import nanoid from 'nanoid'
 import PouchDB from 'pouchdb-browser'
@@ -185,11 +185,9 @@ const RootStore = t
   })
   .views(s => ({
     get visNotes() {
-      return pipe([
-        R.prop('notes'),
-        R.prop('all'),
-        R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))]),
-      ])(s)
+      return R.sortWith([R.descend(R.propOr(0, 'modifiedAt'))])(
+        s.notes.all,
+      )
     },
   }))
   .extend(coreExt)
@@ -279,6 +277,10 @@ if (module.hot) {
   }
   hotDispose(data => {
     data.snap = rs.snap
+    const sync = rs.notes.sync
+    if (sync) {
+      sync.cancel()
+    }
   })
 }
 
