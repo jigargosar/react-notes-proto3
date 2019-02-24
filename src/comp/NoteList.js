@@ -1,3 +1,4 @@
+import { useNotes, useNotesActions } from '../store-model'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
@@ -13,20 +14,15 @@ import toMaterialStyle from 'material-color-hash'
 import * as R from 'ramda'
 import { pipe } from '../ramda-helpers'
 import validate from 'aproba'
-import { rs } from '../store-mst'
-import { mc } from '../mob-act'
 
 function noteAvatarText(note) {
   validate('O', arguments)
+
   return pipe([R.trim, R.take(2)])(note.content)
 }
 
-const NoteAvatar = mc(function NoteAvatar({
-  note,
-  isSelected,
-  ...otherProps
-}) {
-  const { isMultiSelectMode } = rs
+function NoteAvatar({ note, isSelected, ...otherProps }) {
+  const { isMultiSelectMode } = useNotes()
   const isSelectedInMultiSelectMode = isSelected && isMultiSelectMode
 
   const avatarContent = isSelectedInMultiSelectMode ? (
@@ -47,10 +43,15 @@ const NoteAvatar = mc(function NoteAvatar({
       {avatarContent}
     </Avatar>
   )
-})
+}
 
-const NoteItem = mc(function NoteItem({ note, isSelected }) {
-  const { isMultiSelectMode, toggleNoteMultiSelection } = rs
+const NoteItem = ({ note, isSelected }) => {
+  const { isMultiSelectMode } = useNotes()
+
+  const {
+    openEditNoteDialog,
+    toggleNoteMultiSelection,
+  } = useNotesActions()
 
   function handleClick(e) {
     validate('O', arguments)
@@ -65,7 +66,6 @@ const NoteItem = mc(function NoteItem({ note, isSelected }) {
     e.preventDefault()
     toggleNoteMultiSelection(note)
   }
-
   return (
     <ListItem selected={isSelected} onClick={handleClick}>
       <ListItemAvatar>
@@ -79,25 +79,27 @@ const NoteItem = mc(function NoteItem({ note, isSelected }) {
       <ListItemSecondaryAction>
         <IconButton
           disabled={isMultiSelectMode}
-          onClick={() => rs.startEditingNote(note)}
+          onClick={() => openEditNoteDialog(note)}
         >
           <EditIcon />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
   )
-})
-export const NoteList = mc(function NoteList() {
+}
+
+export function NoteList() {
+  const { visibleNotes, selectedIdDict } = useNotes()
   return (
     <>
       <List>
-        {rs.visNotes.map(note => {
+        {visibleNotes.map(note => {
           const id = note._id
           return (
             <NoteItem
               key={id}
               note={note}
-              isSelected={rs.isSelected(note)}
+              isSelected={!!selectedIdDict[id]}
             />
           )
         })}
@@ -105,4 +107,4 @@ export const NoteList = mc(function NoteList() {
       <EditNoteDialog />
     </>
   )
-})
+}

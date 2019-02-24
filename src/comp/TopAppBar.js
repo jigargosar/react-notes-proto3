@@ -1,4 +1,5 @@
 import { withStyles } from '@material-ui/core'
+import { useNotes, useNotesActions } from '../store-model'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -18,11 +19,9 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { rs } from '../store-mst'
-import { mc } from '../mob-act'
-import { pipe } from '../ramda-helpers'
 
-function SyncStatusIcon({ syncStatus }) {
+function SyncStatusIcon() {
+  const { syncStatus } = useNotes()
   const iconMap = {
     synced: SyncIcon,
     disabled: SyncDisabledIcon,
@@ -41,17 +40,32 @@ function SyncStatusIcon({ syncStatus }) {
   )
 }
 
+function SyncStatusIconButton() {
+  const { openSettingsDialog } = useNotesActions()
+  return (
+    <IconButton color="inherit" onClick={() => openSettingsDialog()}>
+      <SyncStatusIcon />
+    </IconButton>
+  )
+}
+
 function HeaderIconBtn(props) {
   return <IconButton color="inherit" {...props} />
 }
 
-function MoreMenu({ children }) {
+function MoreMenu() {
+  const { openSettingsDialog } = useNotesActions()
+
   const [menuOpen, setMenuOpen] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
 
   const handleClose = () => closeMenu()
   const handleOpen = () => setMenuOpen(true)
+  const handleSyncSettings = () => {
+    openSettingsDialog()
+    closeMenu()
+  }
   const anchorRef = useRef(null)
   return (
     <>
@@ -75,31 +89,28 @@ function MoreMenu({ children }) {
         }}
         open={menuOpen}
         onClose={handleClose}
-        onClick={handleClose}
       >
-        {children}
+        <MenuItem onClick={handleSyncSettings}>
+          <ListItemIcon>
+            <SyncIcon />
+          </ListItemIcon>
+          <ListItemText>Sync Settings</ListItemText>
+        </MenuItem>
       </Menu>
     </>
   )
 }
 
-const enhanceTopAppBar = pipe([
-  mc,
-  withStyles(theme => ({
-    toolbar: theme.mixins.toolbar,
-  })),
-])
-
-export const TopAppBar = enhanceTopAppBar(function TopBar({ classes }) {
+export const TopAppBar = withStyles(theme => ({
+  toolbar: theme.mixins.toolbar,
+}))(function TopBar({ classes }) {
+  const { syncStatus, selectedNotesCount, isMultiSelectMode } = useNotes()
   const {
     selectAll,
     clearSelection,
     deleteSelectedNotes,
-    isMultiSelectMode,
-    selectedNotesCount,
-  } = rs
+  } = useNotesActions()
 
-  const syncStatus = rs.notes.syncStatus
   return (
     <>
       <AppBar position="fixed">
@@ -107,9 +118,7 @@ export const TopAppBar = enhanceTopAppBar(function TopBar({ classes }) {
           <Typography variant="h6" color="inherit">
             Notes
           </Typography>
-          <HeaderIconBtn onClick={rs.openSettingsDialogClicked}>
-            <SyncStatusIcon syncStatus={syncStatus} />
-          </HeaderIconBtn>
+          <SyncStatusIconButton />
           <Typography variant="body2" color="inherit">
             {syncStatus}
           </Typography>
@@ -128,14 +137,7 @@ export const TopAppBar = enhanceTopAppBar(function TopBar({ classes }) {
               </HeaderIconBtn>
             </>
           )}
-          <MoreMenu>
-            <MenuItem onClick={rs.openSettingsDialogClicked}>
-              <ListItemIcon>
-                <SyncIcon />
-              </ListItemIcon>
-              <ListItemText>Sync Settings</ListItemText>
-            </MenuItem>
-          </MoreMenu>
+          <MoreMenu />
         </Toolbar>
       </AppBar>
       <div className={classes.toolbar} />

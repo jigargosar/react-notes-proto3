@@ -106,8 +106,3 @@ export const overById = overProp('byId')
 export function isNotNil(v) {
   return !R.isNil(v)
 }
-
-export function dotPath(dotPathStr) {
-  validate('S', arguments)
-  return R.path(dotPathStr.split('.'))
-}
